@@ -1,5 +1,5 @@
 package airlineManager;
 
-public class Plane {
+public class Plane extends Aircraft {
     
 }
