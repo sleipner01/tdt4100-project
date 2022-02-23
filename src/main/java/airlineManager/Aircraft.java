@@ -10,7 +10,6 @@ public class Aircraft {
     private int efficiency;
     private int price;
 
-
     public String getManufacturer() {
         return manufacturer;
     }
@@ -32,6 +31,14 @@ public class Aircraft {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getTailNumber() {
+        return tailNumber;
+    }
+    
+    public void setTailNumber(String tailNumber) {
+        this.tailNumber = tailNumber;
     }
 
     public int getSpeed() {
