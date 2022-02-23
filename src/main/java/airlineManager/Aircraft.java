@@ -5,6 +5,7 @@ public class Aircraft {
     private String manufacturer;
     private String model;
     private String type; // Passanger or Cargo
+    private String tailNumber;
     private int speed;
     private int efficiency;
     private int price;
