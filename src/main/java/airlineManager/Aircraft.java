@@ -6,65 +6,59 @@ public class Aircraft {
     private String model;
     private String type; // Passanger or Cargo
     private String tailNumber;
+    private Livery livery;
     private int speed;
     private int efficiency;
     private int price;
+    private int seats;
+
+    public Aircraft(String manufacturer, String model, String type, String tailNumber, Livery livery, int speed,
+            int efficiency, int price, int seats) {
+        this.manufacturer = manufacturer;
+        this.model = model;
+        this.type = type;
+        this.tailNumber = tailNumber;
+        this.livery = livery;
+        this.speed = speed;
+        this.efficiency = efficiency;
+        this.price = price;
+        this.seats = seats;
+    }
 
     public String getManufacturer() {
-        return manufacturer;
-    }
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
+        return this.manufacturer;
     }
 
     public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
+        return this.model;
     }
 
     public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+        return this.type;
     }
 
     public String getTailNumber() {
-        return tailNumber;
+        return this.tailNumber;
     }
-    
-    public void setTailNumber(String tailNumber) {
-        this.tailNumber = tailNumber;
+
+    public Livery getLivery() {
+        return this.livery;
     }
 
     public int getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
     public int getEfficiency() {
         return efficiency;
-    }
-    
-    public void setEfficiency(int efficiency) {
-        this.efficiency = efficiency;
     }
 
     public int getPrice() {
         return price;
     }
-    
-    public void setPrice(int price) {
-        this.price = price;
+
+    public int getSeats() {
+        return this.seats;
     }
-    
-    
 
 }
