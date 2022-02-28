@@ -1,3 +1,4 @@
+Manufacturer,Model,Type,Livery File,Speed,Range,Efficiency,Price,Seats
 Cessna,152,Passanger,plane.png,120,300,20,500,2
 Boeing,737,Passanger,plane.png,250,1000,100,5000,10
 Boeing,787,Passanger,plane.png,270,3000,400,10000,20
