@@ -16,10 +16,10 @@ public class AirlineManagerGame {
     private String AIRCRAFTS_FILE_NAME;
     private String AIRPORTS_FILE_NAME;
 
-    private static Airline airline;
+    private Airline airline;
     private static List<Airport> airports = new ArrayList<>();
     private static List<Aircraft> aircrafts = new ArrayList<>();
-    private List<Flight> flights = new ArrayList<>();
+    //private List<Flight> flights = new ArrayList<>();
 
 
     public AirlineManagerGame() {
@@ -115,11 +115,12 @@ public class AirlineManagerGame {
         }  
     }
 
-
+    public Airline getAirline() {
+        return this.airline;
+    }
 
     public static void main(String[] args) {
-        AirlineManagerGame game = new AirlineManagerGame();
-        
+        // AirlineManagerGame game = new AirlineManagerGame();
     }
 
 
