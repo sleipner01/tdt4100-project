@@ -5,21 +5,21 @@ public class Aircraft {
     private String manufacturer;
     private String model;
     private String type; // Passanger or Cargo
-    private String tailNumber;
     private Livery livery;
     private int speed;
+    private int range;
     private int efficiency;
     private int price;
     private int seats;
 
-    public Aircraft(String manufacturer, String model, String type, String tailNumber, Livery livery, int speed,
-            int efficiency, int price, int seats) {
+    public Aircraft(String manufacturer, String model, String type, Livery livery, int speed,
+            int range, int efficiency, int price, int seats) {
         this.manufacturer = manufacturer;
         this.model = model;
         this.type = type;
-        this.tailNumber = tailNumber;
         this.livery = livery;
         this.speed = speed;
+        this.range = range;
         this.efficiency = efficiency;
         this.price = price;
         this.seats = seats;
@@ -36,17 +36,17 @@ public class Aircraft {
     public String getType() {
         return this.type;
     }
-
-    public String getTailNumber() {
-        return this.tailNumber;
-    }
-
+    
     public Livery getLivery() {
         return this.livery;
     }
-
+    
     public int getSpeed() {
         return speed;
+    }
+    
+    public int getRange() {
+        return this.range;
     }
 
     public int getEfficiency() {
@@ -59,6 +59,14 @@ public class Aircraft {
 
     public int getSeats() {
         return this.seats;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Aircraft [efficiency=" + efficiency + ", livery=" + livery + ", manufacturer=" + manufacturer
+                + ", model=" + model + ", price=" + price + ", seats=" + seats + ", speed=" + speed + ", range="
+                + range + ", type=" + type + "]";
     }
 
 }

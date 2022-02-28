@@ -1,1 +1,4 @@
-Boeing, 737, 100 
+Cessna,152,Passanger,plane.png,120,300,20,500,2
+Boeing,737,Passanger,plane.png,250,1000,100,5000,10
+Boeing,787,Passanger,plane.png,270,3000,400,10000,20
+Airbus,320,Passanger,plane.png,250,1000,100,4500,10
