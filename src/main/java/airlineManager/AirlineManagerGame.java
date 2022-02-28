@@ -1,6 +1,7 @@
 package airlineManager;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;  
 import java.io.IOException;  
 import java.util.ArrayList;
@@ -15,9 +16,9 @@ public class AirlineManagerGame {
     private String AIRCRAFTS_FILE_NAME;
     private String AIRPORTS_FILE_NAME;
 
-    private Airline airline;
-    public List<Airport> availableAirports = new ArrayList<>();
-    private List<Aircraft> availableAircrafts = new ArrayList<>();
+    private static Airline airline;
+    private static List<Airport> airports = new ArrayList<>();
+    private static List<Aircraft> aircrafts = new ArrayList<>();
     private List<Flight> flights = new ArrayList<>();
 
 
@@ -35,15 +36,27 @@ public class AirlineManagerGame {
         catch (Exception e) {
             e.printStackTrace();
         }
+
+        // Loading game files with airplanes and airports
+        this.load();
     }
 
+    public AirlineManagerGame(File save) {
+        this();
+        this.load(save);
+        // If there exists a save, start from save - Initialize the airline
 
+    }
 
     private void load() {
-        loadAircraft(AIRCRAFTS_FILE_NAME);
-        loadAirports(AIRPORTS_FILE_NAME);
-        
-        // If there exists a save, start from save - Initialize the airline
+        this.loadAircraft(AIRCRAFTS_FILE_NAME);
+        this.loadAirports(AIRPORTS_FILE_NAME);
+    }
+
+    private void load(File save) {
+        this.load();
+
+        // Do Save restoration stuff
     }
 
 
@@ -52,14 +65,13 @@ public class AirlineManagerGame {
         String temporaryLine = "";    
 
         try {  
-            // Parsing a CSV file into BufferedReader class constructor  
             BufferedReader bufferedReader = new BufferedReader(new FileReader(this.PATH + fileName));  
             bufferedReader.readLine(); // Skip first line in the CSV document to skip the header.
 
             while ((temporaryLine = bufferedReader.readLine()) != null) {
                 String[] aircraftInfo = temporaryLine.split(",");
 
-                availableAircrafts.add(
+                aircrafts.add(
                     new Aircraft(aircraftInfo[0], 
                                  aircraftInfo[1], 
                                  aircraftInfo[2], 
@@ -77,25 +89,19 @@ public class AirlineManagerGame {
         catch (IOException e) {  
             e.printStackTrace();  
         }  
-
-        System.out.println(availableAircrafts);
-
     }
-
-
 
     private void loadAirports(String fileName) {
         String temporaryLine = "";    
 
         try {  
-            // Parsing a CSV file into BufferedReader class constructor  
             BufferedReader bufferedReader = new BufferedReader(new FileReader(this.PATH + fileName));  
             bufferedReader.readLine(); // Skip first line in the CSV document to skip the header.
 
             while ((temporaryLine = bufferedReader.readLine()) != null) {
                 String[] airportInfo = temporaryLine.split(",");
 
-                availableAirports.add(
+                airports.add(
                     new Airport(airportInfo[3], 
                                 Integer.parseInt(airportInfo[4]), 
                                 airportInfo[0], Integer.parseInt(airportInfo[1]), Integer.parseInt(airportInfo[2])
@@ -107,16 +113,13 @@ public class AirlineManagerGame {
         catch (IOException e) {  
             e.printStackTrace();  
         }  
-
-        System.out.println(availableAirports);
-
     }
 
 
 
     public static void main(String[] args) {
         AirlineManagerGame game = new AirlineManagerGame();
-        game.load();        
+        
     }
 
 

@@ -7,14 +7,16 @@ public class Airport extends City{
 
     private String name;
     private int gates;
-    private List<Plane> planes = new ArrayList<>();
-    private List<Passenger> travellers = new ArrayList<>();
+    private List<Plane> planes;
+    private List<Passenger> travellers;
 
 
     public Airport(String airportName, int gates, String cityName, int longitude, int latitude) {
         super(cityName, longitude, latitude);
         this.name = airportName;
         this.gates = gates;
+        this.planes = new ArrayList<>();
+        this.travellers = new ArrayList<>();
     }
 
 
@@ -34,8 +36,20 @@ public class Airport extends City{
         this.planes.add(plane);
     }
 
+    public void removePlane(Plane plane) {
+        this.planes.remove(plane);
+    }
+
     public List<Passenger> getTravellers() {
         return new ArrayList<>(this.travellers);
+    }
+
+    public void refreshTravellers(int amount, List<Airport> availableAirports) {
+        this.travellers.removeAll(this.travellers);
+
+        for(int i = 0; i < amount; i++) travellers.add(new Passenger("Magnus", 50, availableAirports.get(0)));
+
+
     }
 
 }
