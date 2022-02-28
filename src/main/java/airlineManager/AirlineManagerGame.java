@@ -2,8 +2,8 @@ package airlineManager;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;  
-import java.io.IOException;  
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -72,14 +72,14 @@ public class AirlineManagerGame {
                 String[] aircraftInfo = temporaryLine.split(",");
 
                 aircrafts.add(
-                    new Aircraft(aircraftInfo[0], 
-                                 aircraftInfo[1], 
-                                 aircraftInfo[2], 
-                                 new Livery(aircraftInfo[3]), 
-                                 Integer.parseInt(aircraftInfo[4]), 
-                                 Integer.parseInt(aircraftInfo[5]), 
-                                 Integer.parseInt(aircraftInfo[6]), 
-                                 Integer.parseInt(aircraftInfo[7]), 
+                    new Aircraft(aircraftInfo[0],
+                                 aircraftInfo[1],
+                                 aircraftInfo[2],
+                                 new Livery(aircraftInfo[3]),
+                                 Integer.parseInt(aircraftInfo[4]),
+                                 Integer.parseInt(aircraftInfo[5]),
+                                 Integer.parseInt(aircraftInfo[6]),
+                                 Integer.parseInt(aircraftInfo[7]),
                                  Integer.parseInt(aircraftInfo[8])
                     )
                 );
@@ -118,6 +118,8 @@ public class AirlineManagerGame {
     public Airline getAirline() {
         return this.airline;
     }
+
+
 
     public static void main(String[] args) {
         // AirlineManagerGame game = new AirlineManagerGame();

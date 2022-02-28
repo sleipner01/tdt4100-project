@@ -5,7 +5,7 @@ public class Flight {
     private Plane plane;
     private Airport origin;
     private Airport destination;
-
+    private int flightTime;
 
     public Flight(Plane plane, Airport origin) {
         this.plane = plane;
@@ -26,6 +26,16 @@ public class Flight {
 
     public void setDestination(Airport destination) {
         this.destination = destination;
+
+        // Calculate flightTime
+    }
+
+    public int getFlightTime() {
+        return this.flightTime;
+    }
+
+    private void setFlightTime(int time) {
+        this.flightTime = time;
     }
 
 }
