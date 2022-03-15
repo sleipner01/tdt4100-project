@@ -53,3 +53,6 @@ The state of the game (Airline info, the location of the planes, every flight th
 - I will test that passangers can be added to flights, and removed from the airport
 
 
+## Tasks
+- Create AircraftInterface and figure out what I can use it for...
+- Finish PlaneIterator. Will be used to iterate through an airline to find all of its planes.
