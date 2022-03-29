@@ -1,6 +1,6 @@
 package airlineManager;
 
-public class Aircraft {
+public class Aircraft implements AircraftInterface {
     
     private String manufacturer;
     private String model;

@@ -1,9 +1,10 @@
 package airlineManager;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class Airline {
+public class Airline implements Iterable<Plane> {
 
     private String name;
     // private long value;
@@ -35,6 +36,16 @@ public class Airline {
 
     public void addPlane(Plane plane) {
         this.planes.add(plane);
+    }
+
+    @Override
+    public Iterator<Plane> iterator() {
+        Iterator<Plane> planeIterator = new PlaneIterator(planes);
+        while(planeIterator.hasNext())
+            System.out.println(planeIterator.next().getNickName());
+        
+        // return planeIterator;
+        return null;
     }
 
 }
