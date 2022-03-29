@@ -28,6 +28,8 @@ public class Flight {
         this.destination = destination;
 
         // Calculate flightTime
+        int time = 0;
+        setFlightTime(time);
     }
 
     public int getFlightTime() {
@@ -36,6 +38,6 @@ public class Flight {
 
     private void setFlightTime(int time) {
         this.flightTime = time;
-    }
+    }   
 
 }
