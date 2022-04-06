@@ -2,7 +2,7 @@ package airlineManager;
 
 import java.io.FileNotFoundException;
 
-public class SaveHandler implements InterfaceSaveHandler {
+public class GameSaveHandler implements InterfaceFileHandler {
 
     @Override
     public void save(String filename, AirlineManagerGame game) throws FileNotFoundException {

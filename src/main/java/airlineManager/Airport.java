@@ -3,7 +3,7 @@ package airlineManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Airport extends City{
+public class Airport extends City {
 
     private String name;
     private int gates;
@@ -50,6 +50,11 @@ public class Airport extends City{
         for(int i = 0; i < amount; i++) travellers.add(new Passenger("Magnus", 50, availableAirports.get(0)));
 
 
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", Airport=" + this.name;
     }
 
 }

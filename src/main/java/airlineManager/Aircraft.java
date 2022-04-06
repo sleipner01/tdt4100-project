@@ -64,9 +64,9 @@ public class Aircraft implements AircraftInterface {
 
     @Override
     public String toString() {
-        return "Aircraft [efficiency=" + efficiency + ", livery=" + livery + ", manufacturer=" + manufacturer
-                + ", model=" + model + ", price=" + price + ", seats=" + seats + ", speed=" + speed + ", range="
-                + range + ", type=" + type + "]";
+        return "Aircraft [manufacturer=" + manufacturer+ ", model=" + model + ", price=" + price
+                + ", seats=" + seats + ", speed=" + speed + ", range="
+                + range + "efficiency=" + efficiency + ", livery=" + livery + ", type=" + type + "]";
     }
 
 }

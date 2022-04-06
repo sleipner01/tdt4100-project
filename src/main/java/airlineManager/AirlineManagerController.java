@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 public class AirlineManagerController {
 
     private AirlineManagerGame game;
-    private InterfaceSaveHandler saveHandler = new SaveHandler();
+    private InterfaceFileHandler saveHandler = new GameSaveHandler();
 
     @FXML
     public void update() {
