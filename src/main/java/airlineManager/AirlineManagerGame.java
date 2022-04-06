@@ -3,6 +3,7 @@ package airlineManager;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 
 public class AirlineManagerGame {
@@ -10,6 +11,8 @@ public class AirlineManagerGame {
     private final String CONFIG_FILE = "config.properties";
     private final String AIRCRAFTS_FILE_NAME = "aircrafts.csv";
     private final String AIRPORTS_FILE_NAME = "airports.csv";
+
+    private Properties properties;
 
     private Airline airline;
     private List<Aircraft> aircrafts = new ArrayList<>();
@@ -19,21 +22,8 @@ public class AirlineManagerGame {
 
 
     public AirlineManagerGame() {
-        // FUNCTIONALITY REMOVED. Instead hardcoded in this file.
-        // Setting up initial values from config file
-        // try (FileReader reader = new FileReader(CONFIG_FILE)) {
-        //     Properties properties = new Properties();
-        //     properties.load(reader);
-
-        //     this.PATH = properties.getProperty("resourcesPath");
-        //     this.AIRCRAFTS_FILE_NAME = properties.getProperty("aircraftsFileName");
-        //     this.AIRPORTS_FILE_NAME = properties.getProperty("airportsFileName");
-
-        // } 
-        // catch (Exception e) {
-        //     e.printStackTrace();
-        // }
-
+        this.properties = new PropertiesLoader().load(CONFIG_FILE);
+        System.out.println(properties.getProperty("defaultMoney"));
         // Loading game files with airplanes and airports
         this.load();
     }
@@ -59,15 +49,13 @@ public class AirlineManagerGame {
 
     private void loadAircraft(String fileName) {
 
-        InterfaceGameFileLoader<Aircraft> aircraftsLoader = new AircraftsLoader();
-        this.aircrafts = aircraftsLoader.load(fileName);
+        this.aircrafts = new AircraftsLoader().load(fileName);;
 
     }
 
     private void loadAirports(String fileName) {
 
-        InterfaceGameFileLoader<Airport> airportsLoader = new AirportsLoader();
-        this.airports = airportsLoader.load(fileName);
+        this.airports = new AirportsLoader().load(fileName);
 
     }
 
