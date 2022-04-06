@@ -6,15 +6,16 @@ import java.util.List;
 public class Airport extends City {
 
     private String name;
-    private int gates;
+    private int gates, capacity;
     private List<Plane> planes;
     private List<Passenger> travellers;
 
 
-    public Airport(String airportName, int gates, String cityName, int longitude, int latitude) {
+    public Airport(String airportName, int gates, int capacity, String cityName, int longitude, int latitude) {
         super(cityName, longitude, latitude);
         this.name = airportName;
         this.gates = gates;
+        this.capacity = capacity;
         this.planes = new ArrayList<>();
         this.travellers = new ArrayList<>();
     }

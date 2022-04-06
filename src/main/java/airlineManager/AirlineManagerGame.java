@@ -15,18 +15,21 @@ public class AirlineManagerGame {
     private Properties properties;
 
     private Airline airline;
-    private List<Aircraft> aircrafts = new ArrayList<>();
-    private List<Airport> airports = new ArrayList<>();
+    private List<Aircraft> aircrafts;
+    private List<Airport> airports;
 
     //private List<Flight> flights = new ArrayList<>();
 
 
     public AirlineManagerGame() {
         this.properties = new PropertiesLoader().load(CONFIG_FILE);
-        System.out.println(properties.getProperty("defaultMoney"));
+        this.aircrafts = new ArrayList<>();
+        this.airports= new ArrayList<>();
         // Loading game files with airplanes and airports
         this.load();
     }
+
+
 
     // If there exists a save, start from save - Initialize the airline
     public AirlineManagerGame(File save) {
@@ -34,10 +37,14 @@ public class AirlineManagerGame {
         this.load(save);
     }
 
+
+
     private void load() {
         this.loadAircraft(AIRCRAFTS_FILE_NAME);
         this.loadAirports(AIRPORTS_FILE_NAME);
     }
+
+
 
     private void load(File save) {
         this.load();
@@ -48,16 +55,16 @@ public class AirlineManagerGame {
 
 
     private void loadAircraft(String fileName) {
-
         this.aircrafts = new AircraftsLoader().load(fileName);;
-
     }
+
+
 
     private void loadAirports(String fileName) {
-
         this.airports = new AirportsLoader().load(fileName);
-
     }
+
+
 
     public Airline getAirline() {
         return this.airline;

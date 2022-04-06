@@ -1,5 +1,5 @@
-City,Longitude,Latitude,Airport Name,Gates
-Oslo,500,300,Gardermoen,10
-London,400,400,Heathrow,20
-Munich,500,500,Munich,8
-New York,100,400,J.F. Kennedy Intl.,50
+City,Longitude,Latitude,Airport Name,Gates,Capacity
+Oslo,500,300,Gardermoen,10,20
+London,400,400,Heathrow,20,20
+Munich,500,500,Munich,8,20
+New York,100,400,J.F. Kennedy Intl.,50,20
