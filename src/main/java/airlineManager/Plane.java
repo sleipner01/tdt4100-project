@@ -2,7 +2,6 @@ package airlineManager;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public class Plane {
 
     private Aircraft aircraft;
@@ -16,6 +15,10 @@ public class Plane {
         this.nickName = nickName;
         this.airline = airline;
         this.passengers = new ArrayList<>();
+
+        System.out.println("Created " 
+                           + aircraft.getManufacturer() + " " + aircraft.getModel() 
+                           + " for " + airline);
     }
 
     public Aircraft getAircraft() {
@@ -42,16 +45,24 @@ public class Plane {
         if(this.passengers.contains(passenger))
             throw new IllegalArgumentException(passenger + "is already in the plane");
         this.passengers.add(passenger);
+        System.out.println("Boarded " + passenger + ".");
     }
 
     public void removePassenger(Passenger passenger) {
         if(!this.passengers.contains(passenger))
             throw new IllegalArgumentException("The plane haven't boarded " + passenger);
         this.passengers.remove(passenger);
+        System.out.println("Kicked off " + passenger + ".");
     }
 
     public void clearPassengers() {
         this.passengers.removeAll(this.passengers);
+        System.out.println("Plane is now empty.");
+    }
+
+    @Override
+    public String toString() {
+        return this.nickName;
     }
     
 }

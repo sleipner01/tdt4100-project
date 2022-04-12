@@ -7,9 +7,10 @@ public class Flight {
     private Airport destination;
     private int flightTime;
 
-    public Flight(Plane plane, Airport origin) {
+    public Flight(Plane plane, Airport destination) {
         this.plane = plane;
-        this.origin = origin;
+        this.destination = destination;
+
     }
 
     public Plane getPlane() {

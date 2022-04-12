@@ -18,8 +18,8 @@ public class Airline implements Iterable<Plane> {
         this.planes = new ArrayList<>();
 
         System.out.println("\n************");
-        System.out.println("Created new Airline");
-        System.out.println("Name:" + name + ", Coins: " + coins + ", Planes:");
+        System.out.println("Created a new airline;");
+        System.out.println("Name: " + name + ", Coins: " + coins + "\n");
     }
 
     public Airline (String name, int coins, List<Plane> planes) {
@@ -33,6 +33,7 @@ public class Airline implements Iterable<Plane> {
         for (Plane plane : planes) {
             System.out.println(plane);
         }
+        System.out.println("");
     }
 
     public String getName() {
@@ -65,7 +66,7 @@ public class Airline implements Iterable<Plane> {
         String temporaryPlaneNickName = (numberOfPlanes == 0) ? "Plane" : "Plane" + numberOfPlanes;
         this.planes.add(new Plane(aircraft, temporaryPlaneNickName, this));
 
-        System.out.println("\n Bought plane");
+        System.out.println("\n" + this + " successfully bought " + aircraft);
     }
 
     @Override
@@ -74,18 +75,9 @@ public class Airline implements Iterable<Plane> {
         return planeIterator;
     }
 
-    public static void main(String[] args) {
-        Airline airline = new Airline("ByrkjajerAirlines", 15000);
-        airline.buy(new Aircraft("Boeing", "737", "Passanger", new Livery("aids.no"), 200, 200, 1, 500, 4));
-        
-        Iterator<Plane> it = airline.iterator();
-        while(it.hasNext()) {
-            System.out.println(it.next().getNickName());
-        }
 
-        for (Plane plane : airline) {
-            System.out.println(plane.getNickName());
-        }
+    @Override
+    public String toString() {
+        return this.name;
     }
-
 }
