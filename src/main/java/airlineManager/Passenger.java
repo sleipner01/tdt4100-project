@@ -23,4 +23,9 @@ public class Passenger {
     public City getDestination() {
         return this.destination;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

@@ -23,8 +23,8 @@ public class AirlineManagerGame {
 
     public AirlineManagerGame() {
         this.properties = new PropertiesLoader().load(CONFIG_FILE);
-        this.aircrafts = new ArrayList<>();
-        this.airports= new ArrayList<>();
+        this.aircrafts = new AircraftsLoader().load(AIRCRAFTS_FILE_NAME);
+        this.airports= new AirportsLoader().load(AIRPORTS_FILE_NAME);
         // Loading game files with airplanes and airports
         this.load();
     }
@@ -40,28 +40,15 @@ public class AirlineManagerGame {
 
 
     private void load() {
-        this.loadAircraft(AIRCRAFTS_FILE_NAME);
-        this.loadAirports(AIRPORTS_FILE_NAME);
+        this.airline = new Airline("ByrkjajerAirlines", Integer.parseInt(properties.getProperty("defaultCoins")));
     }
 
 
 
     private void load(File save) {
-        this.load();
+        // this.load();
 
         // Do Save restoration stuff
-    }
-
-
-
-    private void loadAircraft(String fileName) {
-        this.aircrafts = new AircraftsLoader().load(fileName);;
-    }
-
-
-
-    private void loadAirports(String fileName) {
-        this.airports = new AirportsLoader().load(fileName);
     }
 
 
@@ -74,6 +61,7 @@ public class AirlineManagerGame {
 
     public static void main(String[] args) {
         AirlineManagerGame game = new AirlineManagerGame();
+
     }
 
 

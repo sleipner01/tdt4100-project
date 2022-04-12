@@ -19,11 +19,11 @@ public class Plane {
     }
 
     public Aircraft getAircraft() {
-        return aircraft;
+        return this.aircraft;
     }
 
     public String getNickName() {
-        return nickName;
+        return this.nickName;
     }
 
     public void setNickName(String nickName) {
@@ -31,7 +31,7 @@ public class Plane {
     }
 
     public Airline getAirline() {
-        return airline;
+        return this.airline;
     }
 
     public List<Passenger> getPassengers() {
@@ -39,7 +39,15 @@ public class Plane {
     }
 
     public void addPassenger(Passenger passenger) {
+        if(this.passengers.contains(passenger))
+            throw new IllegalArgumentException(passenger + "is already in the plane");
         this.passengers.add(passenger);
+    }
+
+    public void removePassenger(Passenger passenger) {
+        if(!this.passengers.contains(passenger))
+            throw new IllegalArgumentException("The plane haven't boarded " + passenger);
+        this.passengers.remove(passenger);
     }
 
     public void clearPassengers() {
