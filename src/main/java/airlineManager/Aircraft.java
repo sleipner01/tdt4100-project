@@ -12,17 +12,23 @@ public class Aircraft implements AircraftInterface {
     private int price;
     private int seats;
 
-    public Aircraft(String manufacturer, String model, String type, Livery livery, int speed,
-            int range, int efficiency, int price, int seats) {
+    public Aircraft(String manufacturer, String model, String type, int speed,
+                    int range, int efficiency, int price, int seats) {
         this.manufacturer = manufacturer;
         this.model = model;
         this.type = type;
-        this.livery = livery;
+        this.livery = new Livery("defaultLivery.png");
         this.speed = speed;
         this.range = range;
         this.efficiency = efficiency;
         this.price = price;
         this.seats = seats;
+    }
+
+    public Aircraft(String manufacturer, String model, String type, int speed,
+            int range, int efficiency, int price, int seats, Livery livery) {
+        this(manufacturer, model, type, speed, range, efficiency, price, seats);
+        this.livery = livery;
     }
 
     public String getManufacturer() {

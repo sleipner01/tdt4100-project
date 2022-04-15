@@ -36,7 +36,7 @@
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Refreshing travellers in: ">
                <font>
-                  <Font size="18.0" />
+                  <Font size="16.0" />
                </font>
                <HBox.margin>
                   <Insets right="4.0" />
@@ -44,7 +44,7 @@
             </Text>
             <Text fx:id="time" strokeType="OUTSIDE" strokeWidth="0.0" text="5 min">
                <font>
-                  <Font size="18.0" />
+                  <Font size="16.0" />
                </font>
                <HBox.margin>
                   <Insets right="30.0" />
@@ -84,7 +84,7 @@
                               <Font size="28.0" />
                            </font>
                         </Text>
-                        <Text fx:id="airport" layoutX="491.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AirportName" textAlignment="CENTER" wrappingWidth="200.37622833251953">
+                        <Text fx:id="airportNameLabel" layoutX="491.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AirportName" textAlignment="CENTER" wrappingWidth="200.37622833251953">
                            <font>
                               <Font size="28.0" />
                            </font>
@@ -93,17 +93,17 @@
                            <children>
                               <Button fx:id="takeOff" layoutX="324.0" layoutY="352.0" mnemonicParsing="false" text="Take off" />
                               <Text layoutX="35.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Passengers:" />
-                              <Text fx:id="passengercount" layoutX="105.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x/x" />
+                              <Text fx:id="passengerCountLabel" layoutX="105.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x/x" />
                               <Text layoutX="35.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aircraft:" />
-                              <Text fx:id="aircraftInfo" layoutX="85.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manufacturer + model" />
+                              <Text fx:id="manufacturerAndModelLabel" layoutX="85.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manufacturer + model" />
                               <Text layoutX="36.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination:" />
-                              <Text fx:id="destinationAirport" layoutX="109.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Airport" />
+                              <Text fx:id="destinationAirportLabel" layoutX="109.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Airport" />
                               <Text layoutX="37.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profit:" />
-                              <Text fx:id="profit" layoutX="81.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x coins" />
+                              <Text fx:id="profitLabel" layoutX="81.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x coins" />
                            </children>
                         </Pane>
-                        <ScrollPane fx:id="viewableTravellersList" hbarPolicy="NEVER" layoutX="16.0" layoutY="142.0" prefHeight="200.0" prefWidth="200.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="44.0" />
-                        <ScrollPane fx:id="viewableDestinationList" hbarPolicy="NEVER" layoutX="197.0" layoutY="85.0" prefHeight="200.0" prefWidth="200.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="44.0" />
+                        <ScrollPane fx:id="viewableTravellersList" hbarPolicy="NEVER" layoutX="16.0" layoutY="142.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="44.0" />
+                        <ScrollPane fx:id="viewableDestinationsList" hbarPolicy="NEVER" layoutX="197.0" layoutY="85.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="44.0" />
                         <ScrollPane fx:id="viewablePlanesList" hbarPolicy="ALWAYS" layoutX="197.0" layoutY="383.0" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="440.0" />
                      </children>
                   </AnchorPane>
@@ -116,5 +116,10 @@
           </Tab>
         </tabs>
       </TabPane>
+      <Text fx:id="airlineName" layoutX="194.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AirlineName">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

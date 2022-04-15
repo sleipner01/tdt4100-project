@@ -47,6 +47,10 @@ public class Plane {
         return this.passengers;
     }
 
+    public int getPassengerCount() {
+        return this.passengers.size();
+    }
+
     public void addPassenger(Passenger passenger) {
         if(this.passengers.contains(passenger))
             throw new IllegalArgumentException(passenger + "is already in the plane");

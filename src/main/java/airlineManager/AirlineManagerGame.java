@@ -38,20 +38,20 @@ public class AirlineManagerGame {
 
 
     // If there exists a save, start from save - Initialize the airline
-    public AirlineManagerGame(File save) {
+    public AirlineManagerGame(String gameSaveFileName) {
         // this();
-        this.load(save);
+        this.load(gameSaveFileName);
     }
 
 
 
     private void load() {
-        this.airline = new Airline("ByrkjajerAirlines", Integer.parseInt(properties.getProperty("defaultCoins")), this.defaultAirport);
+        this.airline = new Airline("ByrkjajerAirlines", Integer.parseInt(properties.getProperty("defaultCoins")), this.getDefaultAirport());
     }
 
 
 
-    private void load(File save) {
+    private void load(String gameSaveFileName) {
         // this.load();
 
         // Do Save restoration stuff
@@ -59,7 +59,7 @@ public class AirlineManagerGame {
 
 
     // Remove when other functionality has been added
-    public Airport getDefaulAirport() {
+    private Airport getDefaultAirport() {
         return this.defaultAirport;
     }
 
@@ -71,12 +71,24 @@ public class AirlineManagerGame {
 
 
 
+    public List<Airport> getAirports() {
+        return new ArrayList<>(this.airports);
+    }
+
+
+
+    public List<Aircraft> getAircrafts() {
+        return new ArrayList<>(this.aircrafts);
+    }
+
+
+
     public static void main(String[] args) {
         AirlineManagerGame game = new AirlineManagerGame();
 
         Airline airline = game.getAirline();
         
-        airline.buy(new Aircraft("Boeing", "737", "Passanger", new Livery("aids.no"), 200, 200, 1, 500, 4));
+        airline.buy(new Aircraft("Boeing", "737", "Passanger", 200, 200, 1, 500, 4));
 
         // Iterator<Plane> it = airline.iterator();
         // while(it.hasNext()) {

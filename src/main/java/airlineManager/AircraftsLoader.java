@@ -29,12 +29,12 @@ public class AircraftsLoader implements InterfaceGameFileLoader<Aircraft> {
                     new Aircraft(aircraftInfo[0],
                                  aircraftInfo[1],
                                  aircraftInfo[2],
-                                 new Livery(aircraftInfo[3]),
                                  Integer.parseInt(aircraftInfo[4]),
                                  Integer.parseInt(aircraftInfo[5]),
                                  Integer.parseInt(aircraftInfo[6]),
                                  Integer.parseInt(aircraftInfo[7]),
-                                 Integer.parseInt(aircraftInfo[8])
+                                 Integer.parseInt(aircraftInfo[8]),
+                                 new Livery(aircraftInfo[3])
                     )
                 );
                 System.out.println(aircrafts.get(aircrafts.size()-1));
