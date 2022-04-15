@@ -7,13 +7,15 @@ public class Plane {
     private Aircraft aircraft;
     private String nickName;
     private Airline airline;
+    private Airport airport;
     private List<Passenger> passengers;
 
 
-    public Plane(Aircraft aircraft, String nickName, Airline airline) {
+    public Plane(Aircraft aircraft, String nickName, Airline airline, Airport startingAirport) {
         this.aircraft = aircraft;
         this.nickName = nickName;
         this.airline = airline;
+        this.airport = startingAirport;
         this.passengers = new ArrayList<>();
 
         System.out.println("Created " 
@@ -35,6 +37,10 @@ public class Plane {
 
     public Airline getAirline() {
         return this.airline;
+    }
+
+    public Airport getAirport() {
+        return this.airport;
     }
 
     public List<Passenger> getPassengers() {

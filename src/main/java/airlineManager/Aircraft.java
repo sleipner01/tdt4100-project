@@ -66,7 +66,7 @@ public class Aircraft implements AircraftInterface {
     public String toString() {
         return "Aircraft [manufacturer=" + manufacturer+ ", model=" + model + ", price=" + price
                 + ", seats=" + seats + ", speed=" + speed + ", range="
-                + range + "efficiency=" + efficiency + ", livery=" + livery + ", type=" + type + "]";
+                + range + ", efficiency=" + efficiency + ", livery=" + livery + ", type=" + type + "]";
     }
 
 }

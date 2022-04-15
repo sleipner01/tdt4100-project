@@ -10,11 +10,13 @@ public class Airline implements Iterable<Plane> {
     // private long value;
     private int coins;
     private List<Plane> planes;
+    private Airport homeAirport;
 
 
-    public Airline(String name, int coins) {
+    public Airline(String name, int coins, Airport homeAirport) {
         this.name = name;
         this.coins = coins;
+        this.homeAirport = homeAirport;
         this.planes = new ArrayList<>();
 
         System.out.println("\n************");
@@ -64,9 +66,13 @@ public class Airline implements Iterable<Plane> {
         
         int numberOfPlanes = this.getNumberOfAirplanes();
         String temporaryPlaneNickName = (numberOfPlanes == 0) ? "Plane" : "Plane" + numberOfPlanes;
-        this.planes.add(new Plane(aircraft, temporaryPlaneNickName, this));
+        this.planes.add(new Plane(aircraft, temporaryPlaneNickName, this, this.homeAirport));
 
         System.out.println("\n" + this + " successfully bought " + aircraft);
+    }
+
+    public List<Plane> getPlanes() {
+        return new ArrayList<>(this.planes);
     }
 
     @Override

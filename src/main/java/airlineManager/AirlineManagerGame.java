@@ -12,6 +12,7 @@ public class AirlineManagerGame {
     private final String CONFIG_FILE = "config.properties";
     private final String AIRCRAFTS_FILE_NAME = "aircrafts.csv";
     private final String AIRPORTS_FILE_NAME = "airports.csv";
+    private Airport defaultAirport;
 
     private Properties properties;
 
@@ -29,6 +30,8 @@ public class AirlineManagerGame {
         this.airports= new AirportsLoader().load(AIRPORTS_FILE_NAME);
         this.flights = new ArrayList<>();
         // Loading game files with airplanes and airports
+        this.defaultAirport = airports.stream().filter(airport -> airport.getAirportName().equals(this.properties.get("defaultAirport"))).findFirst().get();
+        System.out.println("Made " + this.defaultAirport + " as default airport");
         this.load();
     }
 
@@ -43,7 +46,7 @@ public class AirlineManagerGame {
 
 
     private void load() {
-        this.airline = new Airline("ByrkjajerAirlines", Integer.parseInt(properties.getProperty("defaultCoins")));
+        this.airline = new Airline("ByrkjajerAirlines", Integer.parseInt(properties.getProperty("defaultCoins")), this.defaultAirport);
     }
 
 
@@ -54,11 +57,19 @@ public class AirlineManagerGame {
         // Do Save restoration stuff
     }
 
+
+    // Remove when other functionality has been added
+    public Airport getDefaulAirport() {
+        return this.defaultAirport;
+    }
+
     
 
     public Airline getAirline() {
         return this.airline;
     }
+
+
 
     public static void main(String[] args) {
         AirlineManagerGame game = new AirlineManagerGame();
