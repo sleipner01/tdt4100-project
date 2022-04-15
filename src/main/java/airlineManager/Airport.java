@@ -3,7 +3,7 @@ package airlineManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import com.github.javafaker.Faker;
+// import com.github.javafaker;
 
 public class Airport extends City {
 
@@ -57,8 +57,8 @@ public class Airport extends City {
 
         this.travellers.removeAll(this.travellers);
 
-        Faker faker = new Faker();
-        String name = faker.name().fullName();
+        // Faker faker = new Faker();
+        // String name = faker.name().fullName();
 
 
         Random random = new Random();

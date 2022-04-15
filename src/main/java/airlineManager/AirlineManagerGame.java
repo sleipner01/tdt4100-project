@@ -38,13 +38,13 @@ public class AirlineManagerGame {
     // If there exists a save, start from save - Initialize the airline
     public AirlineManagerGame(String gameSaveFileName) {
         // this();
-        this.load(gameSaveFileName);
+        //this.load(gameSaveFileName);
     }
 
 
 
     private void load() {
-        this.airline = new Airline("ByrkjajerAirlines", Integer.parseInt(properties.getProperty("defaultCoins")), this.getDefaultAirport());
+        this.airline = new Airline(Integer.parseInt(properties.getProperty("defaultCoins")), this.getDefaultAirport());
         airports.forEach(airport -> airport.refreshTravellers(this.getAirports()));
     }
 

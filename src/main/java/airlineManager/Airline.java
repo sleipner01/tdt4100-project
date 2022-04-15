@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Airline implements Iterable<Plane> {
 
+    private final String DEFAULT_NAME = "Airline";
+
     private String name;
     // private long value;
     private int coins;
@@ -13,8 +15,8 @@ public class Airline implements Iterable<Plane> {
     private Airport homeAirport;
 
 
-    public Airline(String name, int coins, Airport homeAirport) {
-        this.name = name;
+    public Airline( int coins, Airport homeAirport) {
+        this.name = DEFAULT_NAME;
         this.coins = coins;
         this.homeAirport = homeAirport;
         this.planes = new ArrayList<>();
@@ -24,9 +26,10 @@ public class Airline implements Iterable<Plane> {
         System.out.println("Name: " + name + ", Coins: " + coins + "\n");
     }
 
-    public Airline (String name, int coins, List<Plane> planes) {
+    public Airline (String name, int coins, Airport homeAirport, List<Plane> planes) {
         this.name = name;
         this.coins = coins;
+        this.homeAirport = homeAirport;
         this.planes = planes;
 
         System.out.println("\n************");
@@ -40,6 +43,11 @@ public class Airline implements Iterable<Plane> {
 
     public String getName() {
         return this.name;
+    }
+
+    public void rename(String name) {
+        this.name = name;
+        System.out.println("Renamed airline to: " + name);
     }
 
     public int getCoinAmount() {

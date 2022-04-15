@@ -1,5 +1,6 @@
 package airlineManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,6 +11,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
@@ -43,9 +45,22 @@ public class AirlineManagerController {
         // TODO: Check for savefile
         boolean hasSaveFile = false;
         String saveFileName = "aids.txt";
+
         if(hasSaveFile) this.game = new AirlineManagerGame(saveFileName);
         else this.game = new AirlineManagerGame();
 
+
+        String airlineName;
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Welcome to Airline Manager");
+        dialog.setHeaderText("What do you want to name your airline?");
+        dialog.setContentText("Name:");
+        try {
+            airlineName = dialog.showAndWait().get();
+            this.game.getAirline().rename(airlineName);
+        } catch (Exception e) {
+            System.out.println("Something went wrong...");
+        }
 
 
         // TODO: Remove, only for development
