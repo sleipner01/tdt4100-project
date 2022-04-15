@@ -19,7 +19,6 @@ public class AirlineManagerGame {
     private Airline airline;
     private List<Aircraft> aircrafts;
     private List<Airport> airports;
-    private List<Flight> flights;
 
     //private List<Flight> flights = new ArrayList<>();
 
@@ -28,7 +27,6 @@ public class AirlineManagerGame {
         this.properties = new PropertiesLoader().load(CONFIG_FILE);
         this.aircrafts = new AircraftsLoader().load(AIRCRAFTS_FILE_NAME);
         this.airports= new AirportsLoader().load(AIRPORTS_FILE_NAME);
-        this.flights = new ArrayList<>();
         // Loading game files with airplanes and airports
         this.defaultAirport = airports.stream().filter(airport -> airport.getAirportName().equals(this.properties.get("defaultAirport"))).findFirst().get();
         System.out.println("Made " + this.defaultAirport + " as default airport");
@@ -47,6 +45,7 @@ public class AirlineManagerGame {
 
     private void load() {
         this.airline = new Airline("ByrkjajerAirlines", Integer.parseInt(properties.getProperty("defaultCoins")), this.getDefaultAirport());
+        airports.forEach(airport -> airport.refreshTravellers(this.getAirports()));
     }
 
 

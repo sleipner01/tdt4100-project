@@ -3,6 +3,7 @@ package airlineManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import com.github.javafaker.Faker;
 
 public class Airport extends City {
 
@@ -50,15 +51,19 @@ public class Airport extends City {
         return new ArrayList<>(this.travellers);
     }
 
-    public void refreshTravellers(int amount, List<Airport> availableAirports) {
-        if(amount > this.getCapacity() || amount < 0)
-            throw new IllegalArgumentException("The capacity has to be between 0 and " + this.getCapacity());
+    public void refreshTravellers(List<Airport> availableAirports) {
+        // if(amount > this.getCapacity() || amount < 0)
+        //     throw new IllegalArgumentException("The capacity has to be between 0 and " + this.getCapacity());
 
         this.travellers.removeAll(this.travellers);
 
+        Faker faker = new Faker();
+        String name = faker.name().fullName();
+
+
         Random random = new Random();
 
-        for(int i = 0; i < amount; i++) travellers.add(new Passenger("Magnus", 50, availableAirports.get(random.nextInt(availableAirports.size()))));
+        for(int i = 0; i < this.getCapacity(); i++) travellers.add(new Passenger("Magnus", 50, availableAirports.get(random.nextInt(availableAirports.size()))));
 
 
     }

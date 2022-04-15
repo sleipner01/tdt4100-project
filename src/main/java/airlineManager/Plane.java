@@ -9,6 +9,9 @@ public class Plane {
     private Airline airline;
     private Airport airport;
     private List<Passenger> passengers;
+    private Airport destination;
+    private int flightTime;
+    private boolean inFlight;
 
 
     public Plane(Aircraft aircraft, String nickName, Airline airline, Airport startingAirport) {
@@ -17,6 +20,7 @@ public class Plane {
         this.airline = airline;
         this.airport = startingAirport;
         this.passengers = new ArrayList<>();
+        
 
         System.out.println("Created " 
                            + aircraft.getManufacturer() + " " + aircraft.getModel() 
@@ -68,6 +72,40 @@ public class Plane {
     public void clearPassengers() {
         this.passengers.removeAll(this.passengers);
         System.out.println("Plane is now empty.");
+    }
+
+    public Airport getDestination() {
+        return this.destination;
+    }
+
+    public void setDestination(Airport destination) {
+        this.destination = destination;
+
+        // Calculate flightTime
+        int time = 0;
+        setFlightTime(time);
+    }
+
+    public int getFlightTime() {
+        return this.flightTime;
+    }
+
+    private void setFlightTime(int time) {
+        this.flightTime = time;
+    }
+
+    public void takeOff() {
+        //TODO: If everything is good, take off
+        this.inFlight = true;
+
+        System.out.println(this + ": Gear up!");
+    }
+
+    public void land() {
+        //TODO: Do landing stuff
+        this.inFlight = false;
+
+        System.out.println("Retard, retard, retard... " + this + " just landed");
     }
 
     @Override
