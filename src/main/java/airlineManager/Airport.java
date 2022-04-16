@@ -8,6 +8,8 @@ import java.util.Random;
 
 public class Airport extends City {
 
+
+
     private String name;
     private int gates, capacity;
     private List<Plane> planes;
@@ -27,6 +29,7 @@ public class Airport extends City {
     }
 
 
+
     public String getAirportName() { return this.name; }
 
     public int getNumberOfGates() { return this.gates; }
@@ -34,11 +37,15 @@ public class Airport extends City {
     public int getCapacity() { return this.capacity; }
 
     public List<Plane> getPlanes() { return new ArrayList<>(this.planes); }
-
+    
     public void addPlane(Plane plane) { this.planes.add(plane); }
-
+    
     public void removePlane(Plane plane) { this.planes.remove(plane); }
+    
+    public List<Passenger> getTravellers() { return new ArrayList<>(this.travellers); }
 
+
+    
     public void boardPassenger(Plane plane, Passenger passenger) {
         if(!this.planes.contains(plane))
             throw new IllegalArgumentException("This plane is not at " + this.getAirportName());
@@ -48,6 +55,8 @@ public class Airport extends City {
         plane.addPassenger(passenger);
         this.travellers.remove(passenger);
     }
+
+
 
     public void unBoardPassenger(Plane plane, Passenger passenger) {
         if(!this.planes.contains(plane))
@@ -59,7 +68,7 @@ public class Airport extends City {
         this.travellers.add(passenger);
     }
 
-    public List<Passenger> getTravellers() { return new ArrayList<>(this.travellers); }
+
 
     public void refreshTravellers(List<Airport> availableAirports) {
         // if(amount > this.getCapacity() || amount < 0)
@@ -81,9 +90,9 @@ public class Airport extends City {
                    50,
                           availableAirports.get(random.nextInt(availableAirports.size())))
         );
-
-
     }
+
+
 
     // Temporary until Faker works
     private String createTravellerName() {
@@ -96,6 +105,7 @@ public class Airport extends City {
                       surNames.get(random.nextInt(surNames.size()));
 
     }
+
 
 
     @Override

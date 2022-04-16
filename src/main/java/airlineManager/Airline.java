@@ -6,13 +6,18 @@ import java.util.List;
 
 public class Airline implements Iterable<Plane> {
 
+
+
     private final String DEFAULT_NAME = "Airline";
+
+
 
     private String name;
     // private long value;
     private int coins;
     private List<Plane> planes;
     private Airport homeAirport;
+
 
 
     public Airline(int coins, Airport homeAirport) {
@@ -25,6 +30,8 @@ public class Airline implements Iterable<Plane> {
         System.out.println("Created a new airline;");
         System.out.println("Name: " + name + ", Coins: " + coins + "\n");
     }
+
+
 
     public Airline (String name, int coins, Airport homeAirport, List<Plane> planes) {
         this.name = name;
@@ -41,31 +48,31 @@ public class Airline implements Iterable<Plane> {
         System.out.println();
     }
 
-    public String getName() {
-        return this.name;
-    }
+
+
+    public String getName() { return this.name; }
+
+    public int getCoinAmount() { return this.coins; }
+
+    public List<Plane> getPlanes() { return new ArrayList<>(this.planes); }
+
+    public int getNumberOfAirplanes() { return this.planes.size(); }
+
+
 
     public void rename(String name) {
         this.name = name;
         System.out.println("Renamed airline to: " + name);
     }
 
-    public int getCoinAmount() {
-        return this.coins;
-    }
+
 
     public void addIncome(int coins) throws IllegalArgumentException {
         if(coins < 0) throw new IllegalArgumentException("Insert a positive integer.");
         this.coins += coins;
     }
 
-    public int getNumberOfAirplanes() {
-        return this.planes.size();
-    }
 
-    // public List<Plane> getPlanes() {
-    //     return new ArrayList<>(this.planes);
-    // }
 
     public void buy(Aircraft aircraft) throws IllegalArgumentException {
         if(this.getCoinAmount() < aircraft.getPrice())
@@ -77,21 +84,22 @@ public class Airline implements Iterable<Plane> {
         System.out.println("\n" + this + " successfully bought " + aircraft);
     }
 
+
+
     private String createTemporaryPlaneNickName() {
         int numberOfPlanes = this.getNumberOfAirplanes();
         String temporaryPlaneNickName = (numberOfPlanes == 0) ? "Plane" : "Plane" + numberOfPlanes;
         return temporaryPlaneNickName;
     }
 
-    public List<Plane> getPlanes() {
-        return new ArrayList<>(this.planes);
-    }
+
 
     @Override
     public Iterator<Plane> iterator() {
         Iterator<Plane> planeIterator = new PlaneIterator(planes);        
         return planeIterator;
     }
+
 
 
     @Override

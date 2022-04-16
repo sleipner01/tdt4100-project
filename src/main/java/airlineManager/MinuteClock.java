@@ -8,8 +8,9 @@ import java.util.TimerTask;
 
 public class MinuteClock {
 
-    private final long minuteInMilliSeconds = 4000;
 
+
+    private final long minuteInMilliSeconds = 4000;
 
     // private int notificationInterval;
     private Timer timer;
@@ -17,15 +18,23 @@ public class MinuteClock {
     private int minutes;
     private Collection<MinuteClockListener> listeners;
 
+
+    
     public MinuteClock() {
         // this.notificationInterval = notificationInterval;
         this.listeners = new ArrayList<>();
         timer = new Timer(true);
     }
 
+
+
     public int getRunTime() { return this.minutes; }
 
+
+
     // public int getNotificationInterval() { return this.notificationInterval; }
+
+
 
     public void addListener(MinuteClockListener listener) throws IllegalArgumentException {
         if(this.listeners.contains(listener))
@@ -34,12 +43,16 @@ public class MinuteClock {
         System.out.println("Added " + listener.toString() + " as a listener to " + this.toString());
     }
 
+
+
     public void removeListener(MinuteClockListener listener) throws IllegalArgumentException {
         if(!this.listeners.contains(listener))
             throw new IllegalArgumentException(listener + " is not a listener.");
         this.listeners.remove(listener);
         System.out.println("Removed " + listener.toString() + " as a listener to " + this.toString());
     }
+
+
 
     private void createTimerTask() {
         timerTask = new TimerTask() {
@@ -50,6 +63,8 @@ public class MinuteClock {
         };
     }
 
+
+
     public void start() {
 
         this.createTimerTask();
@@ -58,10 +73,14 @@ public class MinuteClock {
         System.out.println( this.toString() + " has been started.");
     }
 
+
+
     public void stop() {
         if(!Objects.isNull(timer)) timer.cancel();
         System.out.println(this.toString() + " has been stopped.");
     }
+
+
 
     private void notifyListeners() {
         this.listeners.forEach(listener -> listener.minuteProcedure());
@@ -69,13 +88,9 @@ public class MinuteClock {
     }
 
 
+
     @Override
     public String toString() {
         return "MinuteClock";
-    }
-
-    public static void main(String[] args) {
-        MinuteClock clock = new MinuteClock();
-        clock.start();
     }
 }

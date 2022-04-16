@@ -5,14 +5,20 @@ import java.util.List;
 
 public class PlaneIterator implements Iterator<Plane> {
 
+
+
     private int index;
     private int listLength;
     private List<Plane> planes;
+
+
 
     public PlaneIterator(List<Plane> planes) {
         this.planes = planes;
         this.listLength = planes.size();
     }
+
+
 
     @Override
     public boolean hasNext() {
@@ -20,6 +26,8 @@ public class PlaneIterator implements Iterator<Plane> {
         return false;
     }
 
+
+    
     @Override
     public Plane next() {
         if(index == listLength || index > listLength)

@@ -19,7 +19,7 @@ public class AircraftsLoader implements InterfaceGameFileLoader<Aircraft> {
             bufferedReader.readLine(); // Skip first line in the CSV document to skip the header.
 
             System.out.println("\n\n********************\n");
-            System.out.println("Starting loading aircrafts...");
+            System.out.println("Starting to load aircrafts...");
             System.out.println("\n");
 
             while ((temporaryLine = bufferedReader.readLine()) != null) {

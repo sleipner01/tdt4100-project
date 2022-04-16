@@ -1,8 +1,10 @@
 package airlineManager;
 
 public class Livery {
-    // private File file;
 
+
+    
+    // private File file;
     private String liveryFileName;
 
     
@@ -10,6 +12,8 @@ public class Livery {
     public Livery(String liveryFileName) {
         this.liveryFileName = liveryFileName;
     }
+
+
 
     public String getLiveryFileName() {
         return this.liveryFileName;

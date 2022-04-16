@@ -345,8 +345,5 @@ public class AirlineManagerController implements MinuteClockListener {
         
         
     }
-
-
-
     
 }

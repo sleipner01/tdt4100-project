@@ -1,7 +1,9 @@
 package airlineManager;
 
-public class Aircraft implements AircraftInterface {
+public class Aircraft {
     
+
+
     private String manufacturer;
     private String model;
     private String type; // Passanger or Cargo
@@ -11,6 +13,8 @@ public class Aircraft implements AircraftInterface {
     private int efficiency;
     private int price;
     private int seats;
+
+
 
     public Aircraft(String manufacturer, String model, String type, int speed,
                     int range, int efficiency, int price, int seats) {
@@ -25,49 +29,36 @@ public class Aircraft implements AircraftInterface {
         this.seats = seats;
     }
 
+
+
     public Aircraft(String manufacturer, String model, String type, int speed,
             int range, int efficiency, int price, int seats, Livery livery) {
         this(manufacturer, model, type, speed, range, efficiency, price, seats);
         this.livery = livery;
     }
 
-    public String getManufacturer() {
-        return this.manufacturer;
-    }
 
-    public String getModel() {
-        return this.model;
-    }
 
-    public String getType() {
-        return this.type;
-    }
+    public String getManufacturer() { return this.manufacturer; }
+
+    public String getModel() { return this.model; }
+
+    public String getType() { return this.type; }
     
-    public Livery getLivery() {
-        return this.livery;
-    }
+    public Livery getLivery() { return this.livery; }
     
-    public int getSpeed() {
-        return speed;
-    }
+    public int getSpeed() { return speed; }
     
-    public int getRange() {
-        return this.range;
-    }
+    public int getRange() { return this.range; }
 
-    public int getEfficiency() {
-        return efficiency;
-    }
+    public int getEfficiency() { return efficiency; }
 
-    public int getPrice() {
-        return price;
-    }
+    public int getPrice() { return price; }
 
-    public int getSeats() {
-        return this.seats;
-    }
+    public int getSeats() { return this.seats; }
 
 
+    
     @Override
     public String toString() {
         return "Aircraft [manufacturer=" + manufacturer+ ", model=" + model + ", price=" + price

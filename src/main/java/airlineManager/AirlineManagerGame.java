@@ -9,6 +9,8 @@ import java.util.Properties;
 
 public class AirlineManagerGame implements MinuteClockListener {
 
+
+
     private final String CONFIG_FILE = "config.properties";
     private final String AIRCRAFTS_FILE_NAME = "aircrafts.csv";
     private final String AIRPORTS_FILE_NAME = "airports.csv";
@@ -24,6 +26,7 @@ public class AirlineManagerGame implements MinuteClockListener {
     private int minutes;
 
     //private List<Flight> flights = new ArrayList<>();
+
 
 
     public AirlineManagerGame() {
@@ -65,27 +68,19 @@ public class AirlineManagerGame implements MinuteClockListener {
 
 
     // Remove when other functionality has been added
-    private Airport getDefaultAirport() {
-        return this.defaultAirport;
-    }
-
-    
-
-    public Airline getAirline() {
-        return this.airline;
-    }
+    private Airport getDefaultAirport() { return this.defaultAirport; }
 
 
 
-    public List<Airport> getAirports() {
-        return new ArrayList<>(this.airports);
-    }
+    public Airline getAirline() { return this.airline; }
 
 
 
-    public List<Aircraft> getAircrafts() {
-        return new ArrayList<>(this.aircrafts);
-    }
+    public List<Airport> getAirports() { return new ArrayList<>(this.airports); }
+
+
+
+    public List<Aircraft> getAircrafts() { return new ArrayList<>(this.aircrafts); }
 
 
 
@@ -118,26 +113,5 @@ public class AirlineManagerGame implements MinuteClockListener {
         // Not perfect, must be fixed
         this.getAirline().getPlanes().forEach(plane -> plane.minuteProcedure()); 
     }
-
-
-
-    public static void main(String[] args) {
-        AirlineManagerGame game = new AirlineManagerGame();
-
-        Airline airline = game.getAirline();
-        
-        airline.buy(new Aircraft("Boeing", "737", "Passenger", 200, 200, 1, 500, 4));
-
-        // Iterator<Plane> it = airline.iterator();
-        // while(it.hasNext()) {
-        //     System.out.println(it.next().getNickName());
-        // }
-
-        // for (Plane plane : airline) {
-        //     System.out.println(plane.getNickName());
-        // }
-
-    }
-
 
 }

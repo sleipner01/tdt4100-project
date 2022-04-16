@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 public class Plane implements MinuteClockListener {
 
+
+
     private Aircraft aircraft;
     private String nickName;
     private Airline airline;
@@ -12,6 +14,7 @@ public class Plane implements MinuteClockListener {
     private Airport destination;
     private int flightTime;
     private boolean inFlight;
+
 
 
     public Plane(Aircraft aircraft, String nickName, Airline airline, Airport startingAirport) {
@@ -28,6 +31,8 @@ public class Plane implements MinuteClockListener {
                            + " for " + airline);
     }
 
+
+
     public Aircraft getAircraft() { return this.aircraft; }
 
     public String getNickName() { return this.nickName; }
@@ -38,22 +43,29 @@ public class Plane implements MinuteClockListener {
 
     public Airport getAirport() { return this.airport; }
     
+    public int getPassengerCount() { return this.passengers.size(); }
+
+    public boolean isInFlight() { return this.inFlight; }
+
+    public Airport getDestination() { return this.destination; }
+
+    private void setFlightTime(int time) { this.flightTime = time; }
+
+    public int getRemainingFlightTime() { return this.flightTime; }
 
     public List<Passenger> getPassengers() {
         return new ArrayList<>(this.passengers);
     }
 
-    public int getPassengerCount() { return this.passengers.size(); }
-
     public boolean hasBoarded(Passenger passenger) {
         return this.passengers.contains(passenger);
     }
 
-    public boolean isInFlight() { return this.inFlight; }
-
     public boolean hasMoreEmptySeats() { 
         return this.getPassengerCount() < this.aircraft.getSeats();
     }
+
+
 
     public void addPassenger(Passenger passenger) {
         if(this.passengers.contains(passenger))
@@ -64,6 +76,8 @@ public class Plane implements MinuteClockListener {
         System.out.println("Boarded " + passenger + ".");
     }
 
+
+
     public void removePassenger(Passenger passenger) {
         if(!this.passengers.contains(passenger))
             throw new IllegalArgumentException("The plane haven't boarded " + passenger);
@@ -71,12 +85,14 @@ public class Plane implements MinuteClockListener {
         System.out.println("\nKicked off " + passenger + ".");
     }
 
+
+
     public void clearPassengers() {
         this.passengers.removeAll(this.passengers);
         System.out.println("\nPlane is now empty.");
     }
 
-    public Airport getDestination() { return this.destination; }
+
 
     public void setDestination(Airport destination) {
         this.destination = destination;
@@ -86,11 +102,7 @@ public class Plane implements MinuteClockListener {
         setFlightTime(time);
     }
 
-    public int getRemainingFlightTime() { return this.flightTime; }
 
-    private void setFlightTime(int time) {
-        this.flightTime = time;
-    }
 
     public void takeOff() {
         //TODO: If everything is good, take off
@@ -101,6 +113,8 @@ public class Plane implements MinuteClockListener {
 
         System.out.println("\n" + this + ": Gear up!");
     }
+
+
 
     public void land() {
         //TODO: Do landing stuff
@@ -119,11 +133,12 @@ public class Plane implements MinuteClockListener {
                 this.removePassenger(this.passengers.get(i));
                 i--;
             }
-
         }
 
     }
     
+
+
     @Override
     public void minuteProcedure() {
 
@@ -135,6 +150,8 @@ public class Plane implements MinuteClockListener {
         flightTime--;
     }
 
+
+    
     @Override
     public String toString() {
         return this.nickName;
