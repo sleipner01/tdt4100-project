@@ -38,7 +38,7 @@ public class Airline implements Iterable<Plane> {
         for (Plane plane : planes) {
             System.out.println(plane);
         }
-        System.out.println("");
+        System.out.println();
     }
 
     public String getName() {

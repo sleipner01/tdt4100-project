@@ -210,7 +210,7 @@ public class AirlineManagerController {
 
     private Button createTravellerButton(Passenger passenger) {
 
-        Button button = new Button(passenger.getName());
+        Button button = new Button(passenger.getFullName());
         button.wrapTextProperty().setValue(true);
         button.setStyle("-fx-text-alignment: center;");
         button.setCursor(Cursor.HAND);

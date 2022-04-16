@@ -2,18 +2,21 @@ package airlineManager;
 
 public class Passenger {
 
-    private String name;
+    private String firstName;
+    private String surName;
     private int paying;
     private Airport destination;
 
     public Passenger(String name, int paying, Airport destinaton) {
-        this.name = name;
+        String[] nameArray = name.split(" ");
+        this.firstName = nameArray[0];
+        this.surName = nameArray[1];
         this.paying = paying;
         this.destination = destinaton;
     }
 
-    public String getName() {
-        return this.name;
+    public String getFullName() {
+        return this.firstName + " " + this.surName;
     }
 
     public int getPaying() {
@@ -26,6 +29,6 @@ public class Passenger {
 
     @Override
     public String toString() {
-        return this.name;
+        return this.getFullName();
     }
 }

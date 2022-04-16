@@ -59,3 +59,7 @@ The state of the game (Airline info, the location of the planes, every flight th
 - Make supplier to create random people. This will be used at the airports.
 - Check if Supplier is useful when creating aircraft objects from files.
 - Gjøre om path slik at den er relativ til prosjektet
+
+
+## Before submitting
+- make module-info.java work with Faker
