@@ -19,6 +19,7 @@ public class Plane {
         this.nickName = nickName;
         this.airline = airline;
         this.airport = startingAirport;
+        startingAirport.addPlane(this);
         this.passengers = new ArrayList<>();
         
 
@@ -27,37 +28,38 @@ public class Plane {
                            + " for " + airline);
     }
 
-    public Aircraft getAircraft() {
-        return this.aircraft;
-    }
+    public Aircraft getAircraft() { return this.aircraft; }
 
-    public String getNickName() {
-        return this.nickName;
-    }
+    public String getNickName() { return this.nickName; }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
+    public void setNickName(String nickName) { this.nickName = nickName; }
 
-    public Airline getAirline() {
-        return this.airline;
-    }
+    public Airline getAirline() { return this.airline; }
 
-    public Airport getAirport() {
-        return this.airport;
-    }
+    public Airport getAirport() { return this.airport; }
+    
 
     public List<Passenger> getPassengers() {
-        return this.passengers;
+        return new ArrayList<>(this.passengers);
     }
 
-    public int getPassengerCount() {
-        return this.passengers.size();
+    public int getPassengerCount() { return this.passengers.size(); }
+
+    public boolean hasBoarded(Passenger passenger) {
+        return this.passengers.contains(passenger);
+    }
+
+    public boolean isInFlight() { return this.inFlight; }
+
+    public boolean hasMoreEmptySeats() { 
+        return this.getPassengerCount() < this.aircraft.getSeats();
     }
 
     public void addPassenger(Passenger passenger) {
         if(this.passengers.contains(passenger))
             throw new IllegalArgumentException(passenger + "is already in the plane");
+        if(!this.hasMoreEmptySeats())
+            throw new IllegalArgumentException("The plane cannot board any more passengers");
         this.passengers.add(passenger);
         System.out.println("Boarded " + passenger + ".");
     }
@@ -74,9 +76,7 @@ public class Plane {
         System.out.println("Plane is now empty.");
     }
 
-    public Airport getDestination() {
-        return this.destination;
-    }
+    public Airport getDestination() { return this.destination; }
 
     public void setDestination(Airport destination) {
         this.destination = destination;
@@ -86,9 +86,7 @@ public class Plane {
         setFlightTime(time);
     }
 
-    public int getFlightTime() {
-        return this.flightTime;
-    }
+    public int getFlightTime() { return this.flightTime; }
 
     private void setFlightTime(int time) {
         this.flightTime = time;
@@ -98,6 +96,8 @@ public class Plane {
         //TODO: If everything is good, take off
         this.inFlight = true;
 
+        this.airport.removePlane(this);
+
         System.out.println(this + ": Gear up!");
     }
 
@@ -105,7 +105,21 @@ public class Plane {
         //TODO: Do landing stuff
         this.inFlight = false;
 
+        this.airport = this.getDestination();
+        this.destination = null;
+        this.airport.addPlane(this);
+
         System.out.println("Retard, retard, retard... " + this + " just landed");
+
+
+        for(Passenger passenger : this.passengers) {
+            if(this.airport.equals(passenger.getDestination())){
+                this.airline.addIncome(passenger.getPaying());
+            }
+
+            this.removePassenger(passenger);
+        }
+
     }
 
     @Override

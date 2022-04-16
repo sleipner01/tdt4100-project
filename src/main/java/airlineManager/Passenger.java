@@ -23,7 +23,7 @@ public class Passenger {
         return this.paying;
     }
 
-    public City getDestination() {
+    public Airport getDestination() {
         return this.destination;
     }
 

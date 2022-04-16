@@ -9,6 +9,7 @@ import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
@@ -126,6 +127,7 @@ public class AirlineManagerController {
         setDestinationAirportLabel(plane);
         loadAirportsList(plane);
         loadTravellersList(plane.getAirport());
+        if(!Objects.isNull(plane.getDestination())) enableTakeOffButton();
     }
 
     private void setAirportNameLabel(Plane plane) {
@@ -164,11 +166,23 @@ public class AirlineManagerController {
 
 
 
+    private void disableTakeOffButton() {
+        takeOff.setDisable(true);
+    }
+
+
+
+    private void enableTakeOffButton() {
+        takeOff.setDisable(false);
+    }
+
+
+
     @FXML
     public void handleSetDestination(Airport airport) {
         this.selectedPlane.setDestination(airport);
         setDestinationAirportLabel(this.selectedPlane);
-        System.out.println(airport);
+        enableTakeOffButton();
     }
 
 
@@ -198,9 +212,15 @@ public class AirlineManagerController {
         grid.setHgap(BUTTON_HORIZONTAL_GAP);
         grid.setVgap(BUTTON_VERTICAL_GAP);
 
+
+        List<Passenger> passengersList = selectedPlane.getPassengers();
+        for (Passenger passenger : passengersList) {
+            grid.add(createPassengerButton(passenger), 1, passengersList.indexOf(passenger));
+        }
+
         List<Passenger> travellersList = airport.getTravellers();
         for (Passenger passenger : travellersList) {
-            grid.add(createTravellerButton(passenger), 1, travellersList.indexOf(passenger));
+            grid.add(createTravellerButton(passenger), 1, travellersList.indexOf(passenger) + passengersList.size());
         }
 
         viewableTravellersList.setContent(grid);
@@ -210,11 +230,43 @@ public class AirlineManagerController {
 
     private Button createTravellerButton(Passenger passenger) {
 
-        Button button = new Button(passenger.getFullName());
+        Button button = new Button(passenger.getFullName() + "\n" + 
+                                   passenger.getPaying() + "\n" +
+                                   passenger.getDestination().getAirportName());
         button.wrapTextProperty().setValue(true);
         button.setStyle("-fx-text-alignment: center;");
         button.setCursor(Cursor.HAND);
-        button.setOnAction((event) -> handlePassenger(passenger));
+        button.setOnAction((event) -> handleBoardPassenger(passenger));
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setMaxHeight(Double.MAX_VALUE);
+        if(!selectedPlane.hasMoreEmptySeats()) {
+            button.setDisable(true);        
+        }
+
+        return button;
+
+    }
+
+
+
+    @FXML
+    public void handleBoardPassenger(Passenger passenger) {
+        selectedPlane.getAirport().boardPassenger(selectedPlane, passenger);
+        setPassengerCountLabel(selectedPlane);
+        loadTravellersList(selectedPlane.getAirport());
+    }
+
+
+    private Button createPassengerButton(Passenger passenger) {
+
+        Button button = new Button(passenger.getFullName() + "\n" + 
+                                   passenger.getPaying() + "\n" +
+                                   passenger.getDestination().getAirportName());
+        button.wrapTextProperty().setValue(true);
+        button.setStyle("-fx-text-alignment: center;");
+        button.setStyle("-fx-background-color: #00FF00;");
+        button.setCursor(Cursor.HAND);
+        button.setOnAction((event) -> handleUnBoardPassenger(passenger));
         button.setMaxWidth(Double.MAX_VALUE);
         button.setMaxHeight(Double.MAX_VALUE);
 
@@ -225,9 +277,10 @@ public class AirlineManagerController {
 
 
     @FXML
-    public void handlePassenger(Passenger passenger) {
-        //TODO: If boarded, kick off, of not, board
-        System.out.println(passenger);
+    public void handleUnBoardPassenger(Passenger passenger) {
+        selectedPlane.getAirport().unBoardPassenger(selectedPlane, passenger);
+        setPassengerCountLabel(selectedPlane);
+        loadTravellersList(selectedPlane.getAirport());
     }
     
 }
