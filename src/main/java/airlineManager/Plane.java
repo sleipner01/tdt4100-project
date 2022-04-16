@@ -2,7 +2,7 @@ package airlineManager;
 
 import java.util.ArrayList;
 import java.util.List;
-public class Plane {
+public class Plane implements MinuteClockListener {
 
     private Aircraft aircraft;
     private String nickName;
@@ -125,6 +125,12 @@ public class Plane {
     @Override
     public String toString() {
         return this.nickName;
+    }
+
+    @Override
+    public void minute() {
+        // TODO Auto-generated method stub
+        
     }
     
 }

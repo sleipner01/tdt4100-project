@@ -29,6 +29,7 @@ public class AirlineManagerGame {
         this.airports= new AirportsLoader().load(AIRPORTS_FILE_NAME);
         // Loading game files with airplanes and airports
         this.defaultAirport = airports.stream().filter(airport -> airport.getAirportName().equals(this.properties.get("defaultAirport"))).findFirst().get();
+        MinuteClock minuteClock = new MinuteClock();
         System.out.println("Made " + this.defaultAirport + " as default airport");
         this.load();
     }
@@ -78,6 +79,12 @@ public class AirlineManagerGame {
 
     public List<Aircraft> getAircrafts() {
         return new ArrayList<>(this.aircrafts);
+    }
+
+
+
+    public void addToGameClock(MinuteClockListener listener) {
+
     }
 
 

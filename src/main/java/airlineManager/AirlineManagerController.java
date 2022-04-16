@@ -16,7 +16,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
-public class AirlineManagerController {
+public class AirlineManagerController implements MinuteClockListener {
 
     // For development, remove later
     private Aircraft testAircraft = new Aircraft("Boeing", "737", "Passenger", 210, 200, 1, 500, 4);
@@ -41,31 +41,38 @@ public class AirlineManagerController {
     public ScrollPane viewableTravellersList, viewableDestinationsList, viewablePlanesList;
 
 
+
     @FXML
     public void initialize() {
         // TODO: Check for savefile
         boolean hasSaveFile = false;
         String saveFileName = "aids.txt";
 
-        if(hasSaveFile) this.game = new AirlineManagerGame(saveFileName);
-        else this.game = new AirlineManagerGame();
+        if(hasSaveFile) game = new AirlineManagerGame(saveFileName);
+        else game = new AirlineManagerGame();
+
+        game.addToGameClock(this);
 
 
-        String airlineName;
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Welcome to Airline Manager");
-        dialog.setHeaderText("What do you want to name your airline?");
-        dialog.setContentText("Name:");
-        try {
-            airlineName = dialog.showAndWait().get();
-            this.game.getAirline().rename(airlineName);
-        } catch (Exception e) {
-            System.out.println("Something went wrong...");
-        }
+        // String airlineName;
+        // TextInputDialog dialog = new TextInputDialog();
+        // dialog.setTitle("Welcome to Airline Manager");
+        // dialog.setHeaderText("What do you want to name your airline?");
+        // dialog.setContentText("Name:");
+        // try {
+        //     airlineName = dialog.showAndWait().get();
+        //     this.game.getAirline().rename(airlineName);
+        // } catch (Exception e) {
+        //     System.out.println("Something went wrong...");
+        // }
 
 
         // TODO: Remove, only for development
         this.game.getAirline().buy(testAircraft);
+        this.game.getAirline().buy(testAircraft);
+        this.game.getAirline().getPlanes().get(1).setDestination(this.game.getAirports().get(1));
+        this.game.getAirline().getPlanes().get(1).land();
+
 
 
         this.setAirlineNameHeader();
@@ -113,12 +120,16 @@ public class AirlineManagerController {
         return button;
     }
 
+
+
     @FXML
     public void handlePlaneSelect(Plane plane) {
         this.selectedPlane = plane;
         showPlaneInfo(plane);
         System.out.println(plane + " selected...");
     }
+
+
 
     private void showPlaneInfo(Plane plane) {
         setAirportNameLabel(plane);
@@ -128,19 +139,28 @@ public class AirlineManagerController {
         loadAirportsList(plane);
         loadTravellersList(plane.getAirport());
         if(!Objects.isNull(plane.getDestination())) enableTakeOffButton();
+        else disableTakeOffButton();
     }
+
+
 
     private void setAirportNameLabel(Plane plane) {
         airportNameLabel.setText(plane.getAirport().getAirportName());
     }
 
+
+
     private void setManufacturerAndModelLabel(Plane plane) {
         manufacturerAndModelLabel.setText(plane.getAircraft().getManufacturer() + " " + plane.getAircraft().getModel());
     }
 
+
+
     private void setPassengerCountLabel(Plane plane) {
         passengerCountLabel.setText(plane.getPassengerCount() + "/" + plane.getAircraft().getSeats());
     }
+
+
 
     private void setDestinationAirportLabel(Plane plane) {
         Airport destination = plane.getDestination();
@@ -205,6 +225,7 @@ public class AirlineManagerController {
     }
 
 
+
     private void loadTravellersList(Airport airport) {
 
         GridPane grid = new GridPane();
@@ -257,6 +278,7 @@ public class AirlineManagerController {
     }
 
 
+
     private Button createPassengerButton(Passenger passenger) {
 
         Button button = new Button(passenger.getFullName() + "\n" + 
@@ -282,5 +304,23 @@ public class AirlineManagerController {
         setPassengerCountLabel(selectedPlane);
         loadTravellersList(selectedPlane.getAirport());
     }
+
+
+
+    @FXML
+    public void handleTakeOff() {
+        
+    }
+
+
+
+    @Override
+    public void minute() {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+
     
 }

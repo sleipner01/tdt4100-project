@@ -91,7 +91,7 @@
                         </Text>
                         <Pane layoutX="461.0" layoutY="116.0" prefHeight="540.5" prefWidth="800.0" style="-fx-background-color: #EEEEEE;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
                            <children>
-                              <Button fx:id="takeOff" disable="true" layoutX="324.0" layoutY="352.0" mnemonicParsing="false" text="Take off" />
+                              <Button fx:id="takeOff" disable="true" layoutX="324.0" layoutY="352.0" mnemonicParsing="false" onAction="#handleTakeOff" text="Take off" />
                               <Text layoutX="35.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Passengers:" />
                               <Text fx:id="passengerCountLabel" layoutX="105.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x/x" />
                               <Text layoutX="35.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aircraft:" />
