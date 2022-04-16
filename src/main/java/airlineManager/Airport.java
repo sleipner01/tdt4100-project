@@ -1,6 +1,7 @@
 package airlineManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 // import com.github.javafaker.Faker;
@@ -11,6 +12,8 @@ public class Airport extends City {
     private int gates, capacity;
     private List<Plane> planes;
     private List<Passenger> travellers;
+    private Random random;
+
 
 
     public Airport(String airportName, int gates, int capacity, String cityName, int longitude, int latitude) {
@@ -20,6 +23,7 @@ public class Airport extends City {
         this.capacity = capacity;
         this.planes = new ArrayList<>();
         this.travellers = new ArrayList<>();
+        this.random = new Random();
     }
 
 
@@ -65,7 +69,6 @@ public class Airport extends City {
         this.travellers.removeAll(this.travellers);
 
         // Faker faker = new Faker();
-        Random random = new Random();
 
         // for(int i = 0; i < this.getCapacity(); i++) travellers.add(
         //     new Passenger(faker.name().firstName() + " " + faker.name().lastName(),
@@ -74,13 +77,26 @@ public class Airport extends City {
         // );
 
         for(int i = 0; i < this.getCapacity(); i++) travellers.add(
-            new Passenger("Magnus Byrkjeland",
+            new Passenger(this.createTravellerName(),
                    50,
                           availableAirports.get(random.nextInt(availableAirports.size())))
         );
 
 
     }
+
+    // Temporary until Faker works
+    private String createTravellerName() {
+        List<String> firstNames = new ArrayList<>(
+            Arrays.asList("Magnus", "James", "Tarald", "Eivind", "Ida", "Karen", "Johanne", "Emilie", "Muhammed", "Ismail", "Gaule", "Gyrsel", "Kristine", "Nils", "Sigurd", "Ingrid", "Yuki", "Zhou", "Carlos", "George", "Valtteri", "Kevin", "Mick", "Grinsild", "Dino", "Stikjær", "Napoleon"));
+        List<String> surNames = new ArrayList<>(
+            Arrays.asList("Islamabad", "Byrkjeland", "Mohammed", "Muhammed", "Olsen", "Bakke", "Systad", "Timm", "Smith", "Leclerc", "Hamilton", "Andersen", "Ghuany", "Tsunoda", "Gasly", "Sainz", "Russel", "Bottas", "Magnussen", "Shumacher", "Hoel"));
+
+        return firstNames.get(random.nextInt(firstNames.size())) + " " +
+                      surNames.get(random.nextInt(surNames.size()));
+
+    }
+
 
     @Override
     public String toString() {
