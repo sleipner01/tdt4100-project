@@ -113,12 +113,13 @@ public class Plane implements MinuteClockListener {
         System.out.println("\nRetard, retard, retard... " + this + " just landed");
 
 
-        for(Passenger passenger : this.passengers) {
-            if(this.airport.equals(passenger.getDestination())){
-                this.airline.addIncome(passenger.getPaying());
+        for(int i = 0; i < this.getPassengerCount(); i++) {
+            if(this.airport.equals(this.passengers.get(i).getDestination())){
+                this.airline.addIncome(this.passengers.get(i).getPaying());
+                this.removePassenger(this.passengers.get(i));
+                i--;
             }
 
-            this.removePassenger(passenger);
         }
 
     }

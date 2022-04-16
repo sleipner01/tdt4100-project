@@ -8,7 +8,7 @@ import java.util.TimerTask;
 
 public class MinuteClock {
 
-    private final long minuteInMilliSeconds = 1000;
+    private final long minuteInMilliSeconds = 4000;
 
 
     // private int notificationInterval;

@@ -24,7 +24,6 @@ public class AirlineManagerController implements MinuteClockListener {
 
 
     private AirlineManagerGame game;
-    private InterfaceFileHandler saveHandler = new GameSaveHandler();
     private Plane selectedPlane;
 
     private final int PLANE_BUTTON_PADDING = 20;
@@ -320,7 +319,14 @@ public class AirlineManagerController implements MinuteClockListener {
 
     @FXML
     public void handleTakeOff() {
-        
+        selectedPlane.takeOff();
+        refreshDisplay();
+    }
+
+
+
+    private void refreshDisplay() {
+
     }
 
 
@@ -335,6 +341,7 @@ public class AirlineManagerController implements MinuteClockListener {
     public void minuteProcedure() {
         // Sleep a little to make sure everything is loaded;
         setTravellersRefreshTimer(game.refreshingTravellersIn());
+        setAirlineCoins(game.getAirline().getCoinAmount());
         
         
     }
