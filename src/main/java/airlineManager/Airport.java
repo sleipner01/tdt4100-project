@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 // import com.github.javafaker.Faker;
 
-public class Airport extends City implements MinuteClockListener {
+public class Airport extends City {
 
     private String name;
     private int gates, capacity;
@@ -85,13 +85,6 @@ public class Airport extends City implements MinuteClockListener {
     @Override
     public String toString() {
         return super.toString() + ", Airport=" + this.name;
-    }
-
-
-    @Override
-    public void minute() {
-        // TODO Auto-generated method stub
-        
     }
 
 }

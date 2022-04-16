@@ -35,10 +35,13 @@ public class AirlineManagerController implements MinuteClockListener {
     public Button takeOff;
 
     @FXML
-    public Text airlineName, manufacturerAndModelLabel, passengerCountLabel, destinationAirportLabel, profitLabel, airportNameLabel;
+    public Text airlineName, manufacturerAndModelLabel, passengerCountLabel,
+                destinationAirportLabel, profitLabel, airportNameLabel,
+                travellersRefreshTimer, airlineCoins;
 
     @FXML
-    public ScrollPane viewableTravellersList, viewableDestinationsList, viewablePlanesList;
+    public ScrollPane viewableTravellersList, viewableDestinationsList,
+                      viewablePlanesList;
 
 
 
@@ -75,7 +78,9 @@ public class AirlineManagerController implements MinuteClockListener {
 
 
 
-        this.setAirlineNameHeader();
+        setAirlineNameHeader(game.getAirline().getName());
+        setAirlineCoins(game.getAirline().getCoinAmount());
+        game.refreshingTravellersIn();
 
 
         this.loadPlanesList();
@@ -84,8 +89,8 @@ public class AirlineManagerController implements MinuteClockListener {
 
 
 
-    private void setAirlineNameHeader() {
-        this.airlineName.setText(this.game.getAirline().getName());
+    private void setAirlineNameHeader(String name) {
+        this.airlineName.setText(name);
     }
 
 
@@ -298,6 +303,12 @@ public class AirlineManagerController implements MinuteClockListener {
 
 
 
+    private void setTravellersRefreshTimer(int time) {
+        travellersRefreshTimer.setText("Refreshing travellers in: " + time + " min");
+    }
+
+
+
     @FXML
     public void handleUnBoardPassenger(Passenger passenger) {
         selectedPlane.getAirport().unBoardPassenger(selectedPlane, passenger);
@@ -314,9 +325,17 @@ public class AirlineManagerController implements MinuteClockListener {
 
 
 
+    private void setAirlineCoins(int coins) {
+        airlineCoins.setText("Coins: " + coins);
+    }
+
+
+
     @Override
-    public void minute() {
-        // TODO Auto-generated method stub
+    public void minuteProcedure() {
+        // Sleep a little to make sure everything is loaded;
+        setTravellersRefreshTimer(game.refreshingTravellersIn());
+        
         
     }
 

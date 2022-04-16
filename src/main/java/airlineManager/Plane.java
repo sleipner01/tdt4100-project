@@ -68,12 +68,12 @@ public class Plane implements MinuteClockListener {
         if(!this.passengers.contains(passenger))
             throw new IllegalArgumentException("The plane haven't boarded " + passenger);
         this.passengers.remove(passenger);
-        System.out.println("Kicked off " + passenger + ".");
+        System.out.println("\nKicked off " + passenger + ".");
     }
 
     public void clearPassengers() {
         this.passengers.removeAll(this.passengers);
-        System.out.println("Plane is now empty.");
+        System.out.println("\nPlane is now empty.");
     }
 
     public Airport getDestination() { return this.destination; }
@@ -86,7 +86,7 @@ public class Plane implements MinuteClockListener {
         setFlightTime(time);
     }
 
-    public int getFlightTime() { return this.flightTime; }
+    public int getRemainingFlightTime() { return this.flightTime; }
 
     private void setFlightTime(int time) {
         this.flightTime = time;
@@ -95,10 +95,11 @@ public class Plane implements MinuteClockListener {
     public void takeOff() {
         //TODO: If everything is good, take off
         this.inFlight = true;
+        this.flightTime = 4;
 
         this.airport.removePlane(this);
 
-        System.out.println(this + ": Gear up!");
+        System.out.println("\n" + this + ": Gear up!");
     }
 
     public void land() {
@@ -109,7 +110,7 @@ public class Plane implements MinuteClockListener {
         this.destination = null;
         this.airport.addPlane(this);
 
-        System.out.println("Retard, retard, retard... " + this + " just landed");
+        System.out.println("\nRetard, retard, retard... " + this + " just landed");
 
 
         for(Passenger passenger : this.passengers) {
@@ -121,16 +122,21 @@ public class Plane implements MinuteClockListener {
         }
 
     }
+    
+    @Override
+    public void minuteProcedure() {
+
+        // Currently no good solution to add the planes directly to the clock.
+        // The game calles this function
+
+        if(!this.isInFlight()) return;
+        if(this.getRemainingFlightTime() <= 1) this.land();
+        flightTime--;
+    }
 
     @Override
     public String toString() {
         return this.nickName;
     }
 
-    @Override
-    public void minute() {
-        // TODO Auto-generated method stub
-        
-    }
-    
 }

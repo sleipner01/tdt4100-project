@@ -34,33 +34,17 @@
       </MenuBar>
       <HBox alignment="CENTER_RIGHT" layoutX="345.0" layoutY="1.0" prefHeight="27.0" prefWidth="454.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Refreshing travellers in: ">
+            <Text fx:id="travellersRefreshTimer" strokeType="OUTSIDE" strokeWidth="0.0" text="Refreshing travellers in:  5 min">
                <font>
                   <Font size="16.0" />
                </font>
-               <HBox.margin>
-                  <Insets right="4.0" />
-               </HBox.margin>
-            </Text>
-            <Text fx:id="time" strokeType="OUTSIDE" strokeWidth="0.0" text="5 min">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="30.0" />
-               </HBox.margin>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Coins:">
-               <HBox.margin>
-                  <Insets right="4.0" />
-               </HBox.margin>
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
-            <Text fx:id="coins" strokeType="OUTSIDE" strokeWidth="0.0" text="15000">
                <HBox.margin>
                   <Insets right="10.0" />
+               </HBox.margin>
+            </Text>
+            <Text fx:id="airlineCoins" strokeType="OUTSIDE" strokeWidth="0.0" text="Coins: 15000">
+               <HBox.margin>
+                  <Insets right="4.0" />
                </HBox.margin>
                <font>
                   <Font size="18.0" />

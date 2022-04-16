@@ -15,7 +15,7 @@ public class Airline implements Iterable<Plane> {
     private Airport homeAirport;
 
 
-    public Airline( int coins, Airport homeAirport) {
+    public Airline(int coins, Airport homeAirport) {
         this.name = DEFAULT_NAME;
         this.coins = coins;
         this.homeAirport = homeAirport;
@@ -71,12 +71,16 @@ public class Airline implements Iterable<Plane> {
         if(this.getCoinAmount() < aircraft.getPrice())
             throw new IllegalArgumentException("You don't have enough money for this aircraft.");
         
-        
-        int numberOfPlanes = this.getNumberOfAirplanes();
-        String temporaryPlaneNickName = (numberOfPlanes == 0) ? "Plane" : "Plane" + numberOfPlanes;
-        this.planes.add(new Plane(aircraft, temporaryPlaneNickName, this, this.homeAirport));
+        Plane newPlane = new Plane(aircraft, this.createTemporaryPlaneNickName(), this, this.homeAirport);
+        this.planes.add(newPlane);
 
         System.out.println("\n" + this + " successfully bought " + aircraft);
+    }
+
+    private String createTemporaryPlaneNickName() {
+        int numberOfPlanes = this.getNumberOfAirplanes();
+        String temporaryPlaneNickName = (numberOfPlanes == 0) ? "Plane" : "Plane" + numberOfPlanes;
+        return temporaryPlaneNickName;
     }
 
     public List<Plane> getPlanes() {
