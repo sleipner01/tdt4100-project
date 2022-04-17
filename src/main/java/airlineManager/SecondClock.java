@@ -1,26 +1,28 @@
 package airlineManager;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.application.Platform;
 
-public class MinuteClock {
+public class SecondClock {
 
 
 
-    private final long minuteInMilliSeconds = 4000;
+    private final long secondInMilliSeconds = 100;
 
     // private int notificationInterval;
     private Timer timer;
-    TimerTask timerTask;
-    private int minutes;
-    private Collection<MinuteClockListener> listeners;
+    private TimerTask timerTask;
+    private int seconds;
+    private Collection<SecondClockListener> listeners;
 
 
     
-    public MinuteClock() {
+    public SecondClock() {
         // this.notificationInterval = notificationInterval;
         this.listeners = new ArrayList<>();
         timer = new Timer(true);
@@ -28,7 +30,7 @@ public class MinuteClock {
 
 
 
-    public int getRunTime() { return this.minutes; }
+    public int getRunTimeInSeconds() { return this.seconds; }
 
 
 
@@ -36,7 +38,7 @@ public class MinuteClock {
 
 
 
-    public void addListener(MinuteClockListener listener) throws IllegalArgumentException {
+    public void addListener(SecondClockListener listener) throws IllegalArgumentException {
         if(this.listeners.contains(listener))
             throw new IllegalArgumentException(listener + " is already added.");
         this.listeners.add(listener);
@@ -45,7 +47,7 @@ public class MinuteClock {
 
 
 
-    public void removeListener(MinuteClockListener listener) throws IllegalArgumentException {
+    public void removeListener(SecondClockListener listener) throws IllegalArgumentException {
         if(!this.listeners.contains(listener))
             throw new IllegalArgumentException(listener + " is not a listener.");
         this.listeners.remove(listener);
@@ -55,10 +57,21 @@ public class MinuteClock {
 
 
     private void createTimerTask() {
+        // timerTask = new TimerTask() {
+        //     public void run() {
+        //         seconds++;
+        //         notifyListeners();
+        //     }
+        // };
+
         timerTask = new TimerTask() {
             public void run() {
-                minutes++;
-                notifyListeners();
+                Platform.runLater(new Runnable() {
+                    public void run() {
+                        seconds++;
+                        notifyListeners();
+                    }
+                });
             }
         };
     }
@@ -68,7 +81,7 @@ public class MinuteClock {
     public void start() {
 
         this.createTimerTask();
-        timer.scheduleAtFixedRate(timerTask, minuteInMilliSeconds, minuteInMilliSeconds);
+        timer.scheduleAtFixedRate(timerTask, secondInMilliSeconds, secondInMilliSeconds);
         
         System.out.println( this.toString() + " has been started.");
     }
@@ -83,14 +96,13 @@ public class MinuteClock {
 
 
     private void notifyListeners() {
-        this.listeners.forEach(listener -> listener.minuteProcedure());
-        System.out.println("Minute passed");
+        this.listeners.forEach(listener -> listener.tick());
     }
 
 
 
     @Override
     public String toString() {
-        return "MinuteClock";
+        return "SecondClock";
     }
 }

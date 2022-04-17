@@ -16,10 +16,8 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
-public class AirlineManagerController implements MinuteClockListener {
+public class AirlineManagerController implements SecondClockListener {
 
-    // For development, remove later
-    private Aircraft testAircraft = new Aircraft("Boeing", "737", "Passenger", 210, 200, 1, 500, 4);
 
 
 
@@ -53,8 +51,7 @@ public class AirlineManagerController implements MinuteClockListener {
         if(hasSaveFile) game = new AirlineManagerGame(saveFileName);
         else game = new AirlineManagerGame();
 
-        game.addToGameClock(this);
-
+        addControllerToGameClock();
 
         // String airlineName;
         // TextInputDialog dialog = new TextInputDialog();
@@ -69,13 +66,6 @@ public class AirlineManagerController implements MinuteClockListener {
         // }
 
 
-        // TODO: Remove, only for development
-        this.game.getAirline().buy(testAircraft);
-        this.game.getAirline().buy(testAircraft);
-        this.game.getAirline().getPlanes().get(1).setDestination(this.game.getAirports().get(1));
-        this.game.getAirline().getPlanes().get(1).land();
-
-
 
         setAirlineNameHeader(game.getAirline().getName());
         setAirlineCoins(game.getAirline().getCoinAmount());
@@ -84,6 +74,12 @@ public class AirlineManagerController implements MinuteClockListener {
 
         this.loadPlanesList();
 
+    }
+
+
+
+    private void addControllerToGameClock() {
+        game.addToGameClock(this);
     }
 
 
@@ -116,7 +112,7 @@ public class AirlineManagerController implements MinuteClockListener {
         Button button;
         if(plane.isInFlight()) {
             button = new Button(plane.getNickName() + "\n" + 
-                                   plane.getRemainingFlightTime() + " min");
+                                   plane.getRemainingFlightTimeInMinutes() + " min");
             button.setDisable(true);
         }
         else { 
@@ -302,7 +298,7 @@ public class AirlineManagerController implements MinuteClockListener {
 
     @FXML
     public void handleBoardPassenger(Passenger passenger) {
-        selectedPlane.getAirport().boardPassenger(selectedPlane, passenger);
+        game.boardPassenger(selectedPlane, passenger);
         setPassengerCountLabel(selectedPlane);
         loadTravellersList(selectedPlane.getAirport());
     }
@@ -336,7 +332,7 @@ public class AirlineManagerController implements MinuteClockListener {
 
     @FXML
     public void handleUnBoardPassenger(Passenger passenger) {
-        selectedPlane.getAirport().unBoardPassenger(selectedPlane, passenger);
+        game.unBoardPassenger(selectedPlane, passenger);
         setPassengerCountLabel(selectedPlane);
         loadTravellersList(selectedPlane.getAirport());
     }
@@ -367,11 +363,11 @@ public class AirlineManagerController implements MinuteClockListener {
 
 
     @Override
-    public void minuteProcedure() {
+    public void tick() {
         // Sleep a little to make sure everything is loaded;
         setTravellersRefreshTimer(game.refreshingTravellersIn());
         setAirlineCoins(game.getAirline().getCoinAmount());
-        // loadPlanesList();
+        loadPlanesList();
     }
 
 

@@ -7,7 +7,12 @@ import java.util.List;
 import java.util.Properties;
 
 
-public class AirlineManagerGame implements MinuteClockListener {
+public class AirlineManagerGame implements SecondClockListener {
+
+
+
+    // For development, remove later
+    private Aircraft testAircraft = new Aircraft("Boeing", "737", "Passenger", 210, 200, 1, 500, 4);
 
 
 
@@ -16,14 +21,14 @@ public class AirlineManagerGame implements MinuteClockListener {
     private final String AIRPORTS_FILE_NAME = "airports.csv";
     private final int travellersRefreshInterval = 5;
     private Airport defaultAirport;
-    private MinuteClock minuteClock;
+    private SecondClock minuteClock;
 
     private Properties properties;
 
     private Airline airline;
     private List<Aircraft> aircrafts;
     private List<Airport> airports;
-    private int minutes;
+    private int seconds;
 
     //private List<Flight> flights = new ArrayList<>();
 
@@ -34,7 +39,7 @@ public class AirlineManagerGame implements MinuteClockListener {
         this.aircrafts = new AircraftsLoader().load(AIRCRAFTS_FILE_NAME);
         this.airports= new AirportsLoader().load(AIRPORTS_FILE_NAME);
         // Loading game files with airplanes and airports
-        this.minuteClock = new MinuteClock();
+        this.minuteClock = new SecondClock();
         this.minuteClock.addListener(this);
         minuteClock.start();
         this.load();
@@ -56,6 +61,13 @@ public class AirlineManagerGame implements MinuteClockListener {
 
         this.airline = new Airline(Integer.parseInt(properties.getProperty("defaultCoins")), this.getDefaultAirport());
         airports.forEach(airport -> airport.refreshTravellers(this.getAirports()));
+
+
+        // TODO: Remove, only for development
+        this.getAirline().buy(testAircraft);
+        this.getAirline().buy(testAircraft);
+        this.getAirline().getPlanes().get(1).setDestination(this.getAirports().get(1));
+        this.getAirline().getPlanes().get(1).land();
     }
 
 
@@ -90,28 +102,46 @@ public class AirlineManagerGame implements MinuteClockListener {
 
 
 
-    public void addToGameClock(MinuteClockListener listener) {
+    public void addToGameClock(SecondClockListener listener) {
         this.minuteClock.addListener(listener);
     }
 
 
 
     public int refreshingTravellersIn() {
-        return this.travellersRefreshInterval - this.minutes;
+        return Math.round(this.travellersRefreshInterval - this.seconds/60);
+    }
+
+
+
+    private void minuteProcedure() {
+            if(this.seconds/60 == this.travellersRefreshInterval) {
+                this.airports.forEach(airport -> airport.refreshTravellers(this.getAirports()));
+                this.seconds = 0;
+            }
+    }
+
+
+
+    public void boardPassenger(Plane plane, Passenger passenger) {
+        plane.getAirport().boardPassenger(plane, passenger);
+    }
+
+
+
+    public void unBoardPassenger(Plane plane, Passenger passenger) {
+        plane.getAirport().unBoardPassenger(plane, passenger);
+
     }
 
 
 
     @Override
-    public void minuteProcedure() {
-        this.minutes++;
-        if(this.minutes == this.travellersRefreshInterval) {
-            this.airports.forEach(airport -> airport.refreshTravellers(this.getAirports()));
-            this.minutes = 0;
-        }
-
+    public void tick() {
+        this.seconds++;
         // Not perfect, must be fixed
-        this.getAirline().getPlanes().forEach(plane -> plane.minuteProcedure()); 
+        this.getAirline().getPlanes().forEach(plane -> plane.tick()); 
+        this.minuteProcedure();
     }
 
 }

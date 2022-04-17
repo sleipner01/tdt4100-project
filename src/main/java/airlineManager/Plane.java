@@ -2,7 +2,7 @@ package airlineManager;
 
 import java.util.ArrayList;
 import java.util.List;
-public class Plane implements MinuteClockListener {
+public class Plane implements SecondClockListener {
 
 
 
@@ -49,9 +49,11 @@ public class Plane implements MinuteClockListener {
 
     public Airport getDestination() { return this.destination; }
 
-    private void setFlightTime(int time) { this.flightTime = time; }
+    private void setFlightTimeInSeconds(int timeInSeconds) { this.flightTime = timeInSeconds; }
 
-    public int getRemainingFlightTime() { return this.flightTime; }
+    public int getRemainingFlightTimeInMinutes() { return (int) Math.ceil(this.flightTime/60.0); }
+
+    private int getRemainingFlightTimeInSeconds() { return this.flightTime; }
 
     public List<Passenger> getPassengers() {
         return new ArrayList<>(this.passengers);
@@ -98,8 +100,7 @@ public class Plane implements MinuteClockListener {
         this.destination = destination;
 
         // Calculate flightTime
-        int time = 0;
-        setFlightTime(time);
+        setFlightTimeInSeconds(4*60);
     }
 
 
@@ -107,7 +108,6 @@ public class Plane implements MinuteClockListener {
     public void takeOff() {
         //TODO: If everything is good, take off
         this.inFlight = true;
-        this.flightTime = 4;
 
         this.airport.removePlane(this);
 
@@ -140,13 +140,13 @@ public class Plane implements MinuteClockListener {
 
 
     @Override
-    public void minuteProcedure() {
+    public void tick() {
 
         // Currently no good solution to add the planes directly to the clock.
         // The game calles this function
 
         if(!this.isInFlight()) return;
-        if(this.getRemainingFlightTime() <= 1) this.land();
+        if(this.getRemainingFlightTimeInSeconds() <= 1) this.land();
         flightTime--;
     }
 
