@@ -6,9 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -24,7 +26,7 @@ public class AirlineManagerController implements SecondClockListener {
     private AirlineManagerGame game;
     private Plane selectedPlane;
 
-    private final int PLANE_BUTTON_PADDING = 20;
+    private final int PLANE_BUTTON_PADDING = 10;
     private final int BUTTON_HORIZONTAL_GAP = 0;
     private final int BUTTON_VERTICAL_GAP = 0;
 
@@ -52,27 +54,32 @@ public class AirlineManagerController implements SecondClockListener {
         else game = new AirlineManagerGame();
 
         addControllerToGameClock();
-
-        // String airlineName;
-        // TextInputDialog dialog = new TextInputDialog();
-        // dialog.setTitle("Welcome to Airline Manager");
-        // dialog.setHeaderText("What do you want to name your airline?");
-        // dialog.setContentText("Name:");
-        // try {
-        //     airlineName = dialog.showAndWait().get();
-        //     this.game.getAirline().rename(airlineName);
-        // } catch (Exception e) {
-        //     System.out.println("Something went wrong...");
-        // }
-
-
-
+        
+        // nameAirline();
         setAirlineNameHeader(game.getAirline().getName());
         setAirlineCoins(game.getAirline().getCoinAmount());
         game.refreshingTravellersIn();
 
 
         this.loadPlanesList();
+
+    }
+
+
+
+    private void nameAirline() {
+
+        String airlineName;
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Welcome to Airline Manager");
+        dialog.setHeaderText("What do you want to name your airline?");
+        dialog.setContentText("Name:");
+        try {
+            airlineName = dialog.showAndWait().get();
+            this.game.getAirline().rename(airlineName);
+        } catch (Exception e) {
+            System.out.println("Something went wrong...");
+        }
 
     }
 
@@ -97,13 +104,40 @@ public class AirlineManagerController implements SecondClockListener {
         grid.setHgap(BUTTON_HORIZONTAL_GAP);
         grid.setVgap(BUTTON_VERTICAL_GAP);
 
+
+        
         List<Plane> planesList = this.game.getAirline().getPlanes();
         for (Plane plane : planesList) {
-            grid.add(this.createPlaneButton(plane),planesList.indexOf(plane),1);
+            grid.add(createPlaneButton(plane),planesList.indexOf(plane),1);
         }
 
         viewablePlanesList.setContent(grid);
         
+    }
+
+    private void refreshPlanesInFlight() throws IllegalStateException {
+
+        Node viewablePlanesListContent = viewablePlanesList.getContent();
+        if(viewablePlanesListContent instanceof GridPane){
+            GridPane viewablePlanesListGridPane = (GridPane) viewablePlanesListContent;
+            ObservableList<Node> gridPanePlaneButtons = viewablePlanesListGridPane.getChildren();
+
+            List<Plane> planesList = this.game.getAirline().getPlanes();
+            // The two lists should be the same length, one with buttons, the other with planes..
+            if(!(gridPanePlaneButtons.size() == planesList.size()))
+                throw new IllegalStateException("The two list are not of the same size. Something is wrong.");
+
+            for (Node button : gridPanePlaneButtons) {
+                if(button.isDisable()){
+                    int index = gridPanePlaneButtons.indexOf(button);
+                    gridPanePlaneButtons.set(index, createPlaneButton(planesList.get(index)));
+                }
+                
+            }
+        }
+        else {
+            throw new IllegalStateException("No can do. This is not a gridpane");
+        }
     }
 
 
@@ -367,7 +401,7 @@ public class AirlineManagerController implements SecondClockListener {
         // Sleep a little to make sure everything is loaded;
         setTravellersRefreshTimer(game.refreshingTravellersIn());
         setAirlineCoins(game.getAirline().getCoinAmount());
-        loadPlanesList();
+        refreshPlanesInFlight();
     }
 
 
