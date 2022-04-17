@@ -113,13 +113,25 @@ public class AirlineManagerController implements MinuteClockListener {
 
 
     private Button createPlaneButton(Plane plane) {
-        Button button = new Button(plane.toString());
+        Button button;
+        if(plane.isInFlight()) {
+            button = new Button(plane.getNickName() + "\n" + 
+                                   plane.getRemainingFlightTime() + " min");
+            button.setDisable(true);
+        }
+        else { 
+            button = new Button(plane.getNickName());
+            button.setDisable(false);
+        }
+        
         button.wrapTextProperty().setValue(true);
         button.setStyle("-fx-text-alignment: center;");
         button.setCursor(Cursor.HAND);
         button.setOnAction((event) -> handlePlaneSelect(plane));
         button.setMaxWidth(Double.MAX_VALUE);
         button.setMaxHeight(Double.MAX_VALUE);
+
+
 
         return button;
     }
@@ -140,8 +152,9 @@ public class AirlineManagerController implements MinuteClockListener {
         setManufacturerAndModelLabel(plane);
         setPassengerCountLabel(plane);
         setDestinationAirportLabel(plane);
-        loadAirportsList(plane);
+        loadDestinationsList(plane);
         loadTravellersList(plane.getAirport());
+         
         if(!Objects.isNull(plane.getDestination())) enableTakeOffButton();
         else disableTakeOffButton();
     }
@@ -211,8 +224,14 @@ public class AirlineManagerController implements MinuteClockListener {
 
 
 
-    private void loadAirportsList(Plane plane) {
-        // TODO: Load except current airport, sort based on distance
+    private void emptyDestinationsList() {
+        viewableDestinationsList.setContent(null);
+    }
+
+
+
+    private void loadDestinationsList(Plane plane) {
+        // TODO: sort based on distance
 
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(PLANE_BUTTON_PADDING));
@@ -220,12 +239,19 @@ public class AirlineManagerController implements MinuteClockListener {
         grid.setVgap(BUTTON_VERTICAL_GAP);
 
         List<Airport> airportsList = this.game.getAirports();
+        airportsList.remove(plane.getAirport());
         for (Airport airport : airportsList) {
             grid.add(this.createAirportButton(airport), 1, airportsList.indexOf(airport));
         }
 
         viewableDestinationsList.setContent(grid);
         
+    }
+
+
+
+    private void emptyTravellersList() {
+        viewableTravellersList.setContent(null);
     }
 
 
@@ -258,7 +284,7 @@ public class AirlineManagerController implements MinuteClockListener {
         Button button = new Button(passenger.getFullName() + "\n" + 
                                    passenger.getPaying() + "\n" +
                                    passenger.getDestination().getAirportName());
-        button.wrapTextProperty().setValue(true);
+                                   button.wrapTextProperty().setValue(true);
         button.setStyle("-fx-text-alignment: center;");
         button.setCursor(Cursor.HAND);
         button.setOnAction((event) -> handleBoardPassenger(passenger));
@@ -326,7 +352,10 @@ public class AirlineManagerController implements MinuteClockListener {
 
 
     private void refreshDisplay() {
-
+        emptyDestinationsList();
+        emptyTravellersList();
+        resetPlaneInfo();
+        loadPlanesList();
     }
 
 
@@ -342,8 +371,17 @@ public class AirlineManagerController implements MinuteClockListener {
         // Sleep a little to make sure everything is loaded;
         setTravellersRefreshTimer(game.refreshingTravellersIn());
         setAirlineCoins(game.getAirline().getCoinAmount());
-        
-        
+        // loadPlanesList();
+    }
+
+
+
+    private void resetPlaneInfo() {
+        airportNameLabel.setText("");
+        manufacturerAndModelLabel.setText("");
+        passengerCountLabel.setText("");
+        destinationAirportLabel.setText("");
+        profitLabel.setText("");
     }
     
 }

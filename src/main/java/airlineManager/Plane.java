@@ -157,4 +157,20 @@ public class Plane implements MinuteClockListener {
         return this.nickName;
     }
 
+
+    public static void main(String[] args) {
+        Airport airport = new Airport("Aids", 2, 40, "Aids", 1, 2);
+        Airport airport2 = new Airport("Aids2", 2, 40, "Aids", 1, 2);
+        Plane plane = new Plane(new Aircraft("S", "S", "S", 200, 200, 300, 250, 4), "aids", new Airline(15000, airport), airport);
+        plane.setDestination(airport2);
+        System.out.println(plane.getAirport().getAirportName());
+        System.out.println(plane.getDestination().getAirportName());
+        plane.takeOff();
+        System.out.println(plane.getAirport().getAirportName());
+        System.out.println(plane.getDestination().getAirportName());
+        plane.land();
+        System.out.println(plane.getAirport().getAirportName());
+        System.out.println(plane.getDestination().getAirportName());
+    }
+
 }

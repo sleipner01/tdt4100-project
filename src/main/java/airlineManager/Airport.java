@@ -49,8 +49,12 @@ public class Airport extends City {
     public void boardPassenger(Plane plane, Passenger passenger) {
         if(!this.planes.contains(plane))
             throw new IllegalArgumentException("This plane is not at " + this.getAirportName());
-        if(!this.travellers.contains(passenger))
-            throw new IllegalArgumentException("The passenger is not at " + this.getAirportName());
+        
+        // Cannot be used because the controller won't be refreshed
+        // until a new / same plane is selected. Then the controller will show the passenger,
+        // but the passenger wont actualle be at the airport.
+        // if(!this.travellers.contains(passenger))
+        //     throw new IllegalArgumentException(passenger.getFullName() + " is not at " + this.getAirportName());
 
         plane.addPassenger(passenger);
         this.travellers.remove(passenger);
@@ -74,6 +78,7 @@ public class Airport extends City {
         // if(amount > this.getCapacity() || amount < 0)
         //     throw new IllegalArgumentException("The capacity has to be between 0 and " + this.getCapacity());
         if(availableAirports.size() < 1) return;
+        if(availableAirports.contains(this)) availableAirports.remove(this);
 
         this.travellers.removeAll(this.travellers);
 
@@ -97,9 +102,9 @@ public class Airport extends City {
     // Temporary until Faker works
     private String createTravellerName() {
         List<String> firstNames = new ArrayList<>(
-            Arrays.asList("Magnus", "James", "Tarald", "Eivind", "Ida", "Karen", "Johanne", "Emilie", "Muhammed", "Ismail", "Gaule", "Gyrsel", "Kristine", "Nils", "Sigurd", "Ingrid", "Yuki", "Zhou", "Carlos", "George", "Valtteri", "Kevin", "Mick", "Grinsild", "Dino", "Stikjær", "Napoleon"));
+            Arrays.asList("Magnus", "James", "Tarald", "Eivind", "Ida", "Karen", "Johanne", "Emilie", "Muhammed", "Ismail", "Gaule", "Gyrsel", "Kristine", "Nils", "Sigurd", "Ingrid", "Yuki", "Zhou", "Carlos", "George", "Valtteri", "Kevin", "Mick", "Grinsild", "Dino", "Stikjær", "Napoleon", "Jøllebølle", "Toto", "Pete", "Christian"));
         List<String> surNames = new ArrayList<>(
-            Arrays.asList("Islamabad", "Byrkjeland", "Mohammed", "Muhammed", "Olsen", "Bakke", "Systad", "Timm", "Smith", "Leclerc", "Hamilton", "Andersen", "Ghuany", "Tsunoda", "Gasly", "Sainz", "Russel", "Bottas", "Magnussen", "Shumacher", "Hoel", "Narui", "Zienolddiny", "Palizban", "Utne", "Gürktürk", "PingLee"));
+            Arrays.asList("Islamabad", "Byrkjeland", "Mohammed", "Muhammed", "Olsen", "Bakke", "Systad", "Timm", "Smith", "Leclerc", "Hamilton", "Andersen", "Ghuany", "Tsunoda", "Gasly", "Sainz", "Russel", "Bottas", "Magnussen", "Shumacher", "Hoel", "Narui", "Zienolddiny", "Palizban", "Utne", "Gürktürk", "PingLee", "Midtskill", "Bonnington", "Wolff", "Horner"));
 
         return firstNames.get(random.nextInt(firstNames.size())) + " " +
                       surNames.get(random.nextInt(surNames.size()));
