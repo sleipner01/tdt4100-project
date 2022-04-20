@@ -18,8 +18,8 @@ public class Airport extends City {
 
 
 
-    public Airport(String airportName, int gates, int capacity, String cityName, int longitude, int latitude) {
-        super(cityName, longitude, latitude);
+    public Airport(String airportName, int gates, int capacity, String cityName, double latitude, double longitude) {
+        super(cityName, latitude, longitude);
         this.name = airportName;
         this.gates = gates;
         this.capacity = capacity;

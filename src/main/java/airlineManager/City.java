@@ -5,14 +5,14 @@ public abstract class City {
 
 
     private String name;
-    private double longitude, latitude; // Coordinates in an imaginary 2D map
+    private double latitude, longitude; // Coordinates
 
 
 
-    protected City(String name, int longitude, int latitude) {
+    protected City(String name, double latitude, double longitude)  {
         this.name = name;
-        this.longitude = longitude;
         this.latitude = latitude;
+        this.longitude = longitude;
     }
 
 
