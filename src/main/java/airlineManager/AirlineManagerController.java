@@ -115,29 +115,32 @@ public class AirlineManagerController implements SecondClockListener {
         
     }
 
+    // To keep the grid from having to update constantly, only the flights in air.
     private void refreshPlanesInFlight() throws IllegalStateException {
 
         Node viewablePlanesListContent = viewablePlanesList.getContent();
-        if(viewablePlanesListContent instanceof GridPane){
-            GridPane viewablePlanesListGridPane = (GridPane) viewablePlanesListContent;
-            ObservableList<Node> gridPanePlaneButtons = viewablePlanesListGridPane.getChildren();
+        if(!(viewablePlanesListContent instanceof GridPane))
+            throw new IllegalStateException("No can do. This is not a gridpane");
 
-            List<Plane> planesList = this.game.getAirline().getPlanes();
-            // The two lists should be the same length, one with buttons, the other with planes..
+        GridPane viewablePlanesListGridPane = (GridPane) viewablePlanesListContent;
+        ObservableList<Node> gridPanePlaneButtons = viewablePlanesListGridPane.getChildren();
+
+        List<Plane> planesList = this.game.getAirline().getPlanes();
+        // The two lists should be the same length, one with buttons, the other with planes..
+        if(!(gridPanePlaneButtons.size() == planesList.size())) {
+            loadPlanesList(); // In case a new aircraft have been bought
             if(!(gridPanePlaneButtons.size() == planesList.size()))
                 throw new IllegalStateException("The two list are not of the same size. Something is wrong.");
+        }
 
-            for (Node button : gridPanePlaneButtons) {
-                if(button.isDisable()){
-                    int index = gridPanePlaneButtons.indexOf(button);
-                    gridPanePlaneButtons.set(index, createPlaneButton(planesList.get(index)));
-                }
-                
+        for (Node button : gridPanePlaneButtons) {
+            if(button.isDisable()){
+                int index = gridPanePlaneButtons.indexOf(button);
+                gridPanePlaneButtons.set(index, createPlaneButton(planesList.get(index)));
             }
+            
         }
-        else {
-            throw new IllegalStateException("No can do. This is not a gridpane");
-        }
+        
     }
 
 
