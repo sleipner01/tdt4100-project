@@ -5,7 +5,7 @@ public abstract class City {
 
 
     private String name;
-    private int longitude, latitude; // Coordinates in an imaginary 2D map
+    private double longitude, latitude; // Coordinates in an imaginary 2D map
 
 
 
@@ -19,9 +19,9 @@ public abstract class City {
 
     public String getCityName() { return this.name; }
 
-    public int getLongitude() { return this.longitude; }
+    public double getLongitude() { return this.longitude; }
 
-    public int getLatitude() { return this.latitude; }
+    public double getLatitude() { return this.latitude; }
 
     public abstract String getAirportName(); 
 
