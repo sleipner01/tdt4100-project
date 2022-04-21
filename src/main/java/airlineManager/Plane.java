@@ -1,7 +1,10 @@
+
+
 package airlineManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 public class Plane implements SecondClockListener {
 
 
@@ -15,6 +18,9 @@ public class Plane implements SecondClockListener {
     private int flightTime;
     private boolean inFlight;
 
+
+
+    private final int DEFAULT_FLIGHTTIME = 30;
 
 
     public Plane(Aircraft aircraft, String nickName, Airline airline, Airport startingAirport) {
@@ -49,11 +55,14 @@ public class Plane implements SecondClockListener {
 
     public Airport getDestination() { return this.destination; }
 
-    private void setFlightTimeInSeconds(int timeInSeconds) { this.flightTime = timeInSeconds; }
+    // Using real world minutes as seconds in the game.
+    private void setFlightTime(int time) { this.flightTime = time; }
 
-    public int getRemainingFlightTimeInMinutes() { return (int) Math.ceil(this.flightTime/60.0); }
+    private int getRemainingFlightTime() { return this.flightTime; }
+    
+    public int getRemainingFlightTimeInMinutes() { return (int) Math.ceil(this.flightTime/60); }
 
-    private int getRemainingFlightTimeInSeconds() { return this.flightTime; }
+
 
     public List<Passenger> getPassengers() {
         return new ArrayList<>(this.passengers);
@@ -100,13 +109,31 @@ public class Plane implements SecondClockListener {
         this.destination = destination;
 
         // Calculate flightTime
-        setFlightTimeInSeconds(4*60);
+        this.setFlightTime(calculateFlightTime());
     }
 
 
 
-    public void takeOff() {
+    private int calculateFlightTime() throws IllegalStateException {
+        if(Objects.isNull(this.airport))
+            throw new IllegalStateException("The plane isn't currently at an airport.");
+        if(Objects.isNull(this.destination))
+            throw new IllegalStateException("Destination is not set.");
+
+        double distance = CalculateFlightDistance.calculate(this.getAirport(), this.getDestination());
+
+        if(distance <= 0) return DEFAULT_FLIGHTTIME;
+        
+        return (int)(distance / this.getAircraft().getSpeed() * 60);
+    }
+
+
+
+    public void takeOff() throws IllegalStateException {
         //TODO: If everything is good, take off
+        if(Objects.isNull(this.destination)) 
+            throw new IllegalStateException("Destination is not set.");
+
         this.inFlight = true;
 
         this.airport.removePlane(this);
@@ -146,7 +173,7 @@ public class Plane implements SecondClockListener {
         // The game calles this function
 
         if(!this.isInFlight()) return;
-        if(this.getRemainingFlightTimeInSeconds() <= 1) this.land();
+        if(this.getRemainingFlightTime() <= 1) this.land();
         flightTime--;
     }
 

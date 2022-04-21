@@ -229,7 +229,8 @@ public class AirlineManagerController implements SecondClockListener {
 
     private Button createAirportButton(Airport airport) {
 
-        Button button = new Button(airport.getAirportName());
+        Button button = new Button(airport.getAirportName() + "\n"
+                                   + (int)CalculateFlightDistance.calculate(selectedPlane.getAirport(), airport) + "km");
         button.wrapTextProperty().setValue(true);
         button.setStyle("-fx-text-alignment: center;");
         button.setCursor(Cursor.HAND);
