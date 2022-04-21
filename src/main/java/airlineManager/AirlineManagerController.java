@@ -35,7 +35,7 @@ public class AirlineManagerController implements SecondClockListener {
 
     @FXML
     public Text airlineName, manufacturerAndModelLabel, passengerCountLabel,
-                destinationAirportLabel, profitLabel, airportNameLabel,
+                destinationAirportLabel, distanceLabel, profitLabel, airportNameLabel,
                 travellersRefreshTimer, airlineCoins;
 
     @FXML
@@ -185,6 +185,8 @@ public class AirlineManagerController implements SecondClockListener {
         setManufacturerAndModelLabel(plane);
         setPassengerCountLabel(plane);
         setDestinationAirportLabel(plane);
+        setDistanceLabel(plane);
+        setProfitLabel(plane);
         loadDestinationsList(plane);
         loadTravellersList(plane.getAirport());
          
@@ -212,15 +214,29 @@ public class AirlineManagerController implements SecondClockListener {
 
 
 
+    private void setDistanceLabel(Plane plane) {
+        Airport destination = plane.getDestination();
+        if(Objects.isNull(destination)) distanceLabel.setText("Destination is not set");
+        else distanceLabel.setText((int)CalculateFlightDistance.calculate(plane.getAirport(), plane.getDestination()) + "km");
+        
+    }
+
+
+
+    private void setProfitLabel(Plane plane) {
+        Airport destination = plane.getDestination();
+        if(Objects.isNull(destination)) profitLabel.setText("Destination is not set");
+        else profitLabel.setText(plane.getProfit() + " coins");
+        
+    }
+
+
+
     private void setDestinationAirportLabel(Plane plane) {
         Airport destination = plane.getDestination();
         if(Objects.isNull(destination)) destinationAirportLabel.setText("Not set");
-        else {
-            destinationAirportLabel.setText(destination.getAirportName());
-            CalculateFlightDistance calc = new CalculateFlightDistance();
-            String value = "" + calc.calculate(plane.getAirport(), plane.getDestination());
-            airportNameLabel.setText(value);
-        }
+        else destinationAirportLabel.setText(destination.getAirportName());
+        
 
         
     }
@@ -237,6 +253,9 @@ public class AirlineManagerController implements SecondClockListener {
         button.setOnAction((event) -> handleSetDestination(airport));
         button.setMaxWidth(Double.MAX_VALUE);
         button.setMaxHeight(Double.MAX_VALUE);
+
+        if(!selectedPlane.isInRange(airport)) button.setDisable(true);
+        else button.setDisable(false);
 
         return button;
 
@@ -258,9 +277,18 @@ public class AirlineManagerController implements SecondClockListener {
 
     @FXML
     public void handleSetDestination(Airport airport) {
-        this.selectedPlane.setDestination(airport);
-        setDestinationAirportLabel(this.selectedPlane);
+        selectedPlane.setDestination(airport);
+        updatePlaneInfo();
         enableTakeOffButton();
+    }
+
+
+
+    private void updatePlaneInfo() {
+        setPassengerCountLabel(selectedPlane);
+        setDestinationAirportLabel(selectedPlane);
+        setDistanceLabel(selectedPlane);
+        setProfitLabel(selectedPlane);
     }
 
 
@@ -281,12 +309,13 @@ public class AirlineManagerController implements SecondClockListener {
 
         List<Airport> airportsList = this.game.getAirports();
         airportsList.remove(plane.getAirport());
+        airportsList.sort((a, b) -> (int)CalculateFlightDistance.calculate(plane.getAirport(), a) - (int)CalculateFlightDistance.calculate(plane.getAirport(), b));
+
         for (Airport airport : airportsList) {
             grid.add(this.createAirportButton(airport), 1, airportsList.indexOf(airport));
         }
 
         viewableDestinationsList.setContent(grid);
-        
     }
 
 
@@ -344,7 +373,7 @@ public class AirlineManagerController implements SecondClockListener {
     @FXML
     public void handleBoardPassenger(Passenger passenger) {
         game.boardPassenger(selectedPlane, passenger);
-        setPassengerCountLabel(selectedPlane);
+        updatePlaneInfo();
         loadTravellersList(selectedPlane.getAirport());
     }
 
@@ -378,7 +407,7 @@ public class AirlineManagerController implements SecondClockListener {
     @FXML
     public void handleUnBoardPassenger(Passenger passenger) {
         game.unBoardPassenger(selectedPlane, passenger);
-        setPassengerCountLabel(selectedPlane);
+        updatePlaneInfo();
         loadTravellersList(selectedPlane.getAirport());
     }
 

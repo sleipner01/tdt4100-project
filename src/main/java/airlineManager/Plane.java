@@ -17,6 +17,7 @@ public class Plane implements SecondClockListener {
     private Airport destination;
     private int flightTime;
     private boolean inFlight;
+    private int flightCost;
 
 
 
@@ -62,6 +63,19 @@ public class Plane implements SecondClockListener {
     
     public int getRemainingFlightTimeInMinutes() { return (int) Math.ceil(this.flightTime/60); }
 
+    public int getFlightCost() { return this.flightCost; }
+
+
+
+    public int getProfit() {
+        return passengers.stream()
+                         .filter(passenger -> passenger.getDestination().equals(this.getDestination()))
+                         .mapToInt(passenger -> passenger.getPaying())
+                         .sum()
+                         - this.getFlightCost();
+                        //  .reduce(-this.getFlightCost(), (sum, passenger) -> sum + passenger.getPaying(), Integer::sum);
+    }
+
 
 
     public List<Passenger> getPassengers() {
@@ -105,11 +119,24 @@ public class Plane implements SecondClockListener {
 
 
 
-    public void setDestination(Airport destination) {
+    public void setDestination(Airport destination) throws IllegalArgumentException {
+
+        if(!this.isInRange(destination))
+            throw new IllegalArgumentException("This airport is out of range for this aircraft");
+
         this.destination = destination;
 
-        // Calculate flightTime
         this.setFlightTime(calculateFlightTime());
+        this.setFlightCost();
+    }
+
+
+
+    public boolean isInRange(Airport destination) {
+        System.out.println(CalculateFlightDistance.calculate(this.airport, destination) + " " + this.aircraft.getRange());
+        if(CalculateFlightDistance.calculate(this.airport, destination) > this.getAircraft().getRange())
+            return false;
+        return true;
     }
 
 
@@ -125,6 +152,21 @@ public class Plane implements SecondClockListener {
         if(distance <= 0) return DEFAULT_FLIGHTTIME;
         
         return (int)(distance / this.getAircraft().getSpeed() * 60);
+    }
+
+
+
+    private void setFlightCost() {
+        this.flightCost = calculateFlightCost();
+    }
+
+    private int calculateFlightCost() throws IllegalStateException {
+        if(Objects.isNull(this.airport))
+            throw new IllegalStateException("The plane isn't currently at an airport.");
+        if(Objects.isNull(this.destination))
+            throw new IllegalStateException("Destination is not set.");
+
+        return (int) (CalculateFlightDistance.calculate(this.getAirport(), this.getDestination()) * this.getAircraft().getEfficiency());
     }
 
 

@@ -11,11 +11,6 @@ public class AirlineManagerGame implements SecondClockListener {
 
 
 
-    // For development, remove later
-    private Aircraft testAircraft = new Aircraft("Boeing", "737", "Passenger", 210, 200, 1, 500, 4);
-
-
-
     private final String CONFIG_FILE = "config.properties";
     private final String AIRCRAFTS_FILE_NAME = "aircrafts.csv";
     private final String AIRPORTS_FILE_NAME = "airports.csv";
@@ -64,8 +59,8 @@ public class AirlineManagerGame implements SecondClockListener {
 
 
         // TODO: Remove, only for development
-        this.getAirline().buy(testAircraft);
-        this.getAirline().buy(testAircraft);
+        this.getAirline().buy(aircrafts.get(1));
+        this.getAirline().buy(aircrafts.get(1));
         this.getAirline().getPlanes().get(1).setDestination(this.getAirports().get(1));
         this.getAirline().getPlanes().get(1).land();
     }

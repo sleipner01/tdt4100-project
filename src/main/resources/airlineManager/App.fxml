@@ -82,8 +82,10 @@
                               <Text fx:id="manufacturerAndModelLabel" layoutX="85.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manufacturer + model" />
                               <Text layoutX="36.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination:" />
                               <Text fx:id="destinationAirportLabel" layoutX="109.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Airport" />
-                              <Text layoutX="37.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profit:" />
-                              <Text fx:id="profitLabel" layoutX="81.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x coins" />
+                              <Text layoutX="37.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profit:" />
+                              <Text fx:id="profitLabel" layoutX="81.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x coins" />
+                              <Text layoutX="36.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Distance:" />
+                              <Text fx:id="distanceLabel" layoutX="94.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Airport" />
                            </children>
                         </Pane>
                         <ScrollPane fx:id="viewableTravellersList" hbarPolicy="NEVER" layoutX="16.0" layoutY="142.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="44.0" />
