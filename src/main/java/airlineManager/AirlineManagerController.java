@@ -215,7 +215,14 @@ public class AirlineManagerController implements SecondClockListener {
     private void setDestinationAirportLabel(Plane plane) {
         Airport destination = plane.getDestination();
         if(Objects.isNull(destination)) destinationAirportLabel.setText("Not set");
-        else destinationAirportLabel.setText(destination.getAirportName());
+        else {
+            destinationAirportLabel.setText(destination.getAirportName());
+            CalculateFlightDistance calc = new CalculateFlightDistance();
+            String value = "" + calc.calculate(plane.getAirport(), plane.getDestination());
+            airportNameLabel.setText(value);
+        }
+
+        
     }
 
 

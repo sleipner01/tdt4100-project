@@ -29,7 +29,7 @@ public class AirportsLoader implements InterfaceGameFileLoader<Airport> {
                 airports.add(
                     new Airport(airportInfo[3], 
                                 Integer.parseInt(airportInfo[4]), Integer.parseInt(airportInfo[5]),
-                                airportInfo[0], Float.parseFloat(airportInfo[1]), Float.parseFloat(airportInfo[2])
+                                airportInfo[0], Double.parseDouble(airportInfo[1]), Double.parseDouble(airportInfo[2])
                     )
                 );
 

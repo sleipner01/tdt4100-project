@@ -1,22 +1,41 @@
-package airlineManager;
+// Haversine Formula
+// https://en.wikipedia.org/wiki/Haversine_formula
 
+// Haversine Formula in code
+// https://www.movable-type.co.uk/scripts/latlong.html
+
+// This Java version of the Haversine Formula is inspired from @author ananth
+// https://gist.github.com/vananth22/888ed9a22105670e7a4092bdcf0d72e4
+
+
+package airlineManager;
 // @FunctionalInterface
 public class CalculateFlightDistance {
-    private final double R = 6371000; // metres
+    // https://en.wikipedia.org/wiki/Earth_radius
+    private final double earthRadius = 6371.0088; // Kilometers
 
     public double calculate(Airport origin, Airport destination) {
-        // φ, λ in radians
-        double φ1 = origin.getLatitude() * Math.PI/180; 
-        double φ2 = destination.getLatitude() * Math.PI/180;
-        double Δφ = (φ2-φ1) * Math.PI/180;
-        double Δλ = (destination.getLongitude()-origin.getLongitude()) * Math.PI/180;
+        double latitude1 = origin.getLatitude();
+        double longitude1 = origin.getLongitude();
+        double latitude2 = destination.getLatitude();
+        double longitude2 = destination.getLongitude();
+        double Δlatitude = this.toRadians(latitude2-latitude1);
+        double Δlongitude = this.toRadians(longitude2-longitude1);
 
-        double a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                Math.cos(φ1) * Math.cos(φ2) *
-                Math.sin(Δλ/2) * Math.sin(Δλ/2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double halfCordLengthSquared = Math.sin(Δlatitude / 2) * Math.sin(Δlatitude / 2) 
+                + Math.cos(this.toRadians(latitude1)) * Math.cos(this.toRadians(latitude2)) 
+                * Math.sin(Δlongitude / 2) * Math.sin(Δlongitude / 2);
 
-        return R * c; // in metres
+        double angularDistanceRadians = 2 * Math.atan2(Math.sqrt(halfCordLengthSquared), Math.sqrt(1-halfCordLengthSquared));
+        double distance = earthRadius * angularDistanceRadians;
+        
+        System.out.println("The distance is: " + distance);
 
+        return distance; // Kilometers
+   
     }
+    
+    private double toRadians(double value) {
+        return value * Math.PI / 180;
+    }        
 }

@@ -144,4 +144,6 @@ public class AirlineManagerGame implements SecondClockListener {
         this.minuteProcedure();
     }
 
+
+
 }
