@@ -14,7 +14,9 @@ public class Airport extends City {
     private int gates, capacity;
     private List<Plane> planes;
     private List<Passenger> travellers;
-    private Random random;
+    // Will be used often, so added as a field to prevent having to
+    // create new instances every time refreshTravellers() is called
+    private Random random; 
 
 
 
@@ -77,9 +79,10 @@ public class Airport extends City {
     public void refreshTravellers(List<Airport> availableAirports) {
         // if(amount > this.getCapacity() || amount < 0)
         //     throw new IllegalArgumentException("The capacity has to be between 0 and " + this.getCapacity());
-        if(availableAirports.size() < 1) return;
+        if(availableAirports.size() < 1)
+            throw new IllegalStateException("There has to be more airports for this method to work.");
+     
         if(availableAirports.contains(this)) availableAirports.remove(this);
-
         this.travellers.removeAll(this.travellers);
 
         // Faker faker = new Faker();
@@ -90,11 +93,14 @@ public class Airport extends City {
         //                   availableAirports.get(random.nextInt(availableAirports.size())))
         // );
 
-        for(int i = 0; i < this.getCapacity(); i++) travellers.add(
+        for(int i = 0; i < this.getCapacity(); i++) {
+            Airport randomDestination = availableAirports.get(random.nextInt(availableAirports.size()));
+            travellers.add(
             new Passenger(this.createTravellerName(),
-                   50,
-                          availableAirports.get(random.nextInt(availableAirports.size())))
+                          (int)CalculateFlightDistance.calculate(this, randomDestination),
+                          randomDestination)
         );
+        }
     }
 
 
