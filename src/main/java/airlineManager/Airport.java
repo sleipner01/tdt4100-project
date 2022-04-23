@@ -97,7 +97,7 @@ public class Airport extends City {
             Airport randomDestination = availableAirports.get(random.nextInt(availableAirports.size()));
             travellers.add(
             new Passenger(this.createTravellerName(),
-                          (int)CalculateFlightDistance.calculate(this, randomDestination),
+                          this,
                           randomDestination)
         );
         }

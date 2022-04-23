@@ -133,7 +133,6 @@ public class Plane implements SecondClockListener {
 
 
     public boolean isInRange(Airport destination) {
-        System.out.println(CalculateFlightDistance.calculate(this.airport, destination) + " " + this.aircraft.getRange());
         if(CalculateFlightDistance.calculate(this.airport, destination) > this.getAircraft().getRange())
             return false;
         return true;

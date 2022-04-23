@@ -307,7 +307,7 @@ public class AirlineManagerController implements SecondClockListener {
         grid.setHgap(BUTTON_HORIZONTAL_GAP);
         grid.setVgap(BUTTON_VERTICAL_GAP);
 
-        List<Airport> airportsList = this.game.getAirports();
+        List<Airport> airportsList = game.getAirports();
         airportsList.remove(plane.getAirport());
         airportsList.sort((a, b) -> (int)CalculateFlightDistance.calculate(plane.getAirport(), a) - (int)CalculateFlightDistance.calculate(plane.getAirport(), b));
 
