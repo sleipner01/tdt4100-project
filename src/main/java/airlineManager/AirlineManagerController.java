@@ -128,7 +128,7 @@ public class AirlineManagerController implements SecondClockListener {
         if(!(viewablePlanesListContent instanceof GridPane))
             throw new IllegalStateException("No can do. This is not a gridpane");
 
-        GridPane viewablePlanesListGridPane = (GridPane) viewablePlanesListContent;
+        GridPane viewablePlanesListGridPane = (GridPane)viewablePlanesListContent;
         ObservableList<Node> gridPanePlaneButtons = viewablePlanesListGridPane.getChildren();
 
         List<Plane> planesList = game.getAirline().getPlanes();
@@ -196,8 +196,7 @@ public class AirlineManagerController implements SecondClockListener {
         loadDestinationsList(plane);
         loadTravellersList(plane.getAirport());
          
-        if(!Objects.isNull(plane.getDestination())) enableTakeOffButton();
-        else disableTakeOffButton();
+        refreshTakeOffButton();
     }
 
 
@@ -584,12 +583,13 @@ public class AirlineManagerController implements SecondClockListener {
     @FXML
     public void handleBuyAircraft() {
         game.airlineBuy(selectedAircraft);
+        loadPlanesList();
         refreshAircraftTab();
     }
 
 
 
-    private refreshAircraftTab() {
+    private void refreshAircraftTab() {
 
     }
     

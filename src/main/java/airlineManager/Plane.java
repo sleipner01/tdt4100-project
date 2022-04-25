@@ -61,19 +61,23 @@ public class Plane implements SecondClockListener {
 
     private int getRemainingFlightTime() { return this.flightTime; }
     
-    public int getRemainingFlightTimeInMinutes() { return (int) Math.ceil(this.flightTime/60); }
+    public int getRemainingFlightTimeInMinutes() { return this.flightTime/60 + 1; }
 
     public int getFlightCost() { return this.flightCost; }
 
 
 
-    public int getProfit() {
+    public int getIncome() {
         return passengers.stream()
                          .filter(passenger -> passenger.getDestination().equals(this.getDestination()))
                          .mapToInt(passenger -> passenger.getPaying())
-                         .sum()
-                         - this.getFlightCost();
-                        //  .reduce(-this.getFlightCost(), (sum, passenger) -> sum + passenger.getPaying(), Integer::sum);
+                         .sum();
+    }
+
+
+
+    public int getProfit() {
+        return this.getIncome() - this.getFlightCost();
     }
 
 
@@ -93,7 +97,7 @@ public class Plane implements SecondClockListener {
     public boolean isReadyForTakeOff() {
         if(Objects.isNull(this.destination)) return false;
         if(!this.isInRange(this.destination)) return false;
-        // If the airline has enough money??
+        if(this.airline.getCoinAmount() < this.getFlightCost()) return false;
         return true;
     }
 
@@ -124,6 +128,17 @@ public class Plane implements SecondClockListener {
     public void clearPassengers() {
         this.passengers.removeAll(this.passengers);
         System.out.println("\nPlane is now empty.");
+    }
+
+
+
+    private void unBoardPassengers() {
+        for(int i = 0; i < this.getPassengerCount(); i++) {
+            if(this.getAirport().equals(this.passengers.get(i).getDestination())){
+                this.removePassenger(this.passengers.get(i));
+                i--;
+            }
+        }
     }
 
 
@@ -179,12 +194,16 @@ public class Plane implements SecondClockListener {
 
 
 
-    public void takeOff() throws IllegalStateException {
+    public void takeOff() throws IllegalArgumentException, IllegalStateException {
         //TODO: If everything is good, take off
+        if(this.isInFlight())
+            throw new IllegalArgumentException("The plane is already in flight");
         if(Objects.isNull(this.destination)) 
             throw new IllegalStateException("Destination is not set.");
 
         this.inFlight = true;
+
+        this.airline.addExpense(this.getFlightCost());
 
         this.airport.removePlane(this);
 
@@ -194,24 +213,20 @@ public class Plane implements SecondClockListener {
 
 
     public void land() {
+        if(!this.isInFlight()) 
+            throw new IllegalArgumentException("The plane isn't flying");
         //TODO: Do landing stuff
         this.inFlight = false;
 
+        this.airline.addIncome(this.getIncome());
+        
         this.airport = this.getDestination();
         this.destination = null;
         this.airport.addPlane(this);
 
+        this.unBoardPassengers();
+        
         System.out.println("\nRetard, retard, retard... " + this + " just landed");
-
-
-        for(int i = 0; i < this.getPassengerCount(); i++) {
-            if(this.airport.equals(this.passengers.get(i).getDestination())){
-                this.airline.addIncome(this.passengers.get(i).getPaying());
-                this.removePassenger(this.passengers.get(i));
-                i--;
-            }
-        }
-
     }
     
 
@@ -232,6 +247,11 @@ public class Plane implements SecondClockListener {
     @Override
     public String toString() {
         return this.nickName;
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println(Math.ceil(1/2));
     }
 
 }

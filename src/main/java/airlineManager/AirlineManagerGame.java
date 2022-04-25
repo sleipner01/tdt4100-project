@@ -16,7 +16,7 @@ public class AirlineManagerGame implements SecondClockListener {
     private final String AIRPORTS_FILE_NAME = "airports.csv";
     private final int travellersRefreshInterval = 5;
     private Airport defaultAirport;
-    private SecondClock minuteClock;
+    private SecondClock secondClock;
 
     private Properties properties;
 
@@ -34,9 +34,9 @@ public class AirlineManagerGame implements SecondClockListener {
         this.aircrafts = new AircraftsLoader().load(AIRCRAFTS_FILE_NAME);
         this.airports= new AirportsLoader().load(AIRPORTS_FILE_NAME);
         // Loading game files with airplanes and airports
-        this.minuteClock = new SecondClock();
-        this.minuteClock.addListener(this);
-        minuteClock.start();
+        this.secondClock = new SecondClock();
+        this.secondClock.addListener(this);
+        secondClock.start();
         this.load();
     }
 
@@ -59,10 +59,11 @@ public class AirlineManagerGame implements SecondClockListener {
 
 
         // TODO: Remove, only for development
-        this.getAirline().buy(aircrafts.get(1));
-        this.getAirline().buy(aircrafts.get(1));
-        this.getAirline().getPlanes().get(1).setDestination(this.getAirports().get(1));
-        this.getAirline().getPlanes().get(1).land();
+        // this.getAirline().buy(aircrafts.get(1));
+        // this.getAirline().buy(aircrafts.get(1));
+        // this.getAirline().getPlanes().get(1).setDestination(this.getAirports().get(1));
+        // this.getAirline().getPlanes().get(1).takeOff();;
+        // this.getAirline().getPlanes().get(1).land();
     }
 
 
@@ -91,20 +92,14 @@ public class AirlineManagerGame implements SecondClockListener {
 
 
 
-    // public MinuteClock getMinuteClock() {
-    //     return this.minuteClock;
-    // }
-
-
-
     public void addToGameClock(SecondClockListener listener) {
-        this.minuteClock.addListener(listener);
+        this.secondClock.addListener(listener);
     }
 
 
 
     public int refreshingTravellersIn() {
-        return (int)Math.ceil(this.travellersRefreshInterval - this.seconds/60);
+        return this.travellersRefreshInterval - this.seconds/60;
     }
 
 

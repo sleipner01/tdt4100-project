@@ -74,9 +74,18 @@ public class Airline implements Iterable<Plane> {
 
 
 
+    public void addExpense(int coins) {
+        if(coins < 0) throw new IllegalArgumentException("Insert a positive integer.");
+        this.coins -= coins;
+    }
+
+
+
     public void buy(Aircraft aircraft) throws IllegalArgumentException {
         if(!this.canBuy(aircraft))
             throw new IllegalArgumentException("You don't have enough money for this aircraft.");
+
+        this.addExpense(aircraft.getPrice());
         
         Plane newPlane = new Plane(aircraft, this.createTemporaryPlaneNickName(), this, this.homeAirport);
         this.planes.add(newPlane);
