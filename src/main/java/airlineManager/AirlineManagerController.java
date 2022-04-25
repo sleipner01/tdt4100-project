@@ -285,7 +285,14 @@ public class AirlineManagerController implements SecondClockListener {
     public void handleSetDestination(Airport airport) {
         selectedPlane.setDestination(airport);
         updatePlaneInfo();
-        enableTakeOffButton();
+        refreshTakeOffButton();
+    }
+
+
+
+    private void refreshTakeOffButton() {
+        if(selectedPlane.isReadyForTakeOff()) enableTakeOffButton();
+        else disableTakeOffButton();
     }
 
 
@@ -576,7 +583,14 @@ public class AirlineManagerController implements SecondClockListener {
 
     @FXML
     public void handleBuyAircraft() {
-        
+        game.airlineBuy(selectedAircraft);
+        refreshAircraftTab();
+    }
+
+
+
+    private refreshAircraftTab() {
+
     }
     
 }

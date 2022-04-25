@@ -90,6 +90,13 @@ public class Plane implements SecondClockListener {
         return this.getPassengerCount() < this.aircraft.getSeats();
     }
 
+    public boolean isReadyForTakeOff() {
+        if(Objects.isNull(this.destination)) return false;
+        if(!this.isInRange(this.destination)) return false;
+        // If the airline has enough money??
+        return true;
+    }
+
 
 
     public void addPassenger(Passenger passenger) {
@@ -97,6 +104,7 @@ public class Plane implements SecondClockListener {
             throw new IllegalArgumentException(passenger + "is already in the plane");
         if(!this.hasMoreEmptySeats())
             throw new IllegalArgumentException("The plane cannot board any more passengers");
+
         this.passengers.add(passenger);
         System.out.println("Boarded " + passenger + ".");
     }
@@ -106,6 +114,7 @@ public class Plane implements SecondClockListener {
     public void removePassenger(Passenger passenger) {
         if(!this.passengers.contains(passenger))
             throw new IllegalArgumentException("The plane haven't boarded " + passenger);
+
         this.passengers.remove(passenger);
         System.out.println("\nKicked off " + passenger + ".");
     }
@@ -223,22 +232,6 @@ public class Plane implements SecondClockListener {
     @Override
     public String toString() {
         return this.nickName;
-    }
-
-
-    public static void main(String[] args) {
-        Airport airport = new Airport("Aids", 2, 40, "Aids", 1, 2);
-        Airport airport2 = new Airport("Aids2", 2, 40, "Aids", 1, 2);
-        Plane plane = new Plane(new Aircraft("S", "S", "S", 200, 200, 300, 250, 4), "aids", new Airline(15000, airport), airport);
-        plane.setDestination(airport2);
-        System.out.println(plane.getAirport().getAirportName());
-        System.out.println(plane.getDestination().getAirportName());
-        plane.takeOff();
-        System.out.println(plane.getAirport().getAirportName());
-        System.out.println(plane.getDestination().getAirportName());
-        plane.land();
-        System.out.println(plane.getAirport().getAirportName());
-        System.out.println(plane.getDestination().getAirportName());
     }
 
 }

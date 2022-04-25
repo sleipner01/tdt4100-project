@@ -147,5 +147,10 @@ public class AirlineManagerGame implements SecondClockListener {
     }
 
 
+    public void airlineBuy(Aircraft aircraft) {
+        this.airline.buy(aircraft);
+    }
+
+
 
 }
