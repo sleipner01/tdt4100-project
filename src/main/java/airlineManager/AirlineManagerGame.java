@@ -141,4 +141,11 @@ public class AirlineManagerGame implements SecondClockListener {
 
 
 
+    public boolean airlineCanBuy(Aircraft aircraft) {
+        if(this.airline.canBuy(aircraft)) return true;
+        return false;
+    }
+
+
+
 }

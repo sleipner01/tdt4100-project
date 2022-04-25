@@ -25,18 +25,20 @@ public class AirlineManagerController implements SecondClockListener {
 
     private AirlineManagerGame game;
     private Plane selectedPlane;
+    private Aircraft selectedAircraft;
 
     private final int PLANE_BUTTON_PADDING = 10;
     private final int BUTTON_HORIZONTAL_GAP = 0;
     private final int BUTTON_VERTICAL_GAP = 0;
 
     @FXML
-    public Button takeOff, buyPlane;
+    public Button takeOffButton, buyPlaneButton;
 
     @FXML
     public Text airlineName, manufacturerAndModelLabel, passengerCountLabel,
                 destinationAirportLabel, distanceLabel, profitLabel, airportNameLabel,
-                travellersRefreshTimer, airlineCoins, selectedAircraftLabel;
+                travellersRefreshTimer, airlineCoins, selectedAircraftLabel, seatsLabel,
+                priceLabel, rangeLabel, efficiencyLabel, speedLabel;
 
     @FXML
     public ScrollPane viewableTravellersList, viewableDestinationsList,
@@ -80,7 +82,7 @@ public class AirlineManagerController implements SecondClockListener {
         dialog.setContentText("Name:");
         try {
             airlineName = dialog.showAndWait().get();
-            this.game.getAirline().rename(airlineName);
+            game.getAirline().rename(airlineName);
         } catch (Exception e) {
             System.out.println("Something went wrong...");
         }
@@ -96,7 +98,7 @@ public class AirlineManagerController implements SecondClockListener {
 
 
     private void setAirlineNameHeader(String name) {
-        this.airlineName.setText(name);
+        airlineName.setText(name);
     }
 
 
@@ -110,7 +112,7 @@ public class AirlineManagerController implements SecondClockListener {
 
 
         
-        List<Plane> planesList = this.game.getAirline().getPlanes();
+        List<Plane> planesList = game.getAirline().getPlanes();
         for (Plane plane : planesList) {
             grid.add(createPlaneButton(plane),planesList.indexOf(plane),1);
         }
@@ -129,7 +131,7 @@ public class AirlineManagerController implements SecondClockListener {
         GridPane viewablePlanesListGridPane = (GridPane) viewablePlanesListContent;
         ObservableList<Node> gridPanePlaneButtons = viewablePlanesListGridPane.getChildren();
 
-        List<Plane> planesList = this.game.getAirline().getPlanes();
+        List<Plane> planesList = game.getAirline().getPlanes();
         // The two lists should be the same length, one with buttons, the other with planes..
         if(!(gridPanePlaneButtons.size() == planesList.size())) {
             loadPlanesList(); // In case a new aircraft have been bought
@@ -177,7 +179,7 @@ public class AirlineManagerController implements SecondClockListener {
 
     @FXML
     public void handlePlaneSelect(Plane plane) {
-        this.selectedPlane = plane;
+        selectedPlane = plane;
         showPlaneInfo(plane);
         System.out.println(plane + " selected...");
     }
@@ -268,13 +270,13 @@ public class AirlineManagerController implements SecondClockListener {
 
 
     private void disableTakeOffButton() {
-        takeOff.setDisable(true);
+        takeOffButton.setDisable(true);
     }
 
 
 
     private void enableTakeOffButton() {
-        takeOff.setDisable(false);
+        takeOffButton.setDisable(false);
     }
 
 
@@ -316,7 +318,7 @@ public class AirlineManagerController implements SecondClockListener {
         airportsList.sort((a, b) -> (int)CalculateFlightDistance.calculate(plane.getAirport(), a) - (int)CalculateFlightDistance.calculate(plane.getAirport(), b));
 
         for (Airport airport : airportsList) {
-            grid.add(this.createAirportButton(airport), 1, airportsList.indexOf(airport));
+            grid.add(createAirportButton(airport), 1, airportsList.indexOf(airport));
         }
 
         viewableDestinationsList.setContent(grid);
@@ -506,9 +508,9 @@ public class AirlineManagerController implements SecondClockListener {
 
     @FXML
     public void handleAircraftSelect(Aircraft aircraft) {
-
-        // this.selectedPlane = plane;
+        selectedAircraft = aircraft;
         showAircraftInfo(aircraft);
+        refreshBuyButton(aircraft);
         System.out.println(aircraft.getManufacturer() + " " + aircraft.getModel() + " selected...");
     }
 
@@ -516,14 +518,11 @@ public class AirlineManagerController implements SecondClockListener {
 
     private void showAircraftInfo(Aircraft aircraft) {
         setSelectedAircraftLabel(aircraft);
-        // setAirportNameLabel(plane);
-        // setManufacturerAndModelLabel(plane);
-        // setPassengerCountLabel(plane);
-        // setDestinationAirportLabel(plane);
-        // setDistanceLabel(plane);
-        // setProfitLabel(plane);
-        // loadDestinationsList(plane);
-        // loadTravellersList(plane.getAirport());
+        setSeatsLabel(aircraft);
+        setPriceLabel(aircraft);
+        setEfficiencyLabel(aircraft);
+        setRangeLabel(aircraft);
+        setSpeedLabel(aircraft);
          
         // if(!Objects.isNull(plane.getDestination())) enableTakeOffButton();
         // else disableTakeOffButton();
@@ -534,5 +533,43 @@ public class AirlineManagerController implements SecondClockListener {
         selectedAircraftLabel.setText(aircraft.getManufacturer() + " " + aircraft.getModel());
     }
 
+    private void setSeatsLabel(Aircraft aircraft) {
+        seatsLabel.setText("Seats: " + aircraft.getSeats());
+    }
+
+    private void setPriceLabel(Aircraft aircraft) {
+        priceLabel.setText("Price: " + aircraft.getPrice() + " coins");
+    }
+
+    private void setRangeLabel(Aircraft aircraft) {
+        rangeLabel.setText("Range: " + aircraft.getRange() + "km");
+    }
+
+    private void setEfficiencyLabel(Aircraft aircraft) {
+        efficiencyLabel.setText("Efficiency: " + aircraft.getEfficiency() + " coins per kilometer");
+    }
+
+    private void setSpeedLabel(Aircraft aircraft) {
+        speedLabel.setText("Speed: " + aircraft.getSpeed() + "km/h");
+    }
+
+
+
+    private void refreshBuyButton(Aircraft aircraft) {
+        if(game.airlineCanBuy(aircraft)) enableBuyButton();
+        else disableBuyButton();
+    }
+
+
+
+    private void disableBuyButton() {
+        buyPlaneButton.setDisable(true);
+    }
+
+
+
+    private void enableBuyButton() {
+        buyPlaneButton.setDisable(false);
+    }
     
 }

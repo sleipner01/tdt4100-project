@@ -75,13 +75,20 @@ public class Airline implements Iterable<Plane> {
 
 
     public void buy(Aircraft aircraft) throws IllegalArgumentException {
-        if(this.getCoinAmount() < aircraft.getPrice())
+        if(!this.canBuy(aircraft))
             throw new IllegalArgumentException("You don't have enough money for this aircraft.");
         
         Plane newPlane = new Plane(aircraft, this.createTemporaryPlaneNickName(), this, this.homeAirport);
         this.planes.add(newPlane);
 
         System.out.println("\n" + this + " successfully bought " + aircraft);
+    }
+
+
+
+    public boolean canBuy(Aircraft aircraft) {
+        if(this.getCoinAmount() > aircraft.getPrice()) return true;
+        return false;
     }
 
 
