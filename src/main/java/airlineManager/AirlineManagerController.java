@@ -31,16 +31,16 @@ public class AirlineManagerController implements SecondClockListener {
     private final int BUTTON_VERTICAL_GAP = 0;
 
     @FXML
-    public Button takeOff;
+    public Button takeOff, buyPlane;
 
     @FXML
     public Text airlineName, manufacturerAndModelLabel, passengerCountLabel,
                 destinationAirportLabel, distanceLabel, profitLabel, airportNameLabel,
-                travellersRefreshTimer, airlineCoins;
+                travellersRefreshTimer, airlineCoins, selectedAircraftLabel;
 
     @FXML
     public ScrollPane viewableTravellersList, viewableDestinationsList,
-                      viewablePlanesList;
+                      viewablePlanesList, viewableBuyableAircraftsList;
 
 
 
@@ -61,7 +61,11 @@ public class AirlineManagerController implements SecondClockListener {
         game.refreshingTravellersIn();
 
 
-        this.loadPlanesList();
+        // Interface tab
+        loadPlanesList();
+
+        // Aircrafts tab
+        loadBuyableAircraftsList();
 
     }
 
@@ -453,5 +457,82 @@ public class AirlineManagerController implements SecondClockListener {
         destinationAirportLabel.setText("");
         profitLabel.setText("");
     }
+
+
+
+
+    // ***************
+    // Planes Tab
+    // ***************
+
+
+
+    private void loadBuyableAircraftsList() {
+
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(PLANE_BUTTON_PADDING));
+        grid.setHgap(BUTTON_HORIZONTAL_GAP);
+        grid.setVgap(BUTTON_VERTICAL_GAP);
+
+
+        
+        List<Aircraft> aircraftsList = game.getAircrafts();
+        for (Aircraft aircraft : aircraftsList) {
+            grid.add(createAircraftButton(aircraft), 1, aircraftsList.indexOf(aircraft));
+        }
+
+        viewableBuyableAircraftsList.setContent(grid);
+        
+    }
+
+
+
+    private Button createAircraftButton(Aircraft aircraft) {
+        Button button;
+
+        button = new Button(aircraft.getManufacturer() + " " + aircraft.getModel());
+        button.setDisable(false);
+        
+        button.wrapTextProperty().setValue(true);
+        button.setStyle("-fx-text-alignment: center;");
+        button.setCursor(Cursor.HAND);
+        button.setOnAction((event) -> handleAircraftSelect(aircraft));
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setMaxHeight(Double.MAX_VALUE);
+
+        return button;    
+    }
+
+
+    @FXML
+    public void handleAircraftSelect(Aircraft aircraft) {
+
+        // this.selectedPlane = plane;
+        showAircraftInfo(aircraft);
+        System.out.println(aircraft.getManufacturer() + " " + aircraft.getModel() + " selected...");
+    }
+
+
+
+    private void showAircraftInfo(Aircraft aircraft) {
+        setSelectedAircraftLabel(aircraft);
+        // setAirportNameLabel(plane);
+        // setManufacturerAndModelLabel(plane);
+        // setPassengerCountLabel(plane);
+        // setDestinationAirportLabel(plane);
+        // setDistanceLabel(plane);
+        // setProfitLabel(plane);
+        // loadDestinationsList(plane);
+        // loadTravellersList(plane.getAirport());
+         
+        // if(!Objects.isNull(plane.getDestination())) enableTakeOffButton();
+        // else disableTakeOffButton();
+    }
+
+
+    private void setSelectedAircraftLabel(Aircraft aircraft) {
+        selectedAircraftLabel.setText(aircraft.getManufacturer() + " " + aircraft.getModel());
+    }
+
     
 }

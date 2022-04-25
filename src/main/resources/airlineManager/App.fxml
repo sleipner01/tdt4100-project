@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="airlineManager.AirlineManagerController">
+<AnchorPane fx:id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="airlineManager.AirlineManagerController">
    <children>
       <MenuBar>
         <menus>
@@ -68,24 +68,24 @@
                               <Font size="28.0" />
                            </font>
                         </Text>
-                        <Text fx:id="airportNameLabel" layoutX="491.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AirportName" textAlignment="CENTER" wrappingWidth="200.37622833251953">
-                           <font>
-                              <Font size="28.0" />
-                           </font>
-                        </Text>
                         <Pane layoutX="461.0" layoutY="116.0" prefHeight="540.5" prefWidth="800.0" style="-fx-background-color: #EEEEEE;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
                            <children>
                               <Button fx:id="takeOff" disable="true" layoutX="324.0" layoutY="352.0" mnemonicParsing="false" onAction="#handleTakeOff" text="Take off" />
-                              <Text layoutX="35.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Passengers:" />
-                              <Text fx:id="passengerCountLabel" layoutX="105.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x/x" />
-                              <Text layoutX="35.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aircraft:" />
-                              <Text fx:id="manufacturerAndModelLabel" layoutX="85.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manufacturer + model" />
-                              <Text layoutX="36.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination:" />
-                              <Text fx:id="destinationAirportLabel" layoutX="109.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Airport" />
-                              <Text layoutX="37.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profit:" />
-                              <Text fx:id="profitLabel" layoutX="81.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x coins" />
-                              <Text layoutX="36.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Distance:" />
-                              <Text fx:id="distanceLabel" layoutX="94.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Airport" />
+                              <Text layoutX="37.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Passengers:" />
+                              <Text fx:id="passengerCountLabel" layoutX="107.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <Text layoutX="37.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aircraft:" />
+                              <Text fx:id="manufacturerAndModelLabel" layoutX="87.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <Text layoutX="38.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination:" />
+                              <Text fx:id="destinationAirportLabel" layoutX="111.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <Text layoutX="39.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profit:" />
+                              <Text fx:id="profitLabel" layoutX="83.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <Text layoutX="38.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Distance:" />
+                              <Text fx:id="distanceLabel" layoutX="96.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <Text fx:id="airportNameLabel" layoutX="99.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a plane..." textAlignment="CENTER" wrappingWidth="200.37622833251953">
+                                 <font>
+                                    <Font size="28.0" />
+                                 </font>
+                              </Text>
                            </children>
                         </Pane>
                         <ScrollPane fx:id="viewableTravellersList" hbarPolicy="NEVER" layoutX="16.0" layoutY="142.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="44.0" />
@@ -95,10 +95,71 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Planes">
+          <Tab text="Aircrafts">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Planes" textAlignment="CENTER" wrappingWidth="200.37622833251953">
+                           <font>
+                              <Font size="28.0" />
+                           </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" textAlignment="CENTER" wrappingWidth="200.37622833251953">
+                           <font>
+                              <Font size="28.0" />
+                           </font>
+                        </Text>
+                        <Pane prefHeight="540.5" prefWidth="800.0" style="-fx-background-color: #EEEEEE;">
+                           <children>
+                              <Button fx:id="takeOff1" disable="true" layoutX="324.0" layoutY="352.0" mnemonicParsing="false" onAction="#handleTakeOff" text="Take off" />
+                              <Text layoutX="37.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Passengers:" />
+                              <Text fx:id="passengerCountLabel1" layoutX="107.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <Text layoutX="37.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aircraft:" />
+                              <Text fx:id="manufacturerAndModelLabel1" layoutX="87.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <Text layoutX="38.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination:" />
+                              <Text fx:id="destinationAirportLabel1" layoutX="111.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <Text layoutX="39.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profit:" />
+                              <Text fx:id="profitLabel1" layoutX="83.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <Text layoutX="38.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Distance:" />
+                              <Text fx:id="distanceLabel1" layoutX="96.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <Text fx:id="airportNameLabel1" layoutX="99.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a plane..." textAlignment="CENTER" wrappingWidth="200.37622833251953">
+                                 <font>
+                                    <Font size="28.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <ScrollPane fx:id="viewableTravellersList1" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" />
+                        <ScrollPane fx:id="viewableDestinationsList1" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" />
+                        <ScrollPane fx:id="viewablePlanesList1" hbarPolicy="ALWAYS" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" />
+                     </children></AnchorPane>
             </content>
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Text layoutX="-4.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aircrafts" textAlignment="CENTER" wrappingWidth="200.37622833251953">
+                           <font>
+                              <Font size="28.0" />
+                           </font>
+                        </Text>
+                        <Pane layoutX="461.0" layoutY="116.0" prefHeight="540.5" prefWidth="800.0" style="-fx-background-color: #EEEEEE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
+                           <children>
+                              <Text fx:id="priceLabel1" layoutX="37.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Range:" />
+                              <Text fx:id="priceLabel" layoutX="37.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price:" />
+                              <Text fx:id="seatsLabel" layoutX="37.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seats:" />
+                              <Text fx:id="selectedAircraftLabel" layoutX="187.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select an aircraft..." textAlignment="CENTER" wrappingWidth="226.77613067626953">
+                                 <font>
+                                    <Font size="28.0" />
+                                 </font>
+                              </Text>
+                              <Button fx:id="buyPlane" disable="true" layoutX="518.0" layoutY="353.0" mnemonicParsing="false" onAction="#handleTakeOff" text="Buy Plane" />
+                              <Text layoutX="37.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Efficiency:" />
+                           </children>
+                        </Pane>
+                        <ScrollPane fx:id="viewableBuyableAircraftsList" hbarPolicy="NEVER" layoutX="16.0" layoutY="142.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="44.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
           </Tab>
         </tabs>
       </TabPane>
