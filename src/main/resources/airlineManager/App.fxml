@@ -70,7 +70,7 @@
                         </Text>
                         <Pane layoutX="461.0" layoutY="116.0" prefHeight="540.5" prefWidth="800.0" style="-fx-background-color: #EEEEEE;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0">
                            <children>
-                              <Button fx:id="takeOff" disable="true" layoutX="324.0" layoutY="352.0" mnemonicParsing="false" onAction="#handleTakeOff" text="Take off" />
+                              <Button fx:id="takeOffButton" disable="true" layoutX="324.0" layoutY="352.0" mnemonicParsing="false" onAction="#handleTakeOff" text="Take off" />
                               <Text layoutX="37.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Passengers:" />
                               <Text fx:id="passengerCountLabel" layoutX="107.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                               <Text layoutX="37.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aircraft:" />
@@ -154,7 +154,7 @@
                                  </font>
                               </Text>
                               <Text fx:id="efficiencyLabel" layoutX="37.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Efficiency:" />
-                              <Button fx:id="buyPlane" disable="true" layoutX="518.0" layoutY="353.0" mnemonicParsing="false" onAction="#handleTakeOff" text="Buy Plane" />
+                              <Button fx:id="buyPlaneButton" disable="true" layoutX="518.0" layoutY="353.0" mnemonicParsing="false" onAction="#handleTakeOff" text="Buy Plane" />
                            </children>
                         </Pane>
                         <ScrollPane fx:id="viewableBuyableAircraftsList" hbarPolicy="NEVER" layoutX="16.0" layoutY="142.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="44.0" />
