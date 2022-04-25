@@ -571,5 +571,12 @@ public class AirlineManagerController implements SecondClockListener {
     private void enableBuyButton() {
         buyPlaneButton.setDisable(false);
     }
+
+
+
+    @FXML
+    public void handleBuyAircraft() {
+        
+    }
     
 }
