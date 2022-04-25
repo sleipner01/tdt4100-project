@@ -104,7 +104,7 @@ public class AirlineManagerGame implements SecondClockListener {
 
 
     public int refreshingTravellersIn() {
-        return Math.round(this.travellersRefreshInterval - this.seconds/60);
+        return (int)Math.ceil(this.travellersRefreshInterval - this.seconds/60);
     }
 
 

@@ -11,7 +11,7 @@ public class SecondClock {
 
 
 
-    private final long secondInMilliSeconds = 100;
+    private final long secondInMilliSeconds = 1000;
 
     // private int notificationInterval;
     private Timer timer;
