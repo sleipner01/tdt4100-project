@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class GameSaveHandler implements InterfaceGameSaveHandler {
 
@@ -18,18 +20,39 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
             Airline airline = game.getAirline();
 
             writer.println("***VALID");
-            writer.println("");
+            writer.println();
 
             writer.println("***AIRLINE");
-            writer.println(airline.getName() + "," +
-                           airline.getCoinAmount());
+            writer.println("Airline," +
+                            airline.getName() + "," +
+                            airline.getCoinAmount());
 
-            writer.println("");
+            writer.println();
 
             writer.println("***PLANES");
             List<Plane> planes = airline.getPlanes();
-            planes.forEach(plane -> writer.println(plane.getNickName() + "," +
-                                                   plane.getAircraft().getAircraftID()));
+            for (Plane plane : planes) {
+                    //Plane info
+                    String destinationID = (Objects.isNull(plane.getDestination())) ? "null" : Integer.toString(plane.getDestination().getAirportID());
+                    writer.println("Plane," +
+                                    plane.getNickName() + "," +
+                                    plane.getAircraft().getAircraftID() + "," +
+                                    plane.getAirport().getAirportID() + "," +
+                                    destinationID + "," +
+                                    plane.isInFlight() + "," +
+                                    plane.getRemainingFlightTimeInMinutes()
+                                    );
+
+                    // Passengers
+                    List<Passenger> passengers = plane.getPassengers();
+                    for (Passenger passenger : passengers) {
+                        writer.println("Passenger," + 
+                                        passenger.getFullName() + "," +
+                                        passenger.getDestination().getAirportID());
+                    }
+
+                writer.println();
+            }
             
         } 
         catch (FileNotFoundException e) {
@@ -39,7 +62,14 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
 
     @Override
     public Airline load(File file, AirlineManagerGame game) {
-        // TODO Auto-generated method stub
+        if(!this.isValidGameSave(file)) throw new IllegalArgumentException("This is not a valid game file...");
+
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String[] data= scanner.nextLine().split(",");
+            }
+        }
+        return selfCheckout;
         return null;
     }
 

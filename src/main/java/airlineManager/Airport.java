@@ -14,17 +14,19 @@ public class Airport extends City {
     private int gates, capacity;
     private List<Plane> planes;
     private List<Passenger> travellers;
+    private int airportID;
     // Will be used often, so added as a field to prevent having to
     // create new instances every time refreshTravellers() is called
     private Random random; 
 
 
 
-    public Airport(String airportName, int gates, int capacity, String cityName, double latitude, double longitude) {
+    public Airport(String airportName, int gates, int capacity, String cityName, double latitude, double longitude, int airportID) {
         super(cityName, latitude, longitude);
         this.name = airportName;
         this.gates = gates;
         this.capacity = capacity;
+        this.airportID = airportID;
         this.planes = new ArrayList<>();
         this.travellers = new ArrayList<>();
         this.random = new Random();
@@ -45,6 +47,8 @@ public class Airport extends City {
     public void removePlane(Plane plane) { this.planes.remove(plane); }
     
     public List<Passenger> getTravellers() { return new ArrayList<>(this.travellers); }
+
+    public int getAirportID() { return this.airportID; }
 
 
     
