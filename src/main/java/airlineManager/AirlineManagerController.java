@@ -1,10 +1,12 @@
 package airlineManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,6 +19,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class AirlineManagerController implements SecondClockListener {
 
@@ -48,16 +52,10 @@ public class AirlineManagerController implements SecondClockListener {
 
     @FXML
     public void initialize() {
-        // TODO: Check for savefile
-        boolean hasSaveFile = false;
-        String saveFileName = "aids.txt";
-
-        if(hasSaveFile) game = new AirlineManagerGame(saveFileName);
-        else game = new AirlineManagerGame();
-
+        game = new AirlineManagerGame();
         addControllerToGameClock();
-        
-        // nameAirline();
+
+        if(!game.hasLoadedFromGameSave()) nameAirline();
         setAirlineNameHeader(game.getAirline().getName());
         setAirlineCoins(game.getAirline().getCoinAmount());
         game.refreshingTravellersIn();
@@ -162,7 +160,6 @@ public class AirlineManagerController implements SecondClockListener {
             button = new Button(plane.getNickName());
             button.setDisable(false);
         }
-        
         button.wrapTextProperty().setValue(true);
         button.setStyle("-fx-text-alignment: center;");
         button.setCursor(Cursor.HAND);
@@ -584,13 +581,67 @@ public class AirlineManagerController implements SecondClockListener {
     public void handleBuyAircraft() {
         game.airlineBuy(selectedAircraft);
         loadPlanesList();
-        refreshAircraftTab();
+        // refreshAircraftTab();
     }
 
 
 
-    private void refreshAircraftTab() {
+    // private void refreshAircraftTab() {
 
+    // }
+
+
+
+
+
+
+    // *****************
+    // Save and load
+    // *****************
+
+
+    @FXML
+    public void handleSaveGame() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Save game");
+        dialog.setHeaderText("What do you want to name the save?");
+        dialog.setContentText("Name:");
+
+        try {
+            String saveName = dialog.showAndWait().get();
+            game.saveGame(saveName);
+            // checkoutReceipt.writeReceipt(receiptName, selfCheckout);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        } 
+        // catch (IOException e) {
+        //     System.out.println(e);
+        //     showErrorMessage("Kvitteringen kunne ikke skrives til fil!");
+        // }
+    }
+
+
+
+    @FXML void handleLoadGame() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(getClass().getResource("gamefiles/").getPath()));
+        fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Text Files", "*.txt")
+                    );
+
+        try {
+            File gameSave = fileChooser.showOpenDialog(new Stage());
+            if(Objects.isNull(gameSave)) return;
+            game.loadGameSave(gameSave);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        } 
+        // catch (IOException e) {
+        //     System.out.println(e);
+        //     showErrorMessage("");
+        // }
     }
     
 }

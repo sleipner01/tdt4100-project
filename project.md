@@ -54,11 +54,9 @@ The state of the game (Airline info, the location of the planes, every flight th
 
 
 ## Tasks
-- Create AircraftInterface and figure out what I can use it for...
-- Finish PlaneIterator. Will be used to iterate through an airline to find all of its planes.
-- Make supplier to create random people. This will be used at the airports.
-- Check if Supplier is useful when creating aircraft objects from files.
-- Gjøre om path slik at den er relativ til prosjektet
+- Write to file
+- Errorhandeling at useful places
+- JUNIT tests
 
 
 ## Before submitting

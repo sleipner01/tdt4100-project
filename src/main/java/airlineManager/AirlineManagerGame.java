@@ -1,9 +1,13 @@
 package airlineManager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 
@@ -16,6 +20,7 @@ public class AirlineManagerGame implements SecondClockListener {
     private final String AIRPORTS_FILE_NAME = "airports.csv";
     private final int travellersRefreshInterval = 5;
     private Airport defaultAirport;
+    private String defaultGameSaveName;
     private SecondClock secondClock;
 
     private Properties properties;
@@ -24,39 +29,40 @@ public class AirlineManagerGame implements SecondClockListener {
     private List<Aircraft> aircrafts;
     private List<Airport> airports;
     private int seconds;
-
-    //private List<Flight> flights = new ArrayList<>();
-
+    private boolean hasLoadedFromGameSave = true; // Remove true when finished with testing
 
 
     public AirlineManagerGame() {
         this.properties = new PropertiesLoader().load(CONFIG_FILE);
         this.aircrafts = new AircraftsLoader().load(AIRCRAFTS_FILE_NAME);
         this.airports= new AirportsLoader().load(AIRPORTS_FILE_NAME);
-        // Loading game files with airplanes and airports
+        this.setDefaultAirport();
+        this.setDefaultGameSaveName();
+
+        File existingGame = this.checkForExistingValidGameSave(this.defaultGameSaveName);
+        if(Objects.isNull(existingGame)) this.loadNewGame();
+        else {
+            System.out.println("Yeah**************");
+            try {
+                this.loadGameSave(existingGame);
+            }
+            catch (Exception e) {
+                System.out.println(e);
+                this.loadNewGame();
+            }
+        }
+
+        refreshTravellers();
         this.secondClock = new SecondClock();
         this.secondClock.addListener(this);
         secondClock.start();
-        this.load();
     }
 
 
 
-    // If there exists a save, start from save - Initialize the airline
-    public AirlineManagerGame(String gameSaveFileName) {
-        // this();
-        //this.load(gameSaveFileName);
-    }
-
-
-
-    private void load() {
-        this.defaultAirport = airports.stream().filter(airport -> airport.getAirportName().equals(this.properties.get("defaultAirport"))).findFirst().get();
-        System.out.println("Made " + this.defaultAirport + " as default airport");
+    private void loadNewGame() {
 
         this.airline = new Airline(Integer.parseInt(properties.getProperty("defaultCoins")), this.getDefaultAirport());
-        airports.forEach(airport -> airport.refreshTravellers(this.getAirports()));
-
 
         // TODO: Remove, only for development
         // this.getAirline().buy(aircrafts.get(1));
@@ -68,11 +74,24 @@ public class AirlineManagerGame implements SecondClockListener {
 
 
 
-    private void load(String gameSaveFileName) {
-        // this.load();
-
-        // Do Save restoration stuff
+    private void loadExistingGame(Airline airline) {
+        this.airline = airline;
+        this.hasLoadedFromGameSave = true;
     }
+
+
+
+    private void setDefaultAirport() {
+        this.defaultAirport = airports.stream().filter(airport -> airport.getAirportName().equals(this.properties.get("defaultAirport"))).findFirst().get();
+        System.out.println("Made " + this.defaultAirport + " as default airport");
+    }
+
+
+
+    private void setDefaultGameSaveName() {
+        this.defaultGameSaveName = properties.getProperty("defaultGameSaveName", "gameSave");
+    }
+
 
 
     // Remove when other functionality has been added
@@ -104,9 +123,16 @@ public class AirlineManagerGame implements SecondClockListener {
 
 
 
+    private void refreshTravellers() {
+        this.airports.forEach(airport -> airport.refreshTravellers(this.getAirports()));
+    }
+
+
+
     private void minuteProcedure() {
             if(this.seconds/60 == this.travellersRefreshInterval) {
-                this.airports.forEach(airport -> airport.refreshTravellers(this.getAirports()));
+                this.refreshTravellers();
+                this.saveGame(defaultGameSaveName);
                 this.seconds = 0;
             }
     }
@@ -144,6 +170,42 @@ public class AirlineManagerGame implements SecondClockListener {
 
     public void airlineBuy(Aircraft aircraft) {
         this.airline.buy(aircraft);
+    }
+
+
+
+    public void saveGame(String saveName) {
+        System.out.println("Saving game... " + saveName);
+        InterfaceGameSaveHandler gameSaveHandler = new GameSaveHandler();
+        try {
+            gameSaveHandler.save(saveName, this);
+            System.out.println("Game saved");
+        }
+        catch (FileNotFoundException e) {
+            System.err.println(e);
+        }
+
+    }
+
+
+
+    public void loadGameSave(File file) throws FileNotFoundException {
+        System.out.println("Loading game...");
+        InterfaceGameSaveHandler gameSaveHandler = new GameSaveHandler();
+        this.loadExistingGame(gameSaveHandler.load(file, this));
+    }
+
+
+
+    private File checkForExistingValidGameSave(String defaultGameSave) {
+        InterfaceGameSaveHandler saveHandler = new GameSaveHandler();
+        return saveHandler.checkForExistingValidGameSave(defaultGameSave);
+    }
+
+
+
+    public boolean hasLoadedFromGameSave() {
+        return this.hasLoadedFromGameSave;
     }
 
 
