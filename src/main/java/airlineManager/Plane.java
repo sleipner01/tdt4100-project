@@ -250,8 +250,4 @@ public class Plane implements SecondClockListener {
     }
 
 
-    public static void main(String[] args) {
-        System.out.println(Math.ceil(1/2));
-    }
-
 }
