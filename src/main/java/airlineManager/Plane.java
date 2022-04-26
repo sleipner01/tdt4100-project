@@ -40,7 +40,7 @@ public class Plane implements SecondClockListener {
 
 
 
-    public Plane(Aircraft aircraft, String nickName, Airline airline, Airport airport, Airport destination, boolean inFlight, int flightTime, List<Passenger> passengers) {
+    public Plane(Aircraft aircraft, String nickName, Airline airline, Airport airport, Airport destination, boolean inFlight, int flightTimeInMinutes, List<Passenger> passengers) {
         this.aircraft = aircraft;
         this.nickName = nickName;
         this.airline = airline;
@@ -48,6 +48,7 @@ public class Plane implements SecondClockListener {
         this.destination = destination;
         this.inFlight = inFlight; 
         if(!inFlight) airport.addPlane(this);
+        this.flightTime = flightTimeInMinutes * 60;
         this.passengers = passengers;
     }
 

@@ -11,7 +11,7 @@ public class SecondClock {
 
 
 
-    private final long secondInMilliSeconds = 10;
+    private final long secondInMilliSeconds = 1000;
 
     // private int notificationInterval;
     private Timer timer;
@@ -56,12 +56,6 @@ public class SecondClock {
 
 
     private void createTimerTask() {
-        // timerTask = new TimerTask() {
-        //     public void run() {
-        //         seconds++;
-        //         notifyListeners();
-        //     }
-        // };
 
         timerTask = new TimerTask() {
             public void run() {
@@ -79,6 +73,7 @@ public class SecondClock {
 
     public void start() {
 
+        timer = new Timer(true);
         this.createTimerTask();
         timer.scheduleAtFixedRate(timerTask, secondInMilliSeconds, secondInMilliSeconds);
         

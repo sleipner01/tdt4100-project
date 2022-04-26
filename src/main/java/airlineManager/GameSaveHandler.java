@@ -33,7 +33,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
             writer.println("Airline," +
                             airline.getName() + SEPERATOR_VALUE +
                             airline.getCoinAmount() + SEPERATOR_VALUE +
-                            airline.getHomeAirport());
+                            airline.getHomeAirport().getAirportID());
 
             writer.println();
             writer.println();
@@ -102,6 +102,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
                         String airlineName = airlineData[1];
                         int airlineCoins = Integer.parseInt(airlineData[2]);
                         Airport homeAirport = gameAirports.stream().filter(airportObject -> airportObject.getAirportID() == Integer.parseInt(airlineData[3])).findFirst().get();
+                        System.out.println(homeAirport.getAirportName());
                         airline = new Airline(airlineName, airlineCoins, homeAirport);
 
                         break;
@@ -132,7 +133,8 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
                                         String[] passengerData = passengerDataLine.split(SEPERATOR_VALUE);
                                         String passengerName = passengerData[1];
                                         Airport location = airport;
-                                        planePassengers.add(new Passenger(passengerName, location, destinaton));
+                                        Airport destination = gameAirports.stream().filter(airportObject -> airportObject.getAirportID() == Integer.parseInt(passengerData[2])).findFirst().get();
+                                        planePassengers.add(new Passenger(passengerName, location, destination));
                                     }
                                     else break;
                                 }
@@ -176,6 +178,10 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
         catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        catch (NullPointerException e) {
+            System.err.println("File does not exist");
+            return false;
+        }
 
         return true;
         
@@ -184,7 +190,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
     private File getFile(String fileName) {
         File file;
         try {
-            file = new File(this.getClass().getResource(this.FOLDER + fileName + this.FORMAT).getPath());
+            file = new File(this.getPathToGameFiles() + fileName + this.FORMAT);
             if(file.isFile()) return file;
         }
         catch (NullPointerException e) {

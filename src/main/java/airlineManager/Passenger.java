@@ -11,14 +11,14 @@ public class Passenger {
 
 
 
-    public Passenger(String name, Airport location, Airport destinaton) throws IllegalArgumentException {
+    public Passenger(String name, Airport location, Airport destination) throws IllegalArgumentException {
         if(!this.isValidNameFormat(name))
             throw new IllegalArgumentException(name + " is not a valid name format...");
         String[] nameArray = name.split(" ");
         this.firstName = nameArray[0];
         this.surName = nameArray[1];
-        this.destination = destinaton;
-        this.paying = this.calculatePayment(location, destinaton);
+        this.destination = destination;
+        this.paying = this.calculatePayment(location, destination);
     }
 
     private boolean isValidNameFormat(String name) {

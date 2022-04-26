@@ -19,7 +19,7 @@ public class Airline implements Iterable<Plane> {
     private Airport homeAirport;
 
     public Airline() {
-        
+
     }
 
     public Airline(int coins, Airport homeAirport) {
@@ -53,6 +53,7 @@ public class Airline implements Iterable<Plane> {
     public Airline(String name, int coins, Airport homeAirport) {
         this.name = name;
         this.coins = coins;
+        this.homeAirport = homeAirport;
 
         System.out.println("\n************");
         System.out.println("Restored Airline");

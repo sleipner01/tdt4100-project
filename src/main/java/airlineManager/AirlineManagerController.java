@@ -58,15 +58,28 @@ public class AirlineManagerController implements SecondClockListener {
         if(!game.hasLoadedFromGameSave()) nameAirline();
         setAirlineNameHeader(game.getAirline().getName());
         setAirlineCoins(game.getAirline().getCoinAmount());
-        game.refreshingTravellersIn();
-
 
         // Interface tab
         loadPlanesList();
 
         // Aircrafts tab
         loadBuyableAircraftsList();
+    }
 
+
+
+    public void initializeAfterGameSaveLoad() {
+        resetPanel();
+    }
+
+
+
+    public void resetPanel() {
+        setAirlineNameHeader(game.getAirline().getName());
+        setAirlineCoins(game.getAirline().getCoinAmount());
+        refreshDisplay();
+        // Aircrafts tab
+        loadBuyableAircraftsList();
     }
 
 
@@ -633,7 +646,10 @@ public class AirlineManagerController implements SecondClockListener {
         try {
             File gameSave = fileChooser.showOpenDialog(new Stage());
             if(Objects.isNull(gameSave)) return;
+            game.stop();
             game.loadGameSave(gameSave);
+            initializeAfterGameSaveLoad();
+            game.start();
         }
         catch (Exception e) {
             System.out.println(e);
