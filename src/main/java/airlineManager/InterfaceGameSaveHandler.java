@@ -5,9 +5,9 @@ import java.io.FileNotFoundException;
 
 public interface InterfaceGameSaveHandler {
 
-    public void save(String filename, AirlineManagerGame game) throws FileNotFoundException;
+    public void save(String filename, AirlineManagerGame game);
 
-	public Airline load(File file, AirlineManagerGame game) throws FileNotFoundException;
+	public Airline load(File file, AirlineManagerGame game);
 
     public File checkForExistingValidGameSave(String defaultGameSaveName);
 

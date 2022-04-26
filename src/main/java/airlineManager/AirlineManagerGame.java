@@ -39,18 +39,17 @@ public class AirlineManagerGame implements SecondClockListener {
         this.setDefaultAirport();
         this.setDefaultGameSaveName();
 
-        File existingGame = this.checkForExistingValidGameSave(this.defaultGameSaveName);
-        if(Objects.isNull(existingGame)) this.loadNewGame();
-        else {
-            System.out.println("Yeah**************");
-            try {
-                this.loadGameSave(existingGame);
-            }
-            catch (Exception e) {
-                System.out.println(e);
+        // File existingGame = this.checkForExistingValidGameSave(this.defaultGameSaveName);
+        // if(Objects.isNull(existingGame)) this.loadNewGame();
+        // else {
+        //     try {
+        //         this.loadGameSave(existingGame);
+        //     }
+        //     catch (Exception e) {
+        //         System.out.println(e);
                 this.loadNewGame();
-            }
-        }
+        //     }
+        // }
 
         refreshTravellers();
         this.secondClock = new SecondClock();
@@ -177,13 +176,9 @@ public class AirlineManagerGame implements SecondClockListener {
     public void saveGame(String saveName) {
         System.out.println("Saving game... " + saveName);
         InterfaceGameSaveHandler gameSaveHandler = new GameSaveHandler();
-        try {
-            gameSaveHandler.save(saveName, this);
-            System.out.println("Game saved");
-        }
-        catch (FileNotFoundException e) {
-            System.err.println(e);
-        }
+        gameSaveHandler.save(saveName, this);
+        System.out.println("Game saved");
+        
 
     }
 
