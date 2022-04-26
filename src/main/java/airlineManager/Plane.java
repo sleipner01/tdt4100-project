@@ -40,6 +40,19 @@ public class Plane implements SecondClockListener {
 
 
 
+    public Plane(Aircraft aircraft, String nickName, Airline airline, Airport airport, Airport destination, boolean inFlight, int flightTime, List<Passenger> passengers) {
+        this.aircraft = aircraft;
+        this.nickName = nickName;
+        this.airline = airline;
+        this.airport = airport;
+        this.destination = destination;
+        this.inFlight = inFlight; 
+        if(!inFlight) airport.addPlane(this);
+        this.passengers = passengers;
+    }
+
+
+
     public Aircraft getAircraft() { return this.aircraft; }
 
     public String getNickName() { return this.nickName; }

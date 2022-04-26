@@ -32,7 +32,8 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
             writer.println(AIRLINE_STAMP);
             writer.println("Airline," +
                             airline.getName() + SEPERATOR_VALUE +
-                            airline.getCoinAmount());
+                            airline.getCoinAmount() + SEPERATOR_VALUE +
+                            airline.getHomeAirport());
 
             writer.println();
             writer.println();
@@ -77,24 +78,36 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
         List<Aircraft> gameAircrafts = game.getAircrafts();
         List<Airport> gameAirports = game.getAirports();
 
-        String[] airlineData;
-        List<Plane> planes;
+        
+        Airline airline = new Airline();
+        List<Plane> planes = new ArrayList<>();
 
 
         try (Scanner scanner = new Scanner(file)) {
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
+                System.out.println(line);
 
                 switch (line) {
                     case VALID_STAMP:
                         break;
                     
+
+
                     case AIRLINE_STAMP:
-                        airlineData = scanner.nextLine().split(SEPERATOR_VALUE);
+                        String[] airlineData = scanner.nextLine().split(SEPERATOR_VALUE);
                         System.out.println(airlineData.toString());
+
+                        String airlineName = airlineData[1];
+                        int airlineCoins = Integer.parseInt(airlineData[2]);
+                        Airport homeAirport = gameAirports.stream().filter(airportObject -> airportObject.getAirportID() == Integer.parseInt(airlineData[3])).findFirst().get();
+                        airline = new Airline(airlineName, airlineCoins, homeAirport);
+
                         break;
                 
+
+
                     case PLANES_STAMP:
                         
                         while(scanner.hasNextLine()) {
@@ -124,6 +137,8 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
                                     else break;
                                 }
 
+                                planes.add(new Plane(aircraft, planeName, airline, airport, destinaton, inFlight, minutesLeftInFlight, planePassengers));
+
                             }
                             else break;
 
@@ -140,7 +155,9 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
             e.printStackTrace();
         }
 
-        return new Airline();
+        airline.addExistingPlanes(planes);
+
+        return airline;
     }
 
     @Override

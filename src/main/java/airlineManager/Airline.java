@@ -18,7 +18,9 @@ public class Airline implements Iterable<Plane> {
     private List<Plane> planes;
     private Airport homeAirport;
 
-
+    public Airline() {
+        
+    }
 
     public Airline(int coins, Airport homeAirport) {
         this.name = DEFAULT_NAME;
@@ -33,7 +35,7 @@ public class Airline implements Iterable<Plane> {
 
 
 
-    public Airline (String name, int coins, Airport homeAirport, List<Plane> planes) {
+    public Airline(String name, int coins, Airport homeAirport, List<Plane> planes) {
         this.name = name;
         this.coins = coins;
         this.homeAirport = homeAirport;
@@ -48,6 +50,27 @@ public class Airline implements Iterable<Plane> {
         System.out.println();
     }
 
+    public Airline(String name, int coins, Airport homeAirport) {
+        this.name = name;
+        this.coins = coins;
+
+        System.out.println("\n************");
+        System.out.println("Restored Airline");
+        System.out.println("Name:" + name + ", Coins: " + coins);
+
+    }
+
+    // Since the planes are connected to the airline, they are added after the fact...
+    public void addExistingPlanes(List<Plane> planes) {
+        this.planes = planes;
+
+        System.out.println("\n************");
+        System.out.println("Restored Planes");
+        for (Plane plane : planes) {
+            System.out.println(plane);
+        }
+    }
+
 
 
     public String getName() { return this.name; }
@@ -57,6 +80,10 @@ public class Airline implements Iterable<Plane> {
     public List<Plane> getPlanes() { return new ArrayList<>(this.planes); }
 
     public int getNumberOfAirplanes() { return this.planes.size(); }
+
+    public Airport getHomeAirport() {
+        return this.homeAirport;
+    }
 
 
 
