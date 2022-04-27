@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 // import com.github.javafaker.Faker;
 
-public class Airport extends City {
+public class Airport extends City implements Comparable<Airport> {
 
 
 
@@ -58,7 +58,7 @@ public class Airport extends City {
         
         // Cannot be used because the controller won't be refreshed
         // until a new / same plane is selected. Then the controller will show the passenger,
-        // but the passenger wont actualle be at the airport.
+        // but the passenger wont actually be at the airport.
         // if(!this.travellers.contains(passenger))
         //     throw new IllegalArgumentException(passenger.getFullName() + " is not at " + this.getAirportName());
 
@@ -122,10 +122,16 @@ public class Airport extends City {
     }
 
 
-
     @Override
     public String toString() {
         return super.toString() + ", Airport=" + this.name;
+    }
+
+
+
+    @Override
+    public int compareTo(Airport airport) {
+        return (int)CalculateFlightDistance.calculate(this, airport);
     }
 
 }

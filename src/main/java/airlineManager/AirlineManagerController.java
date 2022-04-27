@@ -1,6 +1,7 @@
 package airlineManager;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -257,7 +258,7 @@ public class AirlineManagerController implements SecondClockListener {
     private Button createAirportButton(Airport airport) {
 
         Button button = new Button(airport.getAirportName() + "\n"
-                                   + (int)CalculateFlightDistance.calculate(selectedPlane.getAirport(), airport) + "km");
+                                   + selectedPlane.getAirport().compareTo(airport) + "km");
         button.wrapTextProperty().setValue(true);
         button.setStyle("-fx-text-alignment: center;");
         button.setCursor(Cursor.HAND);
@@ -326,7 +327,8 @@ public class AirlineManagerController implements SecondClockListener {
 
         List<Airport> airportsList = game.getAirports();
         airportsList.remove(plane.getAirport());
-        airportsList.sort((a, b) -> (int)CalculateFlightDistance.calculate(plane.getAirport(), a) - (int)CalculateFlightDistance.calculate(plane.getAirport(), b));
+        Collections.sort(airportsList, new AirportDistanceComparator(plane.getAirport()));
+        //airportsList.sort((a, b) -> (int)CalculateFlightDistance.calculate(plane.getAirport(), a) - (int)CalculateFlightDistance.calculate(plane.getAirport(), b));
 
         for (Airport airport : airportsList) {
             grid.add(createAirportButton(airport), 1, airportsList.indexOf(airport));
@@ -356,7 +358,11 @@ public class AirlineManagerController implements SecondClockListener {
             grid.add(createPassengerButton(passenger), 1, passengersList.indexOf(passenger));
         }
 
+
         List<Passenger> travellersList = airport.getTravellers();
+        // AirportDistanceComparator comparator = new AirportDistanceComparator(airport);
+        // travellersList.sort(comparator.compare(a.getDestination(), b.getDestination()));
+        travellersList.sort((a, b) -> (int)CalculateFlightDistance.calculate(airport, a.getDestination()) - (int)CalculateFlightDistance.calculate(airport, b.getDestination()));
         for (Passenger passenger : travellersList) {
             grid.add(createTravellerButton(passenger), 1, travellersList.indexOf(passenger) + passengersList.size());
         }

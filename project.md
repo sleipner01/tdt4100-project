@@ -12,9 +12,8 @@ The gates will periodically refresh the amount of travellers. The travellers who
 
 
 Possible expansions:
-- Make the airports have different distences from each other.
-- Make the planes only fly a certain range.
-- Make the airports contain different gate types, and for a plane to park, it must wait for another to leave if all the gates are full.
+- Connect liveries to the planes and use that in the user interface
+- 
 
 
 ## Base classes
@@ -42,12 +41,12 @@ Possible expansions:
 
 ## File handling
 I will store information on different airports and aircraft in seperate files, so the information can be loaded when the game starts.
-The state of the game (Airline info, the location of the planes, every flight that hasn't departed) will be able to be saved, so that all information needed can be restored and the game to continue.
+The state of the game (Airline info, the location of the planes) will be able to be saved, so that all information needed can be restored and the game to continue.
 
 
 ## Testing
 - I will create tests to make sure the information about the aircrafts and airports are loaded correctly.
-- I will test tuhat flights work withot a hitch
+- I will test that flights work without a hitch
 - I will test that airports can create new passangers
 - I will test the the airports can add and remove planes that arrive / depart
 - I will test that passangers can be added to flights, and removed from the airport
