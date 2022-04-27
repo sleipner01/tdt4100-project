@@ -4,6 +4,10 @@ public class Aircraft {
     
 
 
+    private final String DEFAULT_LIVERY_FILE_NAME = "defaultLivery.png";
+
+
+
     private String manufacturer;
     private String model;
     private String type; // Passanger or Cargo
@@ -19,16 +23,30 @@ public class Aircraft {
 
     public Aircraft(String manufacturer, String model, String type, int speed,
                     int range, int efficiency, int price, int seats, int aircraftID) {
+
+        if(!isValidIntegers(speed, range, efficiency, price, seats, aircraftID)) 
+            throw new IllegalArgumentException("The integers must be positive");
+
         this.manufacturer = manufacturer;
         this.model = model;
         this.type = type;
-        this.livery = new Livery("defaultLivery.png");
         this.speed = speed;
         this.range = range;
         this.efficiency = efficiency;
         this.price = price;
         this.seats = seats;
         this.aircraftID = aircraftID;
+        this.livery = new Livery(DEFAULT_LIVERY_FILE_NAME);
+    }
+
+
+
+    private boolean isValidIntegers(int... integers) {
+        for (int i : integers) {
+            if(i < 0) return false;
+        }
+
+        return true;
     }
 
 
