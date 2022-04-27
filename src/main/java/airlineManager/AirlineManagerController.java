@@ -53,12 +53,13 @@ public class AirlineManagerController implements SecondClockListener {
     @FXML
     public void initialize() {
         game = new AirlineManagerGame();
-        addControllerToGameClock();
-
+        
         if(!game.hasLoadedFromGameSave()) nameAirline();
         setAirlineNameHeader(game.getAirline().getName());
         setAirlineCoins(game.getAirline().getCoinAmount());
-
+        
+        addControllerToGameClock();
+        
         // Interface tab
         loadPlanesList();
 
@@ -322,7 +323,6 @@ public class AirlineManagerController implements SecondClockListener {
 
 
     private void loadDestinationsList(Plane plane) {
-        // TODO: sort based on distance
 
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(PLANE_BUTTON_PADDING));

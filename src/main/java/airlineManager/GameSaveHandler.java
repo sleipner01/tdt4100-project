@@ -62,7 +62,6 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
                     }
 
                 writer.println();
-                writer.println();
             }
             
         } 
@@ -87,7 +86,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                System.out.println(line);
+                System.out.println("Firstline: " + line);
 
                 switch (line) {
                     case VALID_STAMP:
@@ -97,12 +96,10 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
 
                     case AIRLINE_STAMP:
                         String[] airlineData = scanner.nextLine().split(SEPERATOR_VALUE);
-                        System.out.println(airlineData.toString());
 
                         String airlineName = airlineData[1];
                         int airlineCoins = Integer.parseInt(airlineData[2]);
                         Airport homeAirport = gameAirports.stream().filter(airportObject -> airportObject.getAirportID() == Integer.parseInt(airlineData[3])).findFirst().get();
-                        System.out.println(homeAirport.getAirportName());
                         airline = new Airline(airlineName, airlineCoins, homeAirport);
 
                         break;
@@ -113,7 +110,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
                         
                         while(scanner.hasNextLine()) {
                             String planeDataLine = scanner.nextLine();
-                            System.out.println(planeDataLine);
+                            System.out.println("PlaneDataLine: " + planeDataLine);
                             if(planeDataLine.startsWith("Plane")) {
                                 String[] planeData = planeDataLine.split(SEPERATOR_VALUE);
 
@@ -128,7 +125,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
 
                                 while(scanner.hasNextLine()) {
                                     String passengerDataLine = scanner.nextLine();
-                                    System.out.println(passengerDataLine);
+                                    System.out.println("PassengerDataLine: " + passengerDataLine);
                                     if(passengerDataLine.startsWith("Passenger")) {
                                         String[] passengerData = passengerDataLine.split(SEPERATOR_VALUE);
                                         String passengerName = passengerData[1];
@@ -140,6 +137,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
                                 }
 
                                 planes.add(new Plane(aircraft, planeName, airline, airport, destinaton, inFlight, minutesLeftInFlight, planePassengers));
+                                System.out.println("Planes size: " + planes.size());
 
                             }
                             else break;
