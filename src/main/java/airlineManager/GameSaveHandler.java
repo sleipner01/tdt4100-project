@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class GameSaveHandler implements InterfaceGameSaveHandler {
 
+    private final String REGEX_PATTERN = "[a-zA-Z]*";
     private final String FOLDER = "gamefiles/";
     private final String FORMAT = ".txt";
     private final String SEPERATOR_VALUE = ",";
@@ -19,6 +21,10 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
 
     @Override
     public void save(String fileName, AirlineManagerGame game) {
+
+        if(!isValidFileName(fileName))
+            throw new IllegalArgumentException("The filename can only include the name in ACHII characters, no path and no format.");
+
         try (PrintWriter writer = new PrintWriter(new File(this.getPathToGameFiles() + fileName + this.FORMAT))) {
             
             Airline airline = game.getAirline();
@@ -200,6 +206,11 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
 
     private String getPathToGameFiles() {
         return this.getClass().getResource(this.FOLDER).getFile();
+    }
+
+    private boolean isValidFileName(String fileName) {
+        if(Pattern.matches(REGEX_PATTERN, fileName)) return true;
+        return false;
     }
     
 }
