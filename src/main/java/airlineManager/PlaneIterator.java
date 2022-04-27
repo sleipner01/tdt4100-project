@@ -5,7 +5,7 @@ import java.util.List;
 
 public class PlaneIterator implements Iterator<Plane> {
 
-
+    // Because of changes in the code this is never used, but great to have.
 
     private int index;
     private int listLength;
@@ -30,7 +30,7 @@ public class PlaneIterator implements Iterator<Plane> {
     
     @Override
     public Plane next() {
-        if(index == listLength || index > listLength)
+        if(index >= listLength)
             throw new IllegalArgumentException("There are no more planes in the airline.");
         return planes.get(index++);
     }

@@ -22,10 +22,7 @@ public class AirlineManagerController implements SecondClockListener {
 
 
 
-
     private AirlineManagerGame game;
-    private Plane selectedPlane;
-    private Aircraft selectedAircraft;
 
     private final int PLANE_BUTTON_PADDING = 10;
     private final int BUTTON_HORIZONTAL_GAP = 0;
@@ -178,6 +175,117 @@ public class AirlineManagerController implements SecondClockListener {
     }
 
 
+
+    private void loadDestinationsList(Plane plane) {
+
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(PLANE_BUTTON_PADDING));
+        grid.setHgap(BUTTON_HORIZONTAL_GAP);
+        grid.setVgap(BUTTON_VERTICAL_GAP);
+
+        List<Airport> airportsList = game.getAirports();
+        airportsList.remove(plane.getAirport());
+        Collections.sort(airportsList, new AirportDistanceComparator(plane.getAirport()));
+        // airportsList.sort((a, b) -> plane.getAirport().compareTo(a) - plane.getAirport().compareTo(b));
+
+        for (Airport airport : airportsList) {
+            grid.add(createAirportButton(airport), 1, airportsList.indexOf(airport));
+        }
+
+        viewableDestinationsList.setContent(grid);
+    }
+
+    private Button createAirportButton(Airport airport) {
+
+        Button button = new Button(airport.getAirportName() + "\n"
+                                   + getSelectedPlane().getAirport().compareTo(airport) + "km");
+        button.wrapTextProperty().setValue(true);
+        button.setStyle("-fx-text-alignment: center;");
+        button.setCursor(Cursor.HAND);
+        button.setOnAction((event) -> handleSetDestination(airport));
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setMaxHeight(Double.MAX_VALUE);
+
+        if(!getSelectedPlane().isInRange(airport)) button.setDisable(true);
+        else button.setDisable(false);
+
+        return button;
+
+    }
+
+    private void emptyDestinationsList() {
+        viewableDestinationsList.setContent(null);
+    }
+
+
+
+    private void loadTravellersList(Airport airport) {
+
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(PLANE_BUTTON_PADDING));
+        grid.setHgap(BUTTON_HORIZONTAL_GAP);
+        grid.setVgap(BUTTON_VERTICAL_GAP);
+
+
+        List<Passenger> passengersList = getSelectedPlane().getPassengers();
+        for (Passenger passenger : passengersList) {
+            grid.add(createPassengerButton(passenger), 1, passengersList.indexOf(passenger));
+        }
+
+
+        List<Passenger> travellersList = airport.getTravellers();
+        // AirportDistanceComparator comparator = new AirportDistanceComparator(airport);
+        // travellersList.sort(comparator.compare(a.getDestination(), b.getDestination()));
+        travellersList.sort((a, b) -> airport.compareTo(a.getDestination()) - airport.compareTo(b.getDestination()));
+        for (Passenger passenger : travellersList) {
+            grid.add(createTravellerButton(passenger), 1, travellersList.indexOf(passenger) + passengersList.size());
+        }
+
+        viewableTravellersList.setContent(grid);
+    }
+
+    private Button createTravellerButton(Passenger passenger) {
+
+        Button button = new Button(passenger.getFullName() + "\n" + 
+                                   passenger.getPaying() + "\n" +
+                                   passenger.getDestination().getAirportName());
+                                   button.wrapTextProperty().setValue(true);
+        button.setStyle("-fx-text-alignment: center;");
+        button.setCursor(Cursor.HAND);
+        button.setOnAction((event) -> handleBoardPassenger(passenger));
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setMaxHeight(Double.MAX_VALUE);
+        if(!getSelectedPlane().hasMoreEmptySeats()) {
+            button.setDisable(true);        
+        }
+
+        return button;
+
+    }
+
+    private Button createPassengerButton(Passenger passenger) {
+
+        Button button = new Button(passenger.getFullName() + "\n" + 
+                                   passenger.getPaying() + "\n" +
+                                   passenger.getDestination().getAirportName());
+        button.wrapTextProperty().setValue(true);
+        button.setStyle("-fx-text-alignment: center;");
+        button.setStyle("-fx-background-color: #00FF00;");
+        button.setCursor(Cursor.HAND);
+        button.setOnAction((event) -> handleUnBoardPassenger(passenger));
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setMaxHeight(Double.MAX_VALUE);
+
+        return button;
+
+    }
+
+    private void emptyTravellersList() {
+        viewableTravellersList.setContent(null);
+    }
+
+
+
     private void refreshInterface() {
         emptyDestinationsList();
         emptyTravellersList();
@@ -199,10 +307,10 @@ public class AirlineManagerController implements SecondClockListener {
     }
 
     private void updatePlaneInfo() {
-        setPassengerCountLabel(selectedPlane);
-        setDestinationAirportLabel(selectedPlane);
-        setDistanceLabel(selectedPlane);
-        setProfitLabel(selectedPlane);
+        setPassengerCountLabel(getSelectedPlane());
+        setDestinationAirportLabel(getSelectedPlane());
+        setDistanceLabel(getSelectedPlane());
+        setProfitLabel(getSelectedPlane());
     }
 
     private void resetPlaneInfo() {
@@ -212,7 +320,6 @@ public class AirlineManagerController implements SecondClockListener {
         destinationAirportLabel.setText("");
         profitLabel.setText("");
     }
-
 
     private void setAirportNameLabel(Plane plane) {
         airportNameLabel.setText(plane.getAirport().getAirportName());
@@ -249,9 +356,8 @@ public class AirlineManagerController implements SecondClockListener {
         
     }
 
-
     private void refreshTakeOffButton() {
-        if(selectedPlane.isReadyForTakeOff()) enableTakeOffButton();
+        if(getSelectedPlane().isReadyForTakeOff()) enableTakeOffButton();
         else disableTakeOffButton();
     }
 
@@ -261,116 +367,6 @@ public class AirlineManagerController implements SecondClockListener {
 
     private void enableTakeOffButton() {
         takeOffButton.setDisable(false);
-    }
-
-
-
-    private void loadDestinationsList(Plane plane) {
-
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(PLANE_BUTTON_PADDING));
-        grid.setHgap(BUTTON_HORIZONTAL_GAP);
-        grid.setVgap(BUTTON_VERTICAL_GAP);
-
-        List<Airport> airportsList = game.getAirports();
-        airportsList.remove(plane.getAirport());
-        Collections.sort(airportsList, new AirportDistanceComparator(plane.getAirport()));
-        // airportsList.sort((a, b) -> plane.getAirport().compareTo(a) - plane.getAirport().compareTo(b));
-
-        for (Airport airport : airportsList) {
-            grid.add(createAirportButton(airport), 1, airportsList.indexOf(airport));
-        }
-
-        viewableDestinationsList.setContent(grid);
-    }
-
-    private Button createAirportButton(Airport airport) {
-
-        Button button = new Button(airport.getAirportName() + "\n"
-                                   + selectedPlane.getAirport().compareTo(airport) + "km");
-        button.wrapTextProperty().setValue(true);
-        button.setStyle("-fx-text-alignment: center;");
-        button.setCursor(Cursor.HAND);
-        button.setOnAction((event) -> handleSetDestination(airport));
-        button.setMaxWidth(Double.MAX_VALUE);
-        button.setMaxHeight(Double.MAX_VALUE);
-
-        if(!selectedPlane.isInRange(airport)) button.setDisable(true);
-        else button.setDisable(false);
-
-        return button;
-
-    }
-
-    private void emptyDestinationsList() {
-        viewableDestinationsList.setContent(null);
-    }
-
-
-
-    private void loadTravellersList(Airport airport) {
-
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(PLANE_BUTTON_PADDING));
-        grid.setHgap(BUTTON_HORIZONTAL_GAP);
-        grid.setVgap(BUTTON_VERTICAL_GAP);
-
-
-        List<Passenger> passengersList = selectedPlane.getPassengers();
-        for (Passenger passenger : passengersList) {
-            grid.add(createPassengerButton(passenger), 1, passengersList.indexOf(passenger));
-        }
-
-
-        List<Passenger> travellersList = airport.getTravellers();
-        // AirportDistanceComparator comparator = new AirportDistanceComparator(airport);
-        // travellersList.sort(comparator.compare(a.getDestination(), b.getDestination()));
-        travellersList.sort((a, b) -> airport.compareTo(a.getDestination()) - airport.compareTo(b.getDestination()));
-        for (Passenger passenger : travellersList) {
-            grid.add(createTravellerButton(passenger), 1, travellersList.indexOf(passenger) + passengersList.size());
-        }
-
-        viewableTravellersList.setContent(grid);
-    }
-
-    private Button createTravellerButton(Passenger passenger) {
-
-        Button button = new Button(passenger.getFullName() + "\n" + 
-                                   passenger.getPaying() + "\n" +
-                                   passenger.getDestination().getAirportName());
-                                   button.wrapTextProperty().setValue(true);
-        button.setStyle("-fx-text-alignment: center;");
-        button.setCursor(Cursor.HAND);
-        button.setOnAction((event) -> handleBoardPassenger(passenger));
-        button.setMaxWidth(Double.MAX_VALUE);
-        button.setMaxHeight(Double.MAX_VALUE);
-        if(!selectedPlane.hasMoreEmptySeats()) {
-            button.setDisable(true);        
-        }
-
-        return button;
-
-    }
-
-    private Button createPassengerButton(Passenger passenger) {
-
-        Button button = new Button(passenger.getFullName() + "\n" + 
-                                   passenger.getPaying() + "\n" +
-                                   passenger.getDestination().getAirportName());
-        button.wrapTextProperty().setValue(true);
-        button.setStyle("-fx-text-alignment: center;");
-        button.setStyle("-fx-background-color: #00FF00;");
-        button.setCursor(Cursor.HAND);
-        button.setOnAction((event) -> handleUnBoardPassenger(passenger));
-        button.setMaxWidth(Double.MAX_VALUE);
-        button.setMaxHeight(Double.MAX_VALUE);
-
-        return button;
-
-    }
-
-    private void emptyTravellersList() {
-        viewableTravellersList.setContent(null);
     }
 
 
@@ -389,37 +385,57 @@ public class AirlineManagerController implements SecondClockListener {
 
 
 
+    private void setSelectedPlane(Plane plane) {
+        game.setSelectedPlane(plane);
+    }
+
+    private Plane getSelectedPlane() {
+        return game.getSelectedPlane();
+    }
+
+
+
+    private void boardPassenger(Passenger passenger) {
+        game.boardPassenger(getSelectedPlane(), passenger);
+    }
+
+    private void unBoardPassenger(Passenger passenger) {
+        game.unBoardPassenger(getSelectedPlane(), passenger);
+    }
+
+
+
     @FXML
     public void handlePlaneSelect(Plane plane) {
-        selectedPlane = plane;
+        setSelectedPlane(plane);
         showPlaneInfo(plane);
         System.out.println(plane + " selected...");
     }
 
     @FXML
     public void handleBoardPassenger(Passenger passenger) {
-        game.boardPassenger(selectedPlane, passenger);
+        boardPassenger(passenger);
         updatePlaneInfo();
-        loadTravellersList(selectedPlane.getAirport());
+        loadTravellersList(getSelectedPlane().getAirport());
     }
 
     @FXML
     public void handleUnBoardPassenger(Passenger passenger) {
-        game.unBoardPassenger(selectedPlane, passenger);
+        unBoardPassenger(passenger);
         updatePlaneInfo();
-        loadTravellersList(selectedPlane.getAirport());
+        loadTravellersList(getSelectedPlane().getAirport());
     }
 
     @FXML
     public void handleSetDestination(Airport airport) {
-        selectedPlane.setDestination(airport);
+        getSelectedPlane().setDestination(airport);
         updatePlaneInfo();
         refreshTakeOffButton();
     }
 
     @FXML
     public void handleTakeOff() {
-        selectedPlane.takeOff();
+        getSelectedPlane().takeOff();
         refreshInterface();
     }
 
@@ -522,9 +538,18 @@ public class AirlineManagerController implements SecondClockListener {
 
 
 
+    private void setSelectedAircraft(Aircraft aircraft) {
+        game.setSelectedAircraft(aircraft);
+    }
+
+    private Aircraft getSelectedAircraft() {
+        return game.getSelectedAircraft();
+    }
+
+
     @FXML
     public void handleAircraftSelect(Aircraft aircraft) {
-        selectedAircraft = aircraft;
+        setSelectedAircraft(aircraft);
         showAircraftInfo(aircraft);
         refreshBuyButton(aircraft);
         System.out.println(aircraft.getManufacturer() + " " + aircraft.getModel() + " selected...");
@@ -532,7 +557,7 @@ public class AirlineManagerController implements SecondClockListener {
 
     @FXML
     public void handleBuyAircraft() {
-        game.airlineBuy(selectedAircraft);
+        game.airlineBuy(getSelectedAircraft());
         loadPlanesList();
         // refreshAircraftTab();
     }

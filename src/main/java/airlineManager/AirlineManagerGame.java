@@ -28,6 +28,9 @@ public class AirlineManagerGame implements SecondClockListener {
     private int seconds;
     private boolean hasLoadedFromGameSave;
 
+    private Plane selectedPlane;
+    private Aircraft selectedAircraft;
+
 
 
     // ************
@@ -119,6 +122,22 @@ public class AirlineManagerGame implements SecondClockListener {
 
     public void airlineBuy(Aircraft aircraft) {
         this.airline.buy(aircraft);
+    }
+
+    public void setSelectedPlane(Plane plane) {
+        this.selectedPlane = plane;
+    }
+
+    public Plane getSelectedPlane() {
+        return this.selectedPlane;
+    }
+
+    public void setSelectedAircraft(Aircraft aircraft) {
+        this.selectedAircraft = aircraft;
+    }
+
+    public Aircraft getSelectedAircraft() {
+        return this.selectedAircraft;
     }
 
 
