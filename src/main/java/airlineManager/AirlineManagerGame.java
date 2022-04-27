@@ -12,10 +12,11 @@ public class AirlineManagerGame implements SecondClockListener {
 
 
 
-    private final String CONFIG_FILE = "config.properties";
-    private final String AIRCRAFTS_FILE_NAME = "aircrafts.csv";
-    private final String AIRPORTS_FILE_NAME = "airports.csv";
+    private final String CONFIG_FILE_NAME = "config";
+    private final String AIRCRAFTS_FILE_NAME = "aircrafts";
+    private final String AIRPORTS_FILE_NAME = "airports";
     private final int travellersRefreshInterval = 5;
+    
     private Airport defaultAirport;
     private String defaultGameSaveName;
     private SecondClock secondClock;
@@ -38,7 +39,7 @@ public class AirlineManagerGame implements SecondClockListener {
     // ************
 
     public AirlineManagerGame() {
-        this.properties = new PropertiesLoader().load(CONFIG_FILE);
+        this.properties = new PropertiesLoader().load(CONFIG_FILE_NAME);
         this.aircrafts = new AircraftsLoader().load(AIRCRAFTS_FILE_NAME);
         this.airports= new AirportsLoader().load(AIRPORTS_FILE_NAME);
         this.setDefaultAirport();

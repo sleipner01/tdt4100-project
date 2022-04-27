@@ -5,17 +5,25 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class AirportsLoader implements InterfaceGameFileLoader<Airport> {
-    
+
+    private final String REGEX_PATTERN = "[a-zA-Z]*";
+    private final String FILE_FORMAT = ".csv";
+    private final String GAMEFILES_FOLDER = "gamefiles/";
+
     @Override
     public List<Airport> load(String fileName) {
+
+        if(!isValidFileName(fileName))
+            throw new IllegalArgumentException("The filename can only include the name in ACHII characters, no path and no format.");
 
         List<Airport> airports = new ArrayList<>();
 
         String temporaryLine = "";    
 
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("gamefiles/" + fileName)))) {  
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(GAMEFILES_FOLDER + fileName + FILE_FORMAT)))) {  
 
             bufferedReader.readLine(); // Skip first line in the CSV document to skip the header.
 
@@ -51,7 +59,8 @@ public class AirportsLoader implements InterfaceGameFileLoader<Airport> {
         return airports;
     }
 
-    // private File getFile(String filename) {
-    //     return new File(AircraftsLoader.class.getResource("resources/").getFile() + filename);
-    // }
+    private boolean isValidFileName(String fileName) {
+        if(Pattern.matches(REGEX_PATTERN, fileName)) return true;
+        return false;
+    }
 }
