@@ -1,11 +1,15 @@
 package airlineManager;
 
+import java.util.regex.Pattern;
+
 public class Passenger {
 
-    private final double PAYMENT_RATIO = 0.4;
 
-    private String firstName;
-    private String surName;
+
+    private final double PAYMENT_RATIO = 0.4;
+    private final String REGEX_PATTERN = "^([ \\u00c0-\\u01ffa-zA-Z'\\-])+$";
+
+    private String fullName;
     private int paying;
     private Airport destination;
 
@@ -14,16 +18,15 @@ public class Passenger {
     public Passenger(String name, Airport location, Airport destination) throws IllegalArgumentException {
         if(!this.isValidNameFormat(name))
             throw new IllegalArgumentException(name + " is not a valid name format...");
-        String[] nameArray = name.split(" ");
-        this.firstName = nameArray[0];
-        this.surName = nameArray[1];
+
+        this.fullName = name;
         this.destination = destination;
         this.paying = this.calculatePayment(location, destination);
     }
 
     private boolean isValidNameFormat(String name) {
-        // TODO: Use Regex  
-        return true;
+        if(Pattern.matches(REGEX_PATTERN, name)) return true;
+        return false;
     }
 
 
@@ -34,7 +37,7 @@ public class Passenger {
 
 
 
-    public String getFullName() { return this.firstName + " " + this.surName; }
+    public String getFullName() { return this.fullName; }
 
     public int getPaying() { return this.paying; }
 
