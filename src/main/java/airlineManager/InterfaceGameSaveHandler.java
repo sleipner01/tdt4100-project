@@ -1,7 +1,6 @@
 package airlineManager;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 public interface InterfaceGameSaveHandler {
 

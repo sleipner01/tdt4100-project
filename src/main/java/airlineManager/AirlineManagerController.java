@@ -1,19 +1,14 @@
 package airlineManager;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
@@ -59,7 +54,7 @@ public class AirlineManagerController implements SecondClockListener {
         setAirlineCoins(game.getAirline().getCoinAmount());
         
         addControllerToGameClock();
-        
+
         // Interface tab
         loadPlanesList();
 
