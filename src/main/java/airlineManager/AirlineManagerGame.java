@@ -15,6 +15,7 @@ public class AirlineManagerGame implements SecondClockListener {
     private final String CONFIG_FILE_NAME = "config";
     private final String AIRCRAFTS_FILE_NAME = "aircrafts";
     private final String AIRPORTS_FILE_NAME = "airports";
+    private final InterfaceGameSaveHandler gameSaveHandler;
     private final int travellersRefreshInterval = 5;
     
     private Airport defaultAirport;
@@ -42,6 +43,7 @@ public class AirlineManagerGame implements SecondClockListener {
         this.properties = new PropertiesLoader().load(CONFIG_FILE_NAME);
         this.aircrafts = new AircraftsLoader().load(AIRCRAFTS_FILE_NAME);
         this.airports= new AirportsLoader().load(AIRPORTS_FILE_NAME);
+        this.gameSaveHandler = new GameSaveHandler();
         this.setDefaultAirport();
         this.setDefaultGameSaveName();
 
@@ -85,14 +87,13 @@ public class AirlineManagerGame implements SecondClockListener {
         this.defaultGameSaveName = properties.getProperty("defaultGameSaveName", "gameSave");
     }
 
+    private Airport getDefaultAirport() { return this.defaultAirport; }
+
 
 
     // ***************
     // Game Functions
     // ***************
-
-    // Remove when other functionality has been added
-    private Airport getDefaultAirport() { return this.defaultAirport; }
 
     public Airline getAirline() { return this.airline; }
 
@@ -150,22 +151,17 @@ public class AirlineManagerGame implements SecondClockListener {
 
     public void saveGame(String saveName) {
         System.out.println("Saving game... " + saveName);
-        InterfaceGameSaveHandler gameSaveHandler = new GameSaveHandler();
         gameSaveHandler.save(saveName, this);
         System.out.println("Game saved");
-        
-
     }
 
     public void loadGameSave(File file) throws FileNotFoundException {
         System.out.println("Loading game...");
-        InterfaceGameSaveHandler gameSaveHandler = new GameSaveHandler();
         this.loadExistingGame(gameSaveHandler.load(file, this));
     }
 
     private File checkForExistingValidGameSave(String defaultGameSave) {
-        InterfaceGameSaveHandler saveHandler = new GameSaveHandler();
-        return saveHandler.checkForExistingValidGameSave(defaultGameSave);
+        return gameSaveHandler.checkForExistingValidGameSave(defaultGameSave);
     }
 
     public boolean hasLoadedFromGameSave() {
