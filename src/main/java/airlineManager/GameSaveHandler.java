@@ -87,7 +87,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
         List<Airport> gameAirports = game.getAirports();
 
         
-        Airline airline = new Airline();
+        Airline airline = new Airline(this);
         List<Plane> planes = new ArrayList<>();
 
 
@@ -108,7 +108,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
                         String airlineName = airlineData[1];
                         int airlineCoins = Integer.parseInt(airlineData[2]);
                         Airport homeAirport = gameAirports.stream().filter(airportObject -> airportObject.getAirportID() == Integer.parseInt(airlineData[3])).findFirst().get();
-                        airline = new Airline(airlineName, airlineCoins, homeAirport);
+                        airline = new Airline(airlineName, airlineCoins, homeAirport, this);
 
                         break;
                 

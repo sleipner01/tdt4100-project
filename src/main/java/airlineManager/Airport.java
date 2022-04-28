@@ -126,14 +126,10 @@ public class Airport extends City implements Comparable<Airport> {
 
 
 
-    // Temporary until Faker works
     private String createTravellerName() {
 
-        // for(int i = 0; i < this.getCapacity(); i++) travellers.add(
-        //     new Passenger(faker.name().firstName() + " " + faker.name().lastName(),
-        //            50,
-        //                   availableAirports.get(random.nextInt(availableAirports.size())))
-        // );
+        // I wanted to use an external library to create random names, but the compiler wasn't able to add it as a module in module-info.java
+        // return faker.name().firstName() + " " + faker.name().lastName();
 
         List<String> firstNames = new ArrayList<>(
             Arrays.asList("Magnus", "James", "Tarald", "Eivind", "Ida", "Karen", "Johanne", "Emilie", "Muhammed", "Ismail", "Gaule", "Gyrsel", "Kristine", "Nils", "Sigurd", "Ingrid", "Yuki", "Zhou", "Carlos", "George", "Valtteri", "Kevin", "Mick", "Grinsild", "Dino", "Stikjær", "Napoleon", "Jøllebølle", "Toto", "Pete", "Christian"));
