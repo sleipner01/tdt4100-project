@@ -3,6 +3,7 @@ package airlineManager;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import javafx.collections.ObservableList;
@@ -62,16 +63,23 @@ public class AirlineManagerController implements SecondClockListener {
 
     private void nameAirlineDialog() {
 
-        String airlineName;
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Welcome to Airline Manager");
         dialog.setHeaderText("What do you want to name your airline?");
         dialog.setContentText("Name:");
         try {
-            airlineName = dialog.showAndWait().get();
-            game.getAirline().rename(airlineName);
-        } catch (Exception e) {
-            System.out.println("Something went wrong...");
+            game.getAirline().rename(dialog.showAndWait().get());
+        } 
+        catch (IllegalArgumentException e) {
+            showAlert(e.getMessage());
+            nameAirlineDialog();
+        }
+        catch (NoSuchElementException e) {
+            System.err.println("Error when naming airline: " + e.getMessage());
+            System.out.println("Creating airline with default name");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -90,7 +98,12 @@ public class AirlineManagerController implements SecondClockListener {
     // ***********
 
     private void addControllerToGameClock() {
-        game.addToGameClock(this);
+        try {
+            game.addToGameClock(this);
+        }
+        catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
