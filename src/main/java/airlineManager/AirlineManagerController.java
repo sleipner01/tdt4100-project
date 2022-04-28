@@ -617,10 +617,8 @@ public class AirlineManagerController implements SecondClockListener {
         try {
             File gameSave = fileChooser.showOpenDialog(new Stage());
             if(Objects.isNull(gameSave)) return;
-            game.stop();
             game.loadGameSave(gameSave);
             resetPanel();
-            game.start();
         }
         catch (Exception e) {
             System.out.println(e);

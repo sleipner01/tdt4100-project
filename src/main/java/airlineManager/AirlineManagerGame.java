@@ -76,7 +76,7 @@ public class AirlineManagerGame implements SecondClockListener {
         this.hasLoadedFromGameSave = false;
     }
 
-    private void loadExistingGame(Airline airline) {
+    private void initializeExistingGame(Airline airline) {
         this.airline = airline;
         this.hasLoadedFromGameSave = true;
     }
@@ -171,9 +171,11 @@ public class AirlineManagerGame implements SecondClockListener {
         System.out.println("Game saved");
     }
 
-    public void loadGameSave(File file) throws FileNotFoundException {
+    public void loadGameSave(File file) throws FileNotFoundException, IllegalArgumentException {
+        this.stop();
         System.out.println("Loading game...");
-        this.loadExistingGame(gameSaveHandler.load(file, this));
+        this.initializeExistingGame(gameSaveHandler.load(file, this));
+        this.start();
     }
 
     private File checkForExistingValidGameSave(String defaultGameSave) {

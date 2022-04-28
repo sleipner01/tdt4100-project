@@ -10,7 +10,7 @@ public class PropertiesLoader {
     private final String FILE_FORMAT = ".properties";
     private final String GAMEFILES_FOLDER = "gamefiles/";
 
-    public Properties load(String fileName) {
+    public Properties load(String fileName) throws IllegalArgumentException {
 
         if(!isValidFileName(fileName))
             throw new IllegalArgumentException("The filename can only include the name in ACHII characters, no path and no format.");
@@ -26,12 +26,7 @@ public class PropertiesLoader {
             System.out.println("Loading properties...");
             System.out.println("\n");
 
-
             properties.load(inputStream);
-
-            // this.PATH = properties.getProperty("resourcesPath");
-            // this.AIRCRAFTS_FILE_NAME = properties.getProperty("aircraftsFileName");
-            // this.AIRPORTS_FILE_NAME = properties.getProperty("airportsFileName");
 
             System.out.println("Loading complete!");
             System.out.println();

@@ -16,7 +16,7 @@ public class AircraftsLoader implements InterfaceGameFileLoader<Aircraft> {
 
 
     @Override
-    public List<Aircraft> load(String fileName) {
+    public List<Aircraft> load(String fileName) throws IllegalArgumentException {
 
         if(!isValidFileName(fileName))
             throw new IllegalArgumentException("The filename can only include the name in ACHII characters, no path and no format.");

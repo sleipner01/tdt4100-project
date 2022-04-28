@@ -15,7 +15,7 @@ public class AirportsLoader implements InterfaceGameFileLoader<Airport> {
     private final String GAMEFILES_FOLDER = "gamefiles/";
 
     @Override
-    public List<Airport> load(String fileName) {
+    public List<Airport> load(String fileName) throws IllegalArgumentException {
 
         if(!isValidFileName(fileName))
             throw new IllegalArgumentException("The filename can only include the name in ACHII characters, no path and no format.");
