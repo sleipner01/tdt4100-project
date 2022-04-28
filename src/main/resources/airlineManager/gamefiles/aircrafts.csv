@@ -1,9 +1,10 @@
 Manufacturer,Model,Type,Livery File,Speed,Range,Efficiency,Price,Seats
 Cessna,152,Passenger,plane.png,120,768,1,500,2
+De Havilland Canada,Dash 8,Passenger,plane.png,450,1407,2,2000,4
+Embraer,E190-E2,Passenger,plane.png,870,5186,3,3500,5
+Learjet,75,Passenger,plane.png,804,3167,4,3000,5
+Airbus,A320,Passenger,plane.png,839,6510,5,4500,8
 Boeing,737,Passenger,plane.png,839,6510,5,5000,8
 Boeing,787,Passenger,plane.png,903,15750,10,10000,14
-Boeing,747,Passenger,plane.png,913,13450,20,10000,20
-Airbus,A320,Passenger,plane.png,839,6510,5,4500,8
 Airbus,A350,Passenger,plane.png,903,16300,10,10000,14
-Learjet,75,Passenger,plane.png,804,3167,4,3000,5
-Embraer,E190-E2,Passenger,plane.png,870,5186,3,3500,5
+Boeing,747,Passenger,plane.png,913,13450,20,12000,20
