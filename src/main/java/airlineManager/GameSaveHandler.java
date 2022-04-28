@@ -22,7 +22,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
     private final String PLANES_STAMP = "***PLANES";
 
     @Override
-    public void save(String fileName, AirlineManagerGame game) {
+    public void save(String fileName, AirlineManagerGame game) throws IllegalArgumentException {
 
         if(!isValidFileName(fileName))
             throw new IllegalArgumentException("The filename can only include the name in ACHII characters, no path and no format.");
@@ -80,7 +80,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
     }
 
     @Override
-    public Airline load(File file, AirlineManagerGame game) {
+    public Airline load(File file, AirlineManagerGame game) throws IllegalArgumentException {
         if(!this.isValidGameSave(file)) throw new IllegalArgumentException("This is not a valid game file...");
 
         List<Aircraft> gameAircrafts = game.getAircrafts();

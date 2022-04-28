@@ -112,21 +112,22 @@ public class AirlineManagerGame implements SecondClockListener {
         this.airports.forEach(airport -> airport.refreshTravellers(this.getAirports()));
     }
 
-    public void boardPassenger(Plane plane, Passenger passenger) {
+    public void boardPassenger(Plane plane, Passenger passenger) throws IllegalArgumentException {
         plane.getAirport().boardPassenger(plane, passenger);
     }
 
-    public void unBoardPassenger(Plane plane, Passenger passenger) {
+    public void unBoardPassenger(Plane plane, Passenger passenger) throws IllegalArgumentException {
         plane.getAirport().unBoardPassenger(plane, passenger);
 
     }
 
-    public boolean airlineCanBuy(Aircraft aircraft) {
+    public boolean airlineCanBuy(Aircraft aircraft) throws IllegalArgumentException {
+        if(!this.isValidAircraft(aircraft)) throw new IllegalArgumentException(aircraft + " does not exist in the gamefiles.");
         if(this.airline.canBuy(aircraft)) return true;
         return false;
     }
 
-    public void airlineBuy(Aircraft aircraft) {
+    public void airlineBuy(Aircraft aircraft) throws IllegalArgumentException {
         this.airline.buy(aircraft);
     }
 
@@ -164,7 +165,7 @@ public class AirlineManagerGame implements SecondClockListener {
     // Save and load
     // ***************
 
-    public void saveGame(String saveName) {
+    public void saveGame(String saveName) throws IllegalArgumentException {
         System.out.println("Saving game... " + saveName);
         gameSaveHandler.save(saveName, this);
         System.out.println("Game saved");
@@ -218,7 +219,7 @@ public class AirlineManagerGame implements SecondClockListener {
         }
     }
 
-    public void addToGameClock(SecondClockListener listener) {
+    public void addToGameClock(SecondClockListener listener) throws IllegalArgumentException {
         this.secondClock.addListener(listener);
     }
 

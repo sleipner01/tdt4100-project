@@ -46,7 +46,7 @@ public class SecondClock {
 
 
 
-    public void removeListener(SecondClockListener listener) throws IllegalArgumentException {
+    public void removeListener(SecondClockListener listener) {
         if(!this.listeners.contains(listener))
             throw new IllegalArgumentException(listener + " is not a listener.");
         this.listeners.remove(listener);
