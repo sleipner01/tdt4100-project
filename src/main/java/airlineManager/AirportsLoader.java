@@ -36,9 +36,12 @@ public class AirportsLoader implements InterfaceGameFileLoader<Airport> {
 
                 airports.add(
                     new Airport(airportInfo[3], 
-                                Integer.parseInt(airportInfo[4]), Integer.parseInt(airportInfo[5]),
-                                airportInfo[0], Double.parseDouble(airportInfo[1]), Double.parseDouble(airportInfo[2]),
-                                Integer.parseInt(airportInfo[6])
+                                Integer.parseInt(airportInfo[4]),
+                                Integer.parseInt(airportInfo[5]),
+                                airportInfo[0],
+                                Double.parseDouble(airportInfo[1]),
+                                Double.parseDouble(airportInfo[2]),
+                                airports.size()
                     )
                 );
 

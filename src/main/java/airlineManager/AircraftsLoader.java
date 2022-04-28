@@ -44,7 +44,7 @@ public class AircraftsLoader implements InterfaceGameFileLoader<Aircraft> {
                                  Integer.parseInt(aircraftInfo[6]),
                                  Integer.parseInt(aircraftInfo[7]),
                                  Integer.parseInt(aircraftInfo[8]),
-                                 Integer.parseInt(aircraftInfo[9]),
+                                 aircrafts.size(),
                                  new Livery(aircraftInfo[3])
                     )
                 );

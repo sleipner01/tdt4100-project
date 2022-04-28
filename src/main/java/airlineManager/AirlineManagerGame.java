@@ -45,6 +45,14 @@ public class AirlineManagerGame implements SecondClockListener {
         this.setDefaultAirport();
         this.setDefaultGameSaveName();
 
+        this.loadGame();
+
+        this.refreshTravellers();
+
+        this.startGameClock();
+    }
+
+    private void loadGame() {
         File existingGame = this.checkForExistingValidGameSave(this.defaultGameSaveName);
         if(Objects.isNull(existingGame)) this.loadNewGame();
         else {
@@ -52,22 +60,15 @@ public class AirlineManagerGame implements SecondClockListener {
                 this.loadGameSave(existingGame);
             }
             catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
                 this.loadNewGame();
             }
         }
-
-        refreshTravellers();
-        this.secondClock = new SecondClock();
-        this.secondClock.addListener(this);
-        secondClock.start();
     }
 
     private void loadNewGame() {
-
         this.airline = new Airline(Integer.parseInt(properties.getProperty("defaultCoins")), this.getDefaultAirport());
         this.hasLoadedFromGameSave = false;
-
     }
 
     private void loadExistingGame(Airline airline) {
@@ -177,6 +178,12 @@ public class AirlineManagerGame implements SecondClockListener {
     // Time
     // ***************
 
+    private void startGameClock() {
+        this.secondClock = new SecondClock();
+        this.secondClock.addListener(this);
+        secondClock.start();
+    }
+
     @Override
     public void tick() {
         this.seconds++;
@@ -199,7 +206,7 @@ public class AirlineManagerGame implements SecondClockListener {
             this.saveGame(defaultGameSaveName);
             this.seconds = 0;
         }
-}
+    }
 
     public void addToGameClock(SecondClockListener listener) {
         this.secondClock.addListener(listener);
