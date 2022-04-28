@@ -17,12 +17,22 @@ public class Airport extends City implements Comparable<Airport> {
     private int airportID;
     // Will be used often, so added as a field to prevent having to
     // create new instances every time refreshTravellers() is called
-    private Random random; 
+    private Random random;
+    // Faker faker = new Faker();
+
 
 
 
     public Airport(String airportName, int gates, int capacity, String cityName, double latitude, double longitude, int airportID) {
         super(cityName, latitude, longitude);
+
+        if(!isValidIntegers(gates, capacity))
+            throw new IllegalArgumentException("The integers put into the Airport constructor must be positive");
+        if(!isValidDecimalCoordinates(latitude, longitude))
+            throw new IllegalArgumentException("Latitude must be between -+90. It was: " + latitude +"\n" +
+                                               "Longitude must be between -+180. It was: " + longitude);
+
+
         this.name = airportName;
         this.gates = gates;
         this.capacity = capacity;
@@ -30,6 +40,22 @@ public class Airport extends City implements Comparable<Airport> {
         this.planes = new ArrayList<>();
         this.travellers = new ArrayList<>();
         this.random = new Random();
+    }
+
+    private boolean isValidIntegers(int... integers) {
+        for (int i : integers) {
+            if(i < 0) return false;
+        }
+
+        return true;
+    }
+
+    private boolean isValidDecimalCoordinates(double latitude, double longitude) {
+        if(latitude < -90) return false;
+        if(latitude > 90) return false;
+        if(longitude < -180) return false;
+        if(longitude > 180) return false;
+        return true;
     }
 
 
@@ -52,15 +78,11 @@ public class Airport extends City implements Comparable<Airport> {
 
 
     
-    public void boardPassenger(Plane plane, Passenger passenger) {
-        if(!this.planes.contains(plane))
+    public void boardPassenger(Plane plane, Passenger passenger) throws IllegalArgumentException {
+        if(!this.isValidPlane(plane))
             throw new IllegalArgumentException("This plane is not at " + this.getAirportName());
-        
-        // Cannot be used because the controller won't be refreshed
-        // until a new / same plane is selected. Then the controller will show the passenger,
-        // but the passenger wont actually be at the airport.
-        // if(!this.travellers.contains(passenger))
-        //     throw new IllegalArgumentException(passenger.getFullName() + " is not at " + this.getAirportName());
+        if(!this.travellers.contains(passenger))
+            throw new IllegalArgumentException(passenger.getFullName() + " is not at " + this.getAirportName());
 
         plane.addPassenger(passenger);
         this.travellers.remove(passenger);
@@ -68,8 +90,8 @@ public class Airport extends City implements Comparable<Airport> {
 
 
 
-    public void unBoardPassenger(Plane plane, Passenger passenger) {
-        if(!this.planes.contains(plane))
+    public void unBoardPassenger(Plane plane, Passenger passenger) throws IllegalArgumentException {
+        if(!this.isValidPlane(plane))
             throw new IllegalArgumentException("This plane is not at " + this.getAirportName());
         if(!plane.hasBoarded(passenger))
             throw new IllegalArgumentException("The plane havn't boarded " + passenger.getFullName());
@@ -78,24 +100,19 @@ public class Airport extends City implements Comparable<Airport> {
         this.travellers.add(passenger);
     }
 
+    public boolean isValidPlane(Plane plane) {
+        if(this.planes.contains(plane)) return true;
+        return false;
+    }
+
 
 
     public void refreshTravellers(List<Airport> availableAirports) {
-        // if(amount > this.getCapacity() || amount < 0)
-        //     throw new IllegalArgumentException("The capacity has to be between 0 and " + this.getCapacity());
         if(availableAirports.size() < 1)
-            throw new IllegalStateException("There has to be more airports for this method to work.");
+            return;
      
         if(availableAirports.contains(this)) availableAirports.remove(this);
         this.travellers.removeAll(this.travellers);
-
-        // Faker faker = new Faker();
-
-        // for(int i = 0; i < this.getCapacity(); i++) travellers.add(
-        //     new Passenger(faker.name().firstName() + " " + faker.name().lastName(),
-        //            50,
-        //                   availableAirports.get(random.nextInt(availableAirports.size())))
-        // );
 
         for(int i = 0; i < this.getCapacity(); i++) {
             Airport randomDestination = availableAirports.get(random.nextInt(availableAirports.size()));
@@ -111,6 +128,13 @@ public class Airport extends City implements Comparable<Airport> {
 
     // Temporary until Faker works
     private String createTravellerName() {
+
+        // for(int i = 0; i < this.getCapacity(); i++) travellers.add(
+        //     new Passenger(faker.name().firstName() + " " + faker.name().lastName(),
+        //            50,
+        //                   availableAirports.get(random.nextInt(availableAirports.size())))
+        // );
+
         List<String> firstNames = new ArrayList<>(
             Arrays.asList("Magnus", "James", "Tarald", "Eivind", "Ida", "Karen", "Johanne", "Emilie", "Muhammed", "Ismail", "Gaule", "Gyrsel", "Kristine", "Nils", "Sigurd", "Ingrid", "Yuki", "Zhou", "Carlos", "George", "Valtteri", "Kevin", "Mick", "Grinsild", "Dino", "Stikjær", "Napoleon", "Jøllebølle", "Toto", "Pete", "Christian"));
         List<String> surNames = new ArrayList<>(

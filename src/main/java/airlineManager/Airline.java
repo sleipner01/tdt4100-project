@@ -83,7 +83,7 @@ public class Airline implements Iterable<Plane> {
 
 
 
-    public void rename(String name) {
+    public void rename(String name) throws IllegalArgumentException {
         if(!isValidAirlineName(name)) throw new IllegalArgumentException("This is not a valid airline name");
         this.name = name;
         System.out.println("Renamed airline to: " + name);
@@ -97,14 +97,14 @@ public class Airline implements Iterable<Plane> {
 
 
     public void addIncome(int coins) throws IllegalArgumentException {
-        if(coins < 0) throw new IllegalArgumentException("Insert a positive integer.");
+        if(!isValidCoinInput(coins)) throw new IllegalArgumentException("Insert a positive integer.");
         this.coins += coins;
     }
 
 
 
     public void addExpense(int coins) {
-        if(coins < 0) throw new IllegalArgumentException("Insert a positive integer.");
+        if(!isValidCoinInput(coins)) throw new IllegalArgumentException("Insert a positive integer.");
         this.coins -= coins;
     }
 
