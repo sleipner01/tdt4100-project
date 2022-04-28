@@ -3,6 +3,8 @@ package airlineManager;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +16,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
     private final String REGEX_PATTERN = "[a-zA-Z]*";
     private final String FOLDER = "gamefiles/";
     private final String FORMAT = ".txt";
+    private final String CHARSET = "UTF-8";
     private final String SEPERATOR_VALUE = ",";
     private final String VALID_STAMP = "***VALID";
     private final String AIRLINE_STAMP = "***AIRLINE";
@@ -25,8 +28,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
         if(!isValidFileName(fileName))
             throw new IllegalArgumentException("The filename can only include the name in ACHII characters, no path and no format.");
 
-        try (PrintWriter writer = new PrintWriter(new File(this.getPathToGameFiles() + fileName + this.FORMAT))) {
-            
+        try (PrintWriter writer = new PrintWriter(new File(this.getPathToGameFiles() + fileName + this.FORMAT), this.CHARSET)) {
             Airline airline = game.getAirline();
 
             writer.println(VALID_STAMP);
@@ -71,7 +73,10 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
             
         } 
         catch (FileNotFoundException e) {
-            System.err.println(e);
+            e.printStackTrace();
+        }
+        catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
     }
 
@@ -87,7 +92,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
         List<Plane> planes = new ArrayList<>();
 
 
-        try (Scanner scanner = new Scanner(file)) {
+        try (Scanner scanner = new Scanner(file, this.CHARSET)) {
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();

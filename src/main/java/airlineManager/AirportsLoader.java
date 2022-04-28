@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.IllegalFormatPrecisionException;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -23,7 +24,7 @@ public class AirportsLoader implements InterfaceGameFileLoader<Airport> {
 
         String temporaryLine = "";    
 
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(GAMEFILES_FOLDER + fileName + FILE_FORMAT)))) {  
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(GAMEFILES_FOLDER + fileName + FILE_FORMAT), "UTF-8"))) {  
 
             bufferedReader.readLine(); // Skip first line in the CSV document to skip the header.
 
@@ -34,16 +35,22 @@ public class AirportsLoader implements InterfaceGameFileLoader<Airport> {
             while ((temporaryLine = bufferedReader.readLine()) != null) {
                 String[] airportInfo = temporaryLine.split(",");
 
-                airports.add(
-                    new Airport(airportInfo[3], 
-                                Integer.parseInt(airportInfo[4]),
-                                Integer.parseInt(airportInfo[5]),
-                                airportInfo[0],
-                                Double.parseDouble(airportInfo[1]),
-                                Double.parseDouble(airportInfo[2]),
-                                airports.size()
-                    )
-                );
+                try {
+                    airports.add(
+                        new Airport(airportInfo[3], 
+                                    Integer.parseInt(airportInfo[4]),
+                                    Integer.parseInt(airportInfo[5]),
+                                    airportInfo[0],
+                                    Double.parseDouble(airportInfo[1]),
+                                    Double.parseDouble(airportInfo[2]),
+                                    airports.size()
+                        )
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.err.println("Something is wrong with the format of the line:\n" + temporaryLine + "\nin the file: " + fileName + FILE_FORMAT);
+                }
+
 
                 System.out.println(airports.get(airports.size()-1));
 

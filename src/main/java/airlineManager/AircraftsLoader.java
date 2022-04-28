@@ -25,7 +25,7 @@ public class AircraftsLoader implements InterfaceGameFileLoader<Aircraft> {
 
         String temporaryLine = "";    
 
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(GAMEFILES_FOLDER + fileName + FILE_FORMAT)))) {  
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(GAMEFILES_FOLDER + fileName + FILE_FORMAT), "UTF-8"))) {  
             bufferedReader.readLine(); // Skip first line in the CSV document to skip the header.
 
             System.out.println("\n\n********************\n");
