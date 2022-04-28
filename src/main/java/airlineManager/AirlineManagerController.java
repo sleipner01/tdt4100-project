@@ -10,9 +10,11 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -539,7 +541,11 @@ public class AirlineManagerController implements SecondClockListener {
 
 
     private void setSelectedAircraft(Aircraft aircraft) {
-        game.setSelectedAircraft(aircraft);
+        try {
+            game.setSelectedAircraft(aircraft);
+        } catch (IllegalArgumentException e) {
+            showAlert(e.getMessage());
+        }
     }
 
     private Aircraft getSelectedAircraft() {
@@ -564,6 +570,17 @@ public class AirlineManagerController implements SecondClockListener {
 
 
 
+    // *****************
+    // Alert
+    // *****************
+
+    private void showAlert(String errorMessage) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Alert");
+        alert.setHeaderText("Something went wrong");
+        alert.setContentText(errorMessage);
+        alert.showAndWait();
+    }
 
     // *****************
     // Save and load
@@ -590,8 +607,6 @@ public class AirlineManagerController implements SecondClockListener {
         // }
     }
 
-
-
     @FXML void handleLoadGame() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(getClass().getResource("gamefiles/").getPath()));
@@ -616,6 +631,7 @@ public class AirlineManagerController implements SecondClockListener {
         // }
     }
     
+
 
 
 }

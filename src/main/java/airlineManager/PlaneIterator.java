@@ -5,8 +5,8 @@ import java.util.List;
 
 public class PlaneIterator implements Iterator<Plane> {
 
-    // Because of changes in the code this is never used, but great to have.
 
+    
     private int index;
     private int listLength;
     private List<Plane> planes;

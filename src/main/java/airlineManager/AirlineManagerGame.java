@@ -130,16 +130,28 @@ public class AirlineManagerGame implements SecondClockListener {
         this.airline.buy(aircraft);
     }
 
-    public void setSelectedPlane(Plane plane) {
+    public void setSelectedPlane(Plane plane) throws IllegalArgumentException {
+        if(!this.isValidPlane(plane)) throw new IllegalArgumentException(plane + " does not exist in the gamefiles.");
         this.selectedPlane = plane;
+    }
+
+    private boolean isValidPlane(Plane plane) {
+        for(Plane airlinePlane : this.airline) if(airlinePlane.equals(plane)) return true;
+        return false;
     }
 
     public Plane getSelectedPlane() {
         return this.selectedPlane;
     }
 
-    public void setSelectedAircraft(Aircraft aircraft) {
+    public void setSelectedAircraft(Aircraft aircraft) throws IllegalArgumentException {
+        if(!this.isValidAircraft(aircraft)) throw new IllegalArgumentException(aircraft + " does not exist in the gamefiles.");
         this.selectedAircraft = aircraft;
+    }
+
+    private boolean isValidAircraft(Aircraft aircraft) {
+        if(aircrafts.contains(aircraft)) return true;
+        return false;
     }
 
     public Aircraft getSelectedAircraft() {
