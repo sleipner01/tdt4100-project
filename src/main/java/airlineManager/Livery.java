@@ -18,4 +18,9 @@ public class Livery {
     public String getLiveryFileName() {
         return this.liveryFileName;
     }
+
+    @Override
+    public String toString() {
+        return this.liveryFileName;
+    }
 }

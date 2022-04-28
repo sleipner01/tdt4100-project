@@ -95,7 +95,6 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                System.out.println("Firstline: " + line);
 
                 switch (line) {
                     case VALID_STAMP:
@@ -119,7 +118,6 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
                         
                         while(scanner.hasNextLine()) {
                             String planeDataLine = scanner.nextLine();
-                            System.out.println("PlaneDataLine: " + planeDataLine);
                             if(planeDataLine.startsWith("Plane")) {
                                 String[] planeData = planeDataLine.split(SEPERATOR_VALUE);
 
@@ -134,7 +132,6 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
 
                                 while(scanner.hasNextLine()) {
                                     String passengerDataLine = scanner.nextLine();
-                                    System.out.println("PassengerDataLine: " + passengerDataLine);
                                     if(passengerDataLine.startsWith("Passenger")) {
                                         String[] passengerData = passengerDataLine.split(SEPERATOR_VALUE);
                                         String passengerName = passengerData[1];
@@ -146,7 +143,6 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
                                 }
 
                                 planes.add(new Plane(aircraft, planeName, airline, airport, destinaton, inFlight, minutesLeftInFlight, planePassengers));
-                                System.out.println("Planes size: " + planes.size());
 
                             }
                             else break;
@@ -164,7 +160,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
             e.printStackTrace();
         }
 
-        airline.addExistingPlanes(planes);
+        airline.addExistingPlanes(planes, this);
 
         return airline;
     }

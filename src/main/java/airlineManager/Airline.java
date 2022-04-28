@@ -3,12 +3,15 @@ package airlineManager;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Airline implements Iterable<Plane> {
 
 
 
     private final String DEFAULT_NAME = "Airline";
+    private final String REGEX_PATTERN = "[a-zA-Z]*";
+
 
 
 
@@ -22,8 +25,9 @@ public class Airline implements Iterable<Plane> {
 
     }
 
-    public Airline(int coins, Airport homeAirport) {
+    public Airline(int coins, Airport homeAirport) throws IllegalArgumentException {
         this.name = DEFAULT_NAME;
+        if(!isValidCoinInput(coins)) throw new IllegalArgumentException("The coin input must be positive");
         this.coins = coins;
         this.homeAirport = homeAirport;
         this.planes = new ArrayList<>();
@@ -33,25 +37,9 @@ public class Airline implements Iterable<Plane> {
         System.out.println("Name: " + name + ", Coins: " + coins + "\n");
     }
 
-
-
-    public Airline(String name, int coins, Airport homeAirport, List<Plane> planes) {
+    public Airline(String name, int coins, Airport homeAirport) throws IllegalArgumentException {
         this.name = name;
-        this.coins = coins;
-        this.homeAirport = homeAirport;
-        this.planes = planes;
-
-        System.out.println("\n************");
-        System.out.println("Restored Airline");
-        System.out.println("Name:" + name + ", Coins: " + coins + ", Planes:");
-        for (Plane plane : planes) {
-            System.out.println(plane);
-        }
-        System.out.println();
-    }
-
-    public Airline(String name, int coins, Airport homeAirport) {
-        this.name = name;
+        if(!isValidCoinInput(coins)) throw new IllegalArgumentException("The coin input must be positive");
         this.coins = coins;
         this.homeAirport = homeAirport;
 
@@ -61,8 +49,13 @@ public class Airline implements Iterable<Plane> {
 
     }
 
-    // Since the planes are connected to the airline, they are added after the fact...
-    public void addExistingPlanes(List<Plane> planes) {
+    private boolean isValidCoinInput(int coins) {
+        if(coins > 0) return true;
+        return false;
+    }
+
+    // Must be added by an authorized class ie. a gameSave loader
+    public void addExistingPlanes(List<Plane> planes, InterfaceGameSaveHandler gameSaveHandler) {
         this.planes = planes;
 
         System.out.println("\n************");
@@ -71,6 +64,8 @@ public class Airline implements Iterable<Plane> {
             System.out.println(plane);
         }
     }
+
+
 
 
 
@@ -89,8 +84,14 @@ public class Airline implements Iterable<Plane> {
 
 
     public void rename(String name) {
+        if(!isValidAirlineName(name)) throw new IllegalArgumentException("This is not a valid airline name");
         this.name = name;
         System.out.println("Renamed airline to: " + name);
+    }
+    
+    private boolean isValidAirlineName(String name) {
+        if(Pattern.matches(REGEX_PATTERN, name)) return true;
+        return false;
     }
 
 
