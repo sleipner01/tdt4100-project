@@ -11,6 +11,7 @@ public class AircraftsLoader implements InterfaceGameFileLoader<Aircraft> {
 
     private final String REGEX_PATTERN = "[a-zA-Z]*";
     private final String FILE_FORMAT = ".csv";
+    private final String CHARSET = "UTF-8";
     private final String GAMEFILES_FOLDER = "gamefiles/";
 
 
@@ -25,7 +26,7 @@ public class AircraftsLoader implements InterfaceGameFileLoader<Aircraft> {
 
         String temporaryLine = "";    
 
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(GAMEFILES_FOLDER + fileName + FILE_FORMAT), "UTF-8"))) {  
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(GAMEFILES_FOLDER + fileName + FILE_FORMAT), this.CHARSET))) {  
             bufferedReader.readLine(); // Skip first line in the CSV document to skip the header.
 
             System.out.println("\n\n********************\n");
@@ -35,19 +36,26 @@ public class AircraftsLoader implements InterfaceGameFileLoader<Aircraft> {
             while ((temporaryLine = bufferedReader.readLine()) != null) {
                 String[] aircraftInfo = temporaryLine.split(",");
 
-                aircrafts.add(
-                    new Aircraft(aircraftInfo[0],
-                                 aircraftInfo[1],
-                                 aircraftInfo[2],
-                                 Integer.parseInt(aircraftInfo[4]),
-                                 Integer.parseInt(aircraftInfo[5]),
-                                 Integer.parseInt(aircraftInfo[6]),
-                                 Integer.parseInt(aircraftInfo[7]),
-                                 Integer.parseInt(aircraftInfo[8]),
-                                 aircrafts.size(),
-                                 new Livery(aircraftInfo[3])
-                    )
-                );
+                try {
+                    aircrafts.add(
+                        new Aircraft(aircraftInfo[0],
+                                     aircraftInfo[1],
+                                     aircraftInfo[2],
+                                     Integer.parseInt(aircraftInfo[4]),
+                                     Integer.parseInt(aircraftInfo[5]),
+                                     Integer.parseInt(aircraftInfo[6]),
+                                     Integer.parseInt(aircraftInfo[7]),
+                                     Integer.parseInt(aircraftInfo[8]),
+                                     aircrafts.size(),
+                                     new Livery(aircraftInfo[3])
+                        )
+                    );
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    System.err.println("Something is wrong with the format of the line:\n" + temporaryLine + "\nin the file: " + fileName + FILE_FORMAT);
+                }
+                
                 System.out.println(aircrafts.get(aircrafts.size()-1));
             } 
 

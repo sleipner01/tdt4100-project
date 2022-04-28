@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.IllegalFormatPrecisionException;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -12,6 +11,7 @@ public class AirportsLoader implements InterfaceGameFileLoader<Airport> {
 
     private final String REGEX_PATTERN = "[a-zA-Z]*";
     private final String FILE_FORMAT = ".csv";
+    private final String CHARSET = "UTF-8";
     private final String GAMEFILES_FOLDER = "gamefiles/";
 
     @Override
@@ -24,7 +24,7 @@ public class AirportsLoader implements InterfaceGameFileLoader<Airport> {
 
         String temporaryLine = "";    
 
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(GAMEFILES_FOLDER + fileName + FILE_FORMAT), "UTF-8"))) {  
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(GAMEFILES_FOLDER + fileName + FILE_FORMAT), this.CHARSET))) {  
 
             bufferedReader.readLine(); // Skip first line in the CSV document to skip the header.
 
