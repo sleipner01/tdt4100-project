@@ -13,7 +13,7 @@ public class Plane implements SecondClockListener {
 
 
 
-    private Aircraft aircraft;
+    private final Aircraft aircraft;
     private String nickName;
     private Airline airline;
     private Airport airport;
