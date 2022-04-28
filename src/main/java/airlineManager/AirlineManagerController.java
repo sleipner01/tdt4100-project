@@ -701,6 +701,7 @@ public class AirlineManagerController implements SecondClockListener {
         alert.setHeaderText("Something went wrong");
         alert.setContentText(errorMessage);
         alert.showAndWait();
+        resetPanel();
     }
 
 

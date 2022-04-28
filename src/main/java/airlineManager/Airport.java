@@ -97,14 +97,17 @@ public class Airport extends City implements Comparable<Airport> {
 
 
     public void refreshTravellers(List<Airport> availableAirports) {
-        if(availableAirports.size() < 1)
-            return;
+        if(availableAirports.size() < 1) return;
      
         if(availableAirports.contains(this)) availableAirports.remove(this);
         this.travellers.removeAll(this.travellers);
 
         for(int i = 0; i < this.getCapacity(); i++) {
-            Airport randomDestination = availableAirports.get(random.nextInt(availableAirports.size()));
+
+            int bottomHeavyRandomInteger = availableAirports.size()+1;
+            while (bottomHeavyRandomInteger > availableAirports.size())
+                bottomHeavyRandomInteger = (int)Math.abs(random.nextGaussian()*(availableAirports.size()/6));
+            Airport randomDestination = availableAirports.get(bottomHeavyRandomInteger);
             travellers.add(
             new Passenger(this.createTravellerName(),
                           this,
@@ -121,12 +124,22 @@ public class Airport extends City implements Comparable<Airport> {
         // return faker.name().firstName() + " " + faker.name().lastName();
 
         List<String> firstNames = new ArrayList<>(
-            Arrays.asList("Magnus", "James", "Tarald", "Eivind", "Ida", "Karen", "Johanne", "Emilie", "Muhammed", "Ismail", "Gaule", "Gyrsel", "Kristine", "Nils", "Sigurd", "Ingrid", "Yuki", "Zhou", "Carlos", "George", "Valtteri", "Kevin", "Mick", "Grinsild", "Dino", "Stikjær", "Napoleon", "Jøllebølle", "Toto", "Pete", "Christian"));
+            Arrays.asList(
+                "Magnus", "James", "Tarald", "Eivind", "Ida", "Karen",
+                "Johanne", "Emilie", "Muhammed", "Ismail", "Harald", "Donald",
+                "Kristine", "Nils", "Sigurd", "Ingrid", "Yuki", "Zhou", "Carlos", 
+                "George", "Valtteri", "Kevin", "Mick", "Kevin", "Dino", "Erle",
+                "Casper", "Ola", "Toto", "Pete", "Christian"));
         List<String> surNames = new ArrayList<>(
-            Arrays.asList("Islamabad", "Byrkjeland", "Mohammed", "Muhammed", "Olsen", "Bakke", "Systad", "Timm", "Smith", "Leclerc", "Hamilton", "Andersen", "Ghuany", "Tsunoda", "Gasly", "Sainz", "Russel", "Bottas", "Magnussen", "Shumacher", "Hoel", "Narui", "Zienolddiny", "Palizban", "Utne", "Gürktürk", "PingLee", "Midtskill", "Bonnington", "Wolff", "Horner"));
+            Arrays.asList(
+                "Trump", "Hansen", "Mohammed", "Muhammed", "Olsen",
+                "Bakke", "Systad", "Timm", "Smith", "Leclerc", "Hamilton", "Andersen",
+                "Ghuany", "Tsunoda", "Gasly", "Sainz", "Russel", "Bottas", "Magnussen",
+                "Shumacher", "Hoel", "Narui", "Zienolddiny", "Palizban", "Utne", "Napoleon",
+                "Gürktürk", "PingLee", "Midtskill", "Bonnington", "Wolff", "Horner"));
 
         return firstNames.get(random.nextInt(firstNames.size())) + " " +
-                      surNames.get(random.nextInt(surNames.size()));
+               surNames.get(random.nextInt(surNames.size()));
 
     }
 
