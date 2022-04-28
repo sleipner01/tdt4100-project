@@ -1,6 +1,8 @@
 package airlineManager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -27,13 +29,29 @@ public class AirlineManagerController implements SecondClockListener {
 
     private AirlineManagerGame game;
 
+    private final int BUTTON_HORIZONTAL_GAP = 0;
+    private final int BUTTON_VERTICAL_GAP = 0;
+
     private final int PLANE_BUTTON_PADDING = 10;
     private final int PLANE_BUTTON_MIN_HEIGHT = 70;
     private final int PLANE_BUTTON_MAX_HEIGHT = 70;
     private final int PLANE_BUTTON_MIN_WIDTH = 70;
     private final int PLANE_BUTTON_MAX_WIDTH = 100;
-    private final int BUTTON_HORIZONTAL_GAP = 0;
-    private final int BUTTON_VERTICAL_GAP = 0;
+
+    private final int DESTINATION_BUTTON_MIN_HEIGHT = 50;
+    private final int DESTINATION_BUTTON_MAX_HEIGHT = 90;
+    private final int DESTINATION_BUTTON_MIN_WIDTH = 90;
+    private final int DESTINATION_BUTTON_MAX_WIDTH = 90;
+
+    private final int TRAVELLER_BUTTON_MIN_HEIGHT = 50;
+    private final int TRAVELLER_BUTTON_MAX_HEIGHT = 90;
+    private final int TRAVELLER_BUTTON_MIN_WIDTH = 90;
+    private final int TRAVELLER_BUTTON_MAX_WIDTH = 90;
+
+    private final int AIRCRAFT_BUTTON_MIN_HEIGHT = 50;
+    private final int AIRCRAFT_BUTTON_MAX_HEIGHT = 90;
+    private final int AIRCRAFT_BUTTON_MIN_WIDTH = 90;
+    private final int AIRCRAFT_BUTTON_MAX_WIDTH = 90;
 
     @FXML
     public Button takeOffButton, buyPlaneButton;
@@ -131,15 +149,17 @@ public class AirlineManagerController implements SecondClockListener {
         grid.setHgap(BUTTON_HORIZONTAL_GAP);
         grid.setVgap(BUTTON_VERTICAL_GAP);
 
-
-        
         List<Plane> planesList = game.getAirline().getPlanes();
+        if(planesList.size() <= 0) {
+            viewablePlanesList.setContent(new Text("The airline does not have any planes."));
+            return;
+        }
+
         for (Plane plane : planesList) {
             grid.add(createPlaneButton(plane),planesList.indexOf(plane),1);
         }
 
-        if(planesList.size() <= 0) viewablePlanesList.setContent(new Text("The airline does not have any planes."));
-        else viewablePlanesList.setContent(grid);
+        viewablePlanesList.setContent(grid);
         
     }
 
@@ -156,8 +176,8 @@ public class AirlineManagerController implements SecondClockListener {
         // The two lists should be the same length, one with buttons, the other with planes..
         if(!(gridPanePlaneButtons.size() == planesList.size())) {
             loadPlanesList(); // In case a new aircraft have been bought
-            if(!(gridPanePlaneButtons.size() == planesList.size()))
-                throw new IllegalStateException("The two list are not of the same size. Something is wrong.");
+            if(!(gridPanePlaneButtons.size() == planesList.size())) 
+                showAlert("For some reason, the amount of buttons and the number of planes stored in the game are not equal.");
         }
 
         for (Node button : gridPanePlaneButtons) {
@@ -174,7 +194,7 @@ public class AirlineManagerController implements SecondClockListener {
         Button button;
         if(plane.isInFlight()) {
             button = new Button(plane.getNickName() + "\n" + 
-                                   plane.getRemainingFlightTimeInMinutes() + " min");
+                                "Time remaining: " + plane.getRemainingFlightTimeInMinutes() + " min");
             button.setDisable(true);
         }
         else { 
@@ -203,6 +223,11 @@ public class AirlineManagerController implements SecondClockListener {
         grid.setVgap(BUTTON_VERTICAL_GAP);
 
         List<Airport> airportsList = game.getAirports();
+        if(airportsList.size() <= 0) {
+            viewableDestinationsList.setContent(new Text("There are no airports."));
+            return;
+        }
+
         airportsList.remove(plane.getAirport());
         Collections.sort(airportsList, new AirportDistanceComparator(plane.getAirport()));
         // airportsList.sort((a, b) -> plane.getAirport().compareTo(a) - plane.getAirport().compareTo(b));
@@ -222,8 +247,10 @@ public class AirlineManagerController implements SecondClockListener {
         button.setStyle("-fx-text-alignment: center;");
         button.setCursor(Cursor.HAND);
         button.setOnAction((event) -> handleSetDestination(airport));
-        button.setMaxWidth(Double.MAX_VALUE);
-        button.setMaxHeight(Double.MAX_VALUE);
+        button.setMaxWidth(DESTINATION_BUTTON_MAX_WIDTH);
+        button.setMinWidth(DESTINATION_BUTTON_MIN_WIDTH);
+        button.setMaxHeight(DESTINATION_BUTTON_MAX_HEIGHT);
+        button.setMinHeight(DESTINATION_BUTTON_MIN_HEIGHT);
 
         if(!getSelectedPlane().isInRange(airport)) button.setDisable(true);
         else button.setDisable(false);
@@ -253,8 +280,11 @@ public class AirlineManagerController implements SecondClockListener {
 
 
         List<Passenger> travellersList = airport.getTravellers();
-        // AirportDistanceComparator comparator = new AirportDistanceComparator(airport);
-        // travellersList.sort(comparator.compare(a.getDestination(), b.getDestination()));
+        if(travellersList.size() <= 0) {
+            viewableTravellersList.setContent(new Text("There are no travellers at this moment"));
+            return;
+        }
+
         travellersList.sort((a, b) -> airport.compareTo(a.getDestination()) - airport.compareTo(b.getDestination()));
         for (Passenger passenger : travellersList) {
             grid.add(createTravellerButton(passenger), 1, travellersList.indexOf(passenger) + passengersList.size());
@@ -272,8 +302,11 @@ public class AirlineManagerController implements SecondClockListener {
         button.setStyle("-fx-text-alignment: center;");
         button.setCursor(Cursor.HAND);
         button.setOnAction((event) -> handleBoardPassenger(passenger));
-        button.setMaxWidth(Double.MAX_VALUE);
-        button.setMaxHeight(Double.MAX_VALUE);
+        button.setMaxWidth(TRAVELLER_BUTTON_MAX_WIDTH);
+        button.setMinWidth(TRAVELLER_BUTTON_MIN_WIDTH);
+        button.setMaxHeight(TRAVELLER_BUTTON_MAX_HEIGHT);
+        button.setMinHeight(TRAVELLER_BUTTON_MIN_HEIGHT);
+
         if(!getSelectedPlane().hasMoreEmptySeats()) {
             button.setDisable(true);        
         }
@@ -292,8 +325,10 @@ public class AirlineManagerController implements SecondClockListener {
         button.setStyle("-fx-background-color: #00FF00;");
         button.setCursor(Cursor.HAND);
         button.setOnAction((event) -> handleUnBoardPassenger(passenger));
-        button.setMaxWidth(Double.MAX_VALUE);
-        button.setMaxHeight(Double.MAX_VALUE);
+        button.setMaxWidth(TRAVELLER_BUTTON_MAX_WIDTH);
+        button.setMinWidth(TRAVELLER_BUTTON_MIN_WIDTH);
+        button.setMaxHeight(TRAVELLER_BUTTON_MAX_HEIGHT);
+        button.setMinHeight(TRAVELLER_BUTTON_MIN_HEIGHT);
 
         return button;
 
@@ -333,46 +368,69 @@ public class AirlineManagerController implements SecondClockListener {
     }
 
     private void resetPlaneInfo() {
-        airportNameLabel.setText("");
-        manufacturerAndModelLabel.setText("");
-        passengerCountLabel.setText("");
-        destinationAirportLabel.setText("");
-        profitLabel.setText("");
+        setAirportNameLabel("");
+        setManufacturerAndModelLabel("");
+        setPassengerCountLabel("");
+        resetDistanceLabel();
+        resetDestinationLabel();
+        resetProfitLabel();
     }
 
     private void setAirportNameLabel(Plane plane) {
-        airportNameLabel.setText(plane.getAirport().getAirportName());
+        setAirportNameLabel(plane.getAirport().getAirportName());
+    }
+    private void setAirportNameLabel(String text) {
+        airportNameLabel.setText(text);
     }
 
     private void setManufacturerAndModelLabel(Plane plane) {
-        manufacturerAndModelLabel.setText(plane.getAircraft().getManufacturer() + " " + plane.getAircraft().getModel());
+        setManufacturerAndModelLabel(plane.getAircraft().getManufacturer() + " " + plane.getAircraft().getModel());
+    }
+    private void setManufacturerAndModelLabel(String text) {
+        manufacturerAndModelLabel.setText(text);
     }
 
     private void setPassengerCountLabel(Plane plane) {
-        passengerCountLabel.setText(plane.getPassengerCount() + "/" + plane.getAircraft().getSeats());
+        setPassengerCountLabel(plane.getPassengerCount() + "/" + plane.getAircraft().getSeats());
+    }
+    private void setPassengerCountLabel(String text) {
+        passengerCountLabel.setText(text);
     }
 
     private void setDistanceLabel(Plane plane) {
         Airport destination = plane.getDestination();
-        if(Objects.isNull(destination)) distanceLabel.setText("Destination is not set");
-        else distanceLabel.setText(plane.getAirport().compareTo(plane.getDestination()) + "km");
-        
+        if(Objects.isNull(destination)) resetDistanceLabel();
+        else setDistanceLabel(plane.getAirport().compareTo(plane.getDestination()) + "km");
+    }
+    private void setDistanceLabel(String text) {
+        distanceLabel.setText(text);
+    }
+    private void resetDistanceLabel() {
+        distanceLabel.setText("Destination is not set");
     }
 
     private void setProfitLabel(Plane plane) {
         Airport destination = plane.getDestination();
-        if(Objects.isNull(destination)) profitLabel.setText("Destination is not set");
-        else profitLabel.setText(plane.getProfit() + " coins");
-        
+        if(Objects.isNull(destination)) resetProfitLabel();
+        else setProfitLabel(plane.getProfit() + " coins");
+    }
+    private void setProfitLabel(String text) {
+        distanceLabel.setText(text);
+    }
+    private void resetProfitLabel() {
+        distanceLabel.setText("Destination is not set");
     }
 
     private void setDestinationAirportLabel(Plane plane) {
         Airport destination = plane.getDestination();
-        if(Objects.isNull(destination)) destinationAirportLabel.setText("Not set");
-        else destinationAirportLabel.setText(destination.getAirportName());
-        
-
-        
+        if(Objects.isNull(destination)) resetDestinationLabel();
+        else setDestinationLabel(destination.getAirportName());
+    }
+    private void setDestinationLabel(String text) {
+        distanceLabel.setText(text);
+    }
+    private void resetDestinationLabel() {
+        distanceLabel.setText("Destination is not set");
     }
 
     private void refreshTakeOffButton() {
@@ -405,7 +463,12 @@ public class AirlineManagerController implements SecondClockListener {
 
 
     private void setSelectedPlane(Plane plane) {
-        game.setSelectedPlane(plane);
+        try {
+            game.setSelectedPlane(plane);
+        }
+        catch (IllegalArgumentException e) {
+            showAlert(e.getMessage());
+        }
     }
 
     private Plane getSelectedPlane() {
@@ -415,11 +478,21 @@ public class AirlineManagerController implements SecondClockListener {
 
 
     private void boardPassenger(Passenger passenger) {
-        game.boardPassenger(getSelectedPlane(), passenger);
+        try {
+            game.boardPassenger(getSelectedPlane(), passenger);
+        }
+        catch (IllegalArgumentException e) {
+            showAlert(e.getMessage());
+        }
     }
 
     private void unBoardPassenger(Passenger passenger) {
-        game.unBoardPassenger(getSelectedPlane(), passenger);
+        try {
+            game.unBoardPassenger(getSelectedPlane(), passenger);
+        }
+        catch (IllegalArgumentException e) {
+            showAlert(e.getMessage());
+        }
     }
 
 
@@ -447,15 +520,28 @@ public class AirlineManagerController implements SecondClockListener {
 
     @FXML
     public void handleSetDestination(Airport airport) {
-        getSelectedPlane().setDestination(airport);
-        updatePlaneInfo();
-        refreshTakeOffButton();
+        try {
+            getSelectedPlane().setDestination(airport);
+            updatePlaneInfo();
+            refreshTakeOffButton();
+        }
+        catch (IllegalArgumentException e) {
+            showAlert(e.getMessage());
+        }
     }
 
     @FXML
     public void handleTakeOff() {
-        getSelectedPlane().takeOff();
-        refreshInterface();
+        try {
+            getSelectedPlane().takeOff();
+            refreshInterface();
+        }
+        catch (IllegalArgumentException e) {
+            showAlert(e.getMessage());
+        }
+        catch (IllegalStateException e) {
+            showAlert(e.getMessage());
+        }
     }
 
 
@@ -478,6 +564,8 @@ public class AirlineManagerController implements SecondClockListener {
 
         
         List<Aircraft> aircraftsList = game.getAircrafts();
+        if(aircraftsList.size() <= 0) showAlert("Try reloading the game. There are no aircrafts.");
+
         for (Aircraft aircraft : aircraftsList) {
             grid.add(createAircraftButton(aircraft), 1, aircraftsList.indexOf(aircraft));
         }
@@ -496,8 +584,10 @@ public class AirlineManagerController implements SecondClockListener {
         button.setStyle("-fx-text-alignment: center;");
         button.setCursor(Cursor.HAND);
         button.setOnAction((event) -> handleAircraftSelect(aircraft));
-        button.setMaxWidth(Double.MAX_VALUE);
-        button.setMaxHeight(Double.MAX_VALUE);
+        button.setMaxWidth(AIRCRAFT_BUTTON_MAX_WIDTH);
+        button.setMinWidth(AIRCRAFT_BUTTON_MIN_WIDTH);
+        button.setMaxHeight(AIRCRAFT_BUTTON_MAX_HEIGHT);
+        button.setMinHeight(AIRCRAFT_BUTTON_MIN_HEIGHT);
 
         return button;    
     }
@@ -511,9 +601,6 @@ public class AirlineManagerController implements SecondClockListener {
         setEfficiencyLabel(aircraft);
         setRangeLabel(aircraft);
         setSpeedLabel(aircraft);
-         
-        // if(!Objects.isNull(plane.getDestination())) enableTakeOffButton();
-        // else disableTakeOffButton();
     }
 
     private void setSelectedAircraftLabel(Aircraft aircraft) {
@@ -543,8 +630,13 @@ public class AirlineManagerController implements SecondClockListener {
 
 
     private void refreshBuyButton(Aircraft aircraft) {
-        if(game.airlineCanBuy(aircraft)) enableBuyButton();
-        else disableBuyButton();
+        try {
+            if(game.airlineCanBuy(aircraft)) enableBuyButton();
+            else disableBuyButton();
+        }
+        catch (IllegalArgumentException e) {
+            showAlert(e.getMessage());
+        }
     }
 
     private void disableBuyButton() {
@@ -580,9 +672,13 @@ public class AirlineManagerController implements SecondClockListener {
 
     @FXML
     public void handleBuyAircraft() {
-        game.airlineBuy(getSelectedAircraft());
-        loadPlanesList();
-        // refreshAircraftTab();
+        try {
+            game.airlineBuy(getSelectedAircraft());
+            loadPlanesList();
+        }
+        catch (IllegalArgumentException e) {
+            showAlert(e.getMessage());
+        }
     }
 
 
@@ -598,6 +694,8 @@ public class AirlineManagerController implements SecondClockListener {
         alert.setContentText(errorMessage);
         alert.showAndWait();
     }
+
+
 
     // *****************
     // Save and load
@@ -615,21 +713,24 @@ public class AirlineManagerController implements SecondClockListener {
             game.saveGame(saveName);
             // checkoutReceipt.writeReceipt(receiptName, selfCheckout);
         }
+        catch (IllegalArgumentException e) {
+            showAlert(e.getMessage());
+            handleSaveGame();
+        }
+        catch (NoSuchElementException e) {
+            System.err.println("Error naming save file: " + e.getMessage());
+            System.out.println("Aborting...");
+        }
         catch (Exception e) {
-            System.out.println(e);
-        } 
-        // catch (IOException e) {
-        //     System.out.println(e);
-        //     showErrorMessage("Kvitteringen kunne ikke skrives til fil!");
-        // }
+            e.printStackTrace();
+        }
     }
 
     @FXML void handleLoadGame() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(getClass().getResource("gamefiles/").getPath()));
         fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Text Files", "*.txt")
-                    );
+                    new FileChooser.ExtensionFilter("Text Files", "*.txt"));
 
         try {
             File gameSave = fileChooser.showOpenDialog(new Stage());
@@ -637,13 +738,20 @@ public class AirlineManagerController implements SecondClockListener {
             game.loadGameSave(gameSave);
             resetPanel();
         }
+        catch (IllegalArgumentException e) {
+            showAlert(e.getMessage());
+            handleLoadGame();
+        }
+        catch (FileNotFoundException e) {
+            System.err.println("Error when loading file " + e.getMessage());
+            showAlert(e.getMessage());
+            System.out.println("Select a new file...");
+            handleLoadGame();
+        }
         catch (Exception e) {
-            System.out.println(e);
-        } 
-        // catch (IOException e) {
-        //     System.out.println(e);
-        //     showErrorMessage("");
-        // }
+            e.printStackTrace();
+        }
+
     }
     
 

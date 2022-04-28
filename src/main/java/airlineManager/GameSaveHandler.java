@@ -80,7 +80,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
     }
 
     @Override
-    public Airline load(File file, AirlineManagerGame game) throws IllegalArgumentException {
+    public Airline load(File file, AirlineManagerGame game) throws FileNotFoundException, IllegalArgumentException {
         if(!this.isValidGameSave(file)) throw new IllegalArgumentException("This is not a valid game file...");
 
         List<Aircraft> gameAircrafts = game.getAircrafts();
