@@ -24,6 +24,11 @@
                   <MenuItem fx:id="load" mnemonicParsing="false" onAction="#handleLoadGame" text="Load" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Airline">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleRenameAirline" text="Rename" />
+               </items>
+            </Menu>
           <Menu fx:id="help" mnemonicParsing="false" text="Help">
             <items>
                   <MenuItem mnemonicParsing="false" text="Blahblah" />

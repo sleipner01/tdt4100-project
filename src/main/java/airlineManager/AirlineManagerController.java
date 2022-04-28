@@ -2,7 +2,6 @@ package airlineManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,10 +28,11 @@ public class AirlineManagerController implements SecondClockListener {
 
     private AirlineManagerGame game;
 
-    private final int BUTTON_HORIZONTAL_GAP = 0;
-    private final int BUTTON_VERTICAL_GAP = 0;
+    private final int GRIDPANE_PADDING = 6;
 
-    private final int PLANE_BUTTON_PADDING = 10;
+    private final int BUTTON_HORIZONTAL_GAP = 6;
+    private final int BUTTON_VERTICAL_GAP = 6;
+
     private final int PLANE_BUTTON_MIN_HEIGHT = 70;
     private final int PLANE_BUTTON_MAX_HEIGHT = 70;
     private final int PLANE_BUTTON_MIN_WIDTH = 70;
@@ -40,18 +40,18 @@ public class AirlineManagerController implements SecondClockListener {
 
     private final int DESTINATION_BUTTON_MIN_HEIGHT = 50;
     private final int DESTINATION_BUTTON_MAX_HEIGHT = 90;
-    private final int DESTINATION_BUTTON_MIN_WIDTH = 90;
-    private final int DESTINATION_BUTTON_MAX_WIDTH = 90;
+    private final int DESTINATION_BUTTON_MIN_WIDTH = 160;
+    private final int DESTINATION_BUTTON_MAX_WIDTH = 160;
 
     private final int TRAVELLER_BUTTON_MIN_HEIGHT = 50;
     private final int TRAVELLER_BUTTON_MAX_HEIGHT = 90;
-    private final int TRAVELLER_BUTTON_MIN_WIDTH = 90;
-    private final int TRAVELLER_BUTTON_MAX_WIDTH = 90;
+    private final int TRAVELLER_BUTTON_MIN_WIDTH = 160;
+    private final int TRAVELLER_BUTTON_MAX_WIDTH = 160;
 
     private final int AIRCRAFT_BUTTON_MIN_HEIGHT = 50;
     private final int AIRCRAFT_BUTTON_MAX_HEIGHT = 90;
-    private final int AIRCRAFT_BUTTON_MIN_WIDTH = 90;
-    private final int AIRCRAFT_BUTTON_MAX_WIDTH = 90;
+    private final int AIRCRAFT_BUTTON_MIN_WIDTH = 160;
+    private final int AIRCRAFT_BUTTON_MAX_WIDTH = 160;
 
     @FXML
     public Button takeOffButton, buyPlaneButton;
@@ -91,6 +91,7 @@ public class AirlineManagerController implements SecondClockListener {
         dialog.setContentText("Name:");
         try {
             game.getAirline().rename(dialog.showAndWait().get());
+            setAirlineNameHeader();;
         } 
         catch (IllegalArgumentException e) {
             showAlert(e.getMessage());
@@ -107,8 +108,6 @@ public class AirlineManagerController implements SecondClockListener {
     }
 
     public void resetPanel() {
-        setAirlineNameHeader();
-        setAirlineCoins();
         refreshInterface();
         refreshAircraftsTab();
     }
@@ -145,7 +144,7 @@ public class AirlineManagerController implements SecondClockListener {
     private void loadPlanesList() {
 
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(PLANE_BUTTON_PADDING));
+        grid.setPadding(new Insets(GRIDPANE_PADDING));
         grid.setHgap(BUTTON_HORIZONTAL_GAP);
         grid.setVgap(BUTTON_VERTICAL_GAP);
 
@@ -218,7 +217,7 @@ public class AirlineManagerController implements SecondClockListener {
     private void loadDestinationsList(Plane plane) {
 
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(PLANE_BUTTON_PADDING));
+        grid.setPadding(new Insets(GRIDPANE_PADDING));
         grid.setHgap(BUTTON_HORIZONTAL_GAP);
         grid.setVgap(BUTTON_VERTICAL_GAP);
 
@@ -233,6 +232,8 @@ public class AirlineManagerController implements SecondClockListener {
         // airportsList.sort((a, b) -> plane.getAirport().compareTo(a) - plane.getAirport().compareTo(b));
 
         for (Airport airport : airportsList) {
+            if(!getSelectedPlane().isInRange(airport)) break;
+
             grid.add(createAirportButton(airport), 1, airportsList.indexOf(airport));
         }
 
@@ -241,8 +242,9 @@ public class AirlineManagerController implements SecondClockListener {
 
     private Button createAirportButton(Airport airport) {
 
-        Button button = new Button(airport.getAirportName() + "\n"
-                                   + getSelectedPlane().getAirport().compareTo(airport) + "km");
+        Button button = new Button("City: " + airport.getCityName() + "\n" +
+                                   "Airport: " + airport.getAirportName() + "\n" +
+                                   "Distance: " + getSelectedPlane().getAirport().compareTo(airport) + "km");
         button.wrapTextProperty().setValue(true);
         button.setStyle("-fx-text-alignment: center;");
         button.setCursor(Cursor.HAND);
@@ -268,7 +270,7 @@ public class AirlineManagerController implements SecondClockListener {
     private void loadTravellersList(Airport airport) {
 
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(PLANE_BUTTON_PADDING));
+        grid.setPadding(new Insets(GRIDPANE_PADDING));
         grid.setHgap(BUTTON_HORIZONTAL_GAP);
         grid.setVgap(BUTTON_VERTICAL_GAP);
 
@@ -296,9 +298,9 @@ public class AirlineManagerController implements SecondClockListener {
     private Button createTravellerButton(Passenger passenger) {
 
         Button button = new Button(passenger.getFullName() + "\n" + 
-                                   passenger.getPaying() + "\n" +
-                                   passenger.getDestination().getAirportName());
-                                   button.wrapTextProperty().setValue(true);
+                                   "Paying: " + passenger.getPaying() + ",-\n" +
+                                   "Destination: " + passenger.getDestination().getCityName());
+        button.wrapTextProperty().setValue(true);
         button.setStyle("-fx-text-alignment: center;");
         button.setCursor(Cursor.HAND);
         button.setOnAction((event) -> handleBoardPassenger(passenger));
@@ -318,8 +320,8 @@ public class AirlineManagerController implements SecondClockListener {
     private Button createPassengerButton(Passenger passenger) {
 
         Button button = new Button(passenger.getFullName() + "\n" + 
-                                   passenger.getPaying() + "\n" +
-                                   passenger.getDestination().getAirportName());
+                                   "Paying: " + passenger.getPaying() + ",-\n" +
+                                   "Destination: " + passenger.getDestination().getCityName());
         button.wrapTextProperty().setValue(true);
         button.setStyle("-fx-text-alignment: center;");
         button.setStyle("-fx-background-color: #00FF00;");
@@ -341,6 +343,8 @@ public class AirlineManagerController implements SecondClockListener {
 
 
     private void refreshInterface() {
+        setAirlineNameHeader();
+        setAirlineCoins();
         emptyDestinationsList();
         emptyTravellersList();
         resetPlaneInfo();
@@ -415,10 +419,10 @@ public class AirlineManagerController implements SecondClockListener {
         else setProfitLabel(plane.getProfit() + " coins");
     }
     private void setProfitLabel(String text) {
-        distanceLabel.setText(text);
+        profitLabel.setText(text);
     }
     private void resetProfitLabel() {
-        distanceLabel.setText("Destination is not set");
+        profitLabel.setText("Destination is not set");
     }
 
     private void setDestinationAirportLabel(Plane plane) {
@@ -427,10 +431,10 @@ public class AirlineManagerController implements SecondClockListener {
         else setDestinationLabel(destination.getAirportName());
     }
     private void setDestinationLabel(String text) {
-        distanceLabel.setText(text);
+        destinationAirportLabel.setText(text);
     }
     private void resetDestinationLabel() {
-        distanceLabel.setText("Destination is not set");
+        destinationAirportLabel.setText("Destination is not set");
     }
 
     private void refreshTakeOffButton() {
@@ -544,6 +548,10 @@ public class AirlineManagerController implements SecondClockListener {
         }
     }
 
+    @FXML
+    public void handleRenameAirline() {
+        nameAirlineDialog();
+    }
 
 
     // ***************
@@ -557,7 +565,7 @@ public class AirlineManagerController implements SecondClockListener {
     private void loadBuyableAircraftsList() {
 
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(PLANE_BUTTON_PADDING));
+        grid.setPadding(new Insets(GRIDPANE_PADDING));
         grid.setHgap(BUTTON_HORIZONTAL_GAP);
         grid.setVgap(BUTTON_VERTICAL_GAP);
 

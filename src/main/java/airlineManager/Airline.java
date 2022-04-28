@@ -86,7 +86,10 @@ public class Airline implements Iterable<Plane> {
 
     public void rename(String name) throws IllegalArgumentException {
         if(!isValidAirlineName(name)) throw new IllegalArgumentException("This is not a valid airline name");
-        this.name = name;
+
+        if(name.equals("")) return;
+        else this.name = name;
+
         System.out.println("Renamed airline to: " + name);
     }
     
