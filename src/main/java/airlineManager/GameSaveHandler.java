@@ -142,7 +142,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
                                     else break;
                                 }
 
-                                planes.add(new Plane(aircraft, planeName, airline, airport, destinaton, inFlight, minutesLeftInFlight, planePassengers));
+                                planes.add(new Plane(aircraft, planeName, airline, airport, destinaton, inFlight, minutesLeftInFlight, planePassengers, this));
 
                             }
                             else break;

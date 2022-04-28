@@ -1,11 +1,15 @@
-
-
 package airlineManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 public class Plane implements SecondClockListener {
+
+
+
+    private final String REGEX_PATTERN = "[a-zA-Z0-9]*";
+    private final int DEFAULT_FLIGHTTIME = 30;
 
 
 
@@ -21,13 +25,15 @@ public class Plane implements SecondClockListener {
 
 
 
-    private final int DEFAULT_FLIGHTTIME = 30;
-
-
-    public Plane(Aircraft aircraft, String nickName, Airline airline, Airport startingAirport) {
+    private Plane(Aircraft aircraft, String nickName, Airline airline) throws IllegalArgumentException {
         this.aircraft = aircraft;
+        if(!isValidNickName(nickName)) throw new IllegalArgumentException(nickName + " is not a valid nickname");
         this.nickName = nickName;
         this.airline = airline;
+    }
+
+    public Plane(Aircraft aircraft, String nickName, Airline airline, Airport startingAirport) throws IllegalArgumentException {
+        this(aircraft, nickName, airline);
         this.airport = startingAirport;
         startingAirport.addPlane(this);
         this.passengers = new ArrayList<>();
@@ -38,12 +44,11 @@ public class Plane implements SecondClockListener {
                            + " for " + airline);
     }
 
-
-
-    public Plane(Aircraft aircraft, String nickName, Airline airline, Airport airport, Airport destination, boolean inFlight, int flightTimeInMinutes, List<Passenger> passengers) {
-        this.aircraft = aircraft;
-        this.nickName = nickName;
-        this.airline = airline;
+    //For restoring plane from file
+    public Plane(Aircraft aircraft, String nickName, Airline airline, Airport airport, Airport destination, 
+                 boolean inFlight, int flightTimeInMinutes, List<Passenger> passengers, InterfaceGameSaveHandler gameSaveHandler) 
+                 throws IllegalArgumentException {
+        this(aircraft, nickName, airline);
         this.airport = airport;
         this.destination = destination;
         this.inFlight = inFlight; 
@@ -52,13 +57,16 @@ public class Plane implements SecondClockListener {
         this.passengers = passengers;
     }
 
+    private boolean isValidNickName(String nickName) {
+        if(Pattern.matches(REGEX_PATTERN, nickName)) return true;
+        return false;
+    }
+
 
 
     public Aircraft getAircraft() { return this.aircraft; }
 
     public String getNickName() { return this.nickName; }
-
-    public void setNickName(String nickName) { this.nickName = nickName; }
 
     public Airline getAirline() { return this.airline; }
 
@@ -81,14 +89,20 @@ public class Plane implements SecondClockListener {
 
 
 
+    public void setNickName(String nickName) {
+        if(!isValidNickName(nickName)) throw new IllegalArgumentException(nickName + " is not a valid nickname");
+        this.nickName = nickName; 
+    }
+
+
+
+
     public int getIncome() {
         return passengers.stream()
                          .filter(passenger -> passenger.getDestination().equals(this.getDestination()))
                          .mapToInt(passenger -> passenger.getPaying())
                          .sum();
     }
-
-
 
     public int getProfit() {
         return this.getIncome() - this.getFlightCost();
@@ -107,6 +121,8 @@ public class Plane implements SecondClockListener {
     public boolean hasMoreEmptySeats() { 
         return this.getPassengerCount() < this.aircraft.getSeats();
     }
+
+
 
     public boolean isReadyForTakeOff() {
         if(Objects.isNull(this.destination)) return false;
@@ -229,15 +245,12 @@ public class Plane implements SecondClockListener {
     public void land() {
         if(!this.isInFlight()) 
             throw new IllegalArgumentException("The plane isn't flying");
-        //TODO: Do landing stuff
-        this.inFlight = false;
 
+        this.inFlight = false;
         this.airline.addIncome(this.getIncome());
-        
         this.airport = this.getDestination();
         this.destination = null;
         this.airport.addPlane(this);
-
         this.unBoardPassengers();
         
         System.out.println("\nRetard, retard, retard... " + this + " just landed");

@@ -47,14 +47,6 @@ public class Airport extends City implements Comparable<Airport> {
         return true;
     }
 
-    private boolean isValidDecimalCoordinates(double latitude, double longitude) {
-        if(latitude < -90) return false;
-        if(latitude > 90) return false;
-        if(longitude < -180) return false;
-        if(longitude > 180) return false;
-        return true;
-    }
-
 
 
     public String getAirportName() { return this.name; }
