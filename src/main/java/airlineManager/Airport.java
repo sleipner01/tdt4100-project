@@ -23,15 +23,12 @@ public class Airport extends City implements Comparable<Airport> {
 
 
 
-    public Airport(String airportName, int gates, int capacity, String cityName, double latitude, double longitude, int airportID) {
+    public Airport(String airportName, int gates, int capacity, String cityName, double latitude, double longitude, int airportID)
+    throws IllegalArgumentException {
         super(cityName, latitude, longitude);
 
         if(!isValidIntegers(gates, capacity))
             throw new IllegalArgumentException("The integers put into the Airport constructor must be positive");
-        if(!isValidDecimalCoordinates(latitude, longitude))
-            throw new IllegalArgumentException("Latitude must be between -+90. It was: " + latitude +"\n" +
-                                               "Longitude must be between -+180. It was: " + longitude);
-
 
         this.name = airportName;
         this.gates = gates;

@@ -9,10 +9,23 @@ public abstract class City {
 
 
 
-    protected City(String name, double latitude, double longitude)  {
+    protected City(String name, double latitude, double longitude) throws IllegalArgumentException {
+
+        if(!isValidDecimalCoordinates(latitude, longitude))
+        throw new IllegalArgumentException("Latitude must be between -+90. It was: " + latitude +"\n" +
+                                           "Longitude must be between -+180. It was: " + longitude);
+
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    private boolean isValidDecimalCoordinates(double latitude, double longitude) {
+        if(latitude < -90) return false;
+        if(latitude > 90) return false;
+        if(longitude < -180) return false;
+        if(longitude > 180) return false;
+        return true;
     }
 
 
