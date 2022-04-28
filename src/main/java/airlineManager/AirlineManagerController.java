@@ -28,6 +28,10 @@ public class AirlineManagerController implements SecondClockListener {
     private AirlineManagerGame game;
 
     private final int PLANE_BUTTON_PADDING = 10;
+    private final int PLANE_BUTTON_MIN_HEIGHT = 70;
+    private final int PLANE_BUTTON_MAX_HEIGHT = 70;
+    private final int PLANE_BUTTON_MIN_WIDTH = 70;
+    private final int PLANE_BUTTON_MAX_WIDTH = 100;
     private final int BUTTON_HORIZONTAL_GAP = 0;
     private final int BUTTON_VERTICAL_GAP = 0;
 
@@ -109,7 +113,7 @@ public class AirlineManagerController implements SecondClockListener {
     @Override
     public void tick() {
         // Only refreshing certain parts to keep the game running smoothly
-        setTravellersRefreshTimer(game.refreshingTravellersIn());
+        setTravellersRefreshTimer();
         setAirlineCoins();
         refreshPlanesInFlight();
     }
@@ -134,16 +138,16 @@ public class AirlineManagerController implements SecondClockListener {
             grid.add(createPlaneButton(plane),planesList.indexOf(plane),1);
         }
 
-        viewablePlanesList.setContent(grid);
+        if(planesList.size() <= 0) viewablePlanesList.setContent(new Text("The airline does not have any planes."));
+        else viewablePlanesList.setContent(grid);
         
     }
 
     // To keep the grid from having to update constantly, this only updates the flights in air.
-    private void refreshPlanesInFlight() throws IllegalStateException {
+    private void refreshPlanesInFlight() {
 
         Node viewablePlanesListContent = viewablePlanesList.getContent();
-        if(!(viewablePlanesListContent instanceof GridPane))
-            throw new IllegalStateException("No can do. This is not a gridpane");
+        if(!(viewablePlanesListContent instanceof GridPane)) return;
 
         GridPane viewablePlanesListGridPane = (GridPane)viewablePlanesListContent;
         ObservableList<Node> gridPanePlaneButtons = viewablePlanesListGridPane.getChildren();
@@ -181,10 +185,10 @@ public class AirlineManagerController implements SecondClockListener {
         button.setStyle("-fx-text-alignment: center;");
         button.setCursor(Cursor.HAND);
         button.setOnAction((event) -> handlePlaneSelect(plane));
-        button.setMaxWidth(Double.MAX_VALUE);
-        button.setMaxHeight(Double.MAX_VALUE);
-
-
+        button.setMaxWidth(PLANE_BUTTON_MAX_WIDTH);
+        button.setMinWidth(PLANE_BUTTON_MIN_WIDTH);
+        button.setMaxHeight(PLANE_BUTTON_MAX_HEIGHT);
+        button.setMinHeight(PLANE_BUTTON_MIN_HEIGHT);
 
         return button;
     }
@@ -390,8 +394,8 @@ public class AirlineManagerController implements SecondClockListener {
         airlineName.setText(game.getAirline().getName());
     }
 
-    private void setTravellersRefreshTimer(int time) {
-        travellersRefreshTimer.setText("Refreshing travellers in: " + time + " min");
+    private void setTravellersRefreshTimer() {
+        travellersRefreshTimer.setText("Refreshing travellers in: " + game.refreshingTravellersIn() + " min");
     }
 
     private void setAirlineCoins() {
