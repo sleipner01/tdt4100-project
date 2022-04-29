@@ -114,7 +114,7 @@ public class Airline implements Iterable<Plane> {
 
 
 
-    public void buy(Aircraft aircraft) throws IllegalArgumentException {
+    public void buy(Aircraft aircraft, SecondClock clock) throws IllegalArgumentException {
         if(!this.canBuy(aircraft))
             throw new IllegalArgumentException("You don't have enough money for this aircraft.");
 
@@ -122,6 +122,7 @@ public class Airline implements Iterable<Plane> {
         
         Plane newPlane = new Plane(aircraft, this.createTemporaryPlaneNickName(), this, this.homeAirport);
         this.planes.add(newPlane);
+        clock.addListener(newPlane);
 
         System.out.println("\n" + this + " successfully bought " + aircraft);
     }

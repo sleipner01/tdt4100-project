@@ -17,6 +17,7 @@ public class SecondClock {
     private Timer timer;
     private TimerTask timerTask;
     private int seconds;
+    private boolean isStarted;
     private Collection<SecondClockListener> listeners;
 
 
@@ -25,6 +26,7 @@ public class SecondClock {
         // this.notificationInterval = notificationInterval;
         this.listeners = new ArrayList<>();
         timer = new Timer(true);
+        System.out.println("CLOCKCREATED");
     }
 
 
@@ -73,9 +75,13 @@ public class SecondClock {
 
     public void start() {
 
-        timer = new Timer(true);
+        if(this.isStarted) return;
+
+        this.timer = new Timer(true);
         this.createTimerTask();
         timer.scheduleAtFixedRate(timerTask, secondInMilliSeconds, secondInMilliSeconds);
+
+        this.isStarted = true;
         
         System.out.println( this.toString() + " has been started.");
     }
@@ -83,6 +89,10 @@ public class SecondClock {
 
 
     public void stop() {
+
+        if(!this.isStarted) return;
+
+
         if(!Objects.isNull(timer)) timer.cancel();
         System.out.println(this.toString() + " has been stopped.");
     }
@@ -90,6 +100,7 @@ public class SecondClock {
 
 
     private void notifyListeners() {
+        System.out.println(seconds);
         this.listeners.forEach(listener -> listener.tick());
     }
 
@@ -99,4 +110,5 @@ public class SecondClock {
     public String toString() {
         return "SecondClock";
     }
+
 }

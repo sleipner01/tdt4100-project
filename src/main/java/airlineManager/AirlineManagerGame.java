@@ -128,7 +128,7 @@ public class AirlineManagerGame implements SecondClockListener {
     }
 
     public void airlineBuy(Aircraft aircraft) throws IllegalArgumentException {
-        this.airline.buy(aircraft);
+        this.airline.buy(aircraft, this.secondClock);
     }
 
     public void setSelectedPlane(Plane plane) throws IllegalArgumentException {
@@ -194,14 +194,15 @@ public class AirlineManagerGame implements SecondClockListener {
 
     private void startGameClock() {
         this.secondClock.addListener(this);
-        secondClock.start();
+        for (Plane plane : this.getAirline()) {
+            this.secondClock.addListener(plane);
+        }
+        this.secondClock.start();
     }
 
     @Override
     public void tick() {
         this.seconds++;
-        // Not perfect, must be fixed
-        this.getAirline().getPlanes().forEach(plane -> plane.tick()); 
         this.minuteProcedure();
     }
 

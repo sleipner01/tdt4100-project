@@ -79,7 +79,7 @@ public class Plane implements SecondClockListener {
     public Airport getDestination() { return this.destination; }
 
     // Using real world minutes as seconds in the game.
-    private void setFlightTime(int time) { this.flightTime = time; }
+    private void setFlightTime(int time) { this.flightTime = time; System.out.println(time); System.out.println(getRemainingFlightTimeInMinutes()); }
 
     private int getRemainingFlightTime() { return this.flightTime; }
     
@@ -225,7 +225,6 @@ public class Plane implements SecondClockListener {
 
 
     public void takeOff() throws IllegalArgumentException, IllegalStateException {
-        //TODO: If everything is good, take off
         if(this.isInFlight())
             throw new IllegalArgumentException("The plane is already in flight");
         if(Objects.isNull(this.destination)) 
@@ -260,10 +259,6 @@ public class Plane implements SecondClockListener {
 
     @Override
     public void tick() {
-
-        // Currently no good solution to add the planes directly to the clock.
-        // The game calles this function
-
         if(!this.isInFlight()) return;
         if(this.getRemainingFlightTime() <= 1) this.land();
         flightTime--;
