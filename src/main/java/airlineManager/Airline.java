@@ -35,9 +35,6 @@ public class Airline implements Iterable<Plane> {
         System.out.println("Name: " + name + ", Coins: " + coins + "\n");
     }
 
-    // Simply to allow the gameSaveHandler to create the airline in an alternate way, with it's signature for security
-    public Airline(InterfaceGameSaveHandler gameSaveHandler) {}
-
     public Airline(String name, int coins, Airport homeAirport, InterfaceGameSaveHandler gameSaveHandler) throws IllegalArgumentException {
         this.name = name;
         if(!isValidCoinInput(coins)) throw new IllegalArgumentException("The coin input must be positive");

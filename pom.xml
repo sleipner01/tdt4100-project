@@ -9,23 +9,28 @@
     <packaging>jar</packaging>
  
     <name>tdt4100_v2022_prosjekt_boilerplate</name>
+
+	<properties>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
 	
 
    <dependencies>
 
 	<!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
-	<dependency>
+	<!-- <dependency>
 		<groupId>com.github.javafaker</groupId>
 		<artifactId>javafaker</artifactId>
 		<version>1.0.2</version>
-	</dependency>
+	</dependency> -->
 
 	
 
  	<dependency>
 		<groupId>org.openjfx</groupId>
-	  <artifactId>javafx-fxml</artifactId>
-	  <version>17-ea+8</version>
+	  	<artifactId>javafx-fxml</artifactId>
+	  	<version>17-ea+8</version>
 	</dependency>
 
 

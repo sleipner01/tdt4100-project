@@ -87,7 +87,7 @@ public class GameSaveHandler implements InterfaceGameSaveHandler {
         List<Airport> gameAirports = game.getAirports();
 
         
-        Airline airline = new Airline(this);
+        Airline airline = null;
         List<Plane> planes = new ArrayList<>();
 
 
