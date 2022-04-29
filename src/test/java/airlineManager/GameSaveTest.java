@@ -3,8 +3,10 @@ package airlineManager;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 
@@ -21,55 +23,75 @@ public class GameSaveTest {
         return game;
 	}
 
-    // For some reason, this test fails. The actual and expected look similar,
+    // For some reason, this test started failing. The actual and expected look similar,
     // but there is probably something with the encoding, og the interpretation of the characters that creates the difference.
-    // Anyways, the following commented code is how I want to test the saveHandler.
+    // Since I have autoSave, to test this, gameSave.txt must be deleted. But it is still wrong...
 
-	// @Test
-	// public void testSaveGame() {
-	// 	AirlineManagerGame game = this.createGame();
-	// 	InterfaceGameSaveHandler gameSaveHandler = new GameSaveHandler();
-	// 	gameSaveHandler.save("testSave", game);
+	@Test
+	public void testSaveGame() {
+		AirlineManagerGame game = this.createGame();
+		InterfaceGameSaveHandler gameSaveHandler = new GameSaveHandler();
+		gameSaveHandler.save("testSave", game);
 
-    //     Airline airline = game.getAirline();
-    //     Plane plane = game.getAirline().getPlanes().get(0);
-    //     Passenger passenger = plane.getPassengers().get(0); 
+        Airline airline = game.getAirline();
+        Plane plane = game.getAirline().getPlanes().get(0);
+        Passenger passenger = plane.getPassengers().get(0); 
 
-    //     String content = null;
+        String content = null;
 		
-    //     try {
-    //         content = Files.readString(new File(getClass().getResource("gamefiles/").getFile() + "testSave.txt").toPath());
-    //     }
-    //     catch (IOException e) {
-    //         fail("Error when reading file");
-    //         e.printStackTrace();
-    //     }
 
-	// 	String actual = content;
-	// 	String expected = "***VALID\n" +
-    //                       "\n\n\n" +
-    //                       "***AIRLINE\n" + 
-    //                       "Airline," + 
-    //                       airline.getName() + "," + 
-    //                       airline.getCoinAmount() + "," + 
-    //                       airline.getHomeAirport().getAirportID() + "\n" +
-    //                       "\n\n\n" +
-    //                       "***PLANES\n" +
-    //                       "Plane," + 
-    //                       plane.getNickName() + "," +
-    //                       plane.getAircraft().getAircraftID() + "," +
-    //                       plane.getAirport().getAirportID() + "," +
-    //                       "null," +
-    //                       plane.isInFlight() + "," +
-    //                       plane.getRemainingFlightTimeInMinutes() + "\n" + 
-    //                       "Passenger," + 
-    //                       passenger.getFullName() + "," +
-    //                       passenger.getDestination().getAirportID() + "\n" + 
-    //                       "\n\n";
+        //Trial 1
+        try {
+            content = Files.readString(new File(getClass().getResource("gamefiles/").getFile() + "testSave.txt").toPath());
+        }
+        catch (IOException e) {
+            fail("Error when reading file");
+            e.printStackTrace();
+        }
 
+
+        // Trial 2
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(getClass().getResource("gamefiles/").getFile() + "testSave.txt")))) {
+            StringBuilder stringBuilder = new StringBuilder();
+            String line = bufferedReader.readLine();
+    
+            while (line != null) {
+                stringBuilder.append(line);
+                stringBuilder.append("\n");
+                line = bufferedReader.readLine();
+            }
+            content = stringBuilder.toString();
+        } 
+        catch (IOException e) {
+            e.printStackTrace();
+        } 
+
+    
+
+		String actual = content;
+		String expected = "***VALID\n" +
+                          "\n\n\n" +
+                          "***AIRLINE\n" + 
+                          "Airline," + 
+                          airline.getName() + "," + 
+                          airline.getCoinAmount() + "," + 
+                          airline.getHomeAirport().getAirportID() + "\n" +
+                          "\n\n\n" +
+                          "***PLANES\n" +
+                          "Plane," + 
+                          plane.getNickName() + "," +
+                          plane.getAircraft().getAircraftID() + "," +
+                          plane.getAirport().getAirportID() + "," +
+                          "null," +
+                          plane.isInFlight() + "," +
+                          plane.getRemainingFlightTimeInMinutes() + "\n" + 
+                          "Passenger," + 
+                          passenger.getFullName() + "," +
+                          passenger.getDestination().getAirportID() + "\n";
+                          //"\n\n";
 		
-	// 	assertEquals(expected, actual, "Information written to the file is in the wrong format.");
-	// }
+		assertEquals(expected, actual, "Information written to the file is in the wrong format.");
+	}
 	
 	@Test
 	public void testLoadGame() {
