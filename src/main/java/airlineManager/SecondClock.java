@@ -16,7 +16,7 @@ public class SecondClock {
     // private int notificationInterval;
     private Timer timer;
     private TimerTask timerTask;
-    private int seconds;
+    //private int seconds;
     private boolean isStarted;
     private Collection<SecondClockListener> listeners;
 
@@ -26,12 +26,11 @@ public class SecondClock {
         // this.notificationInterval = notificationInterval;
         this.listeners = new ArrayList<>();
         timer = new Timer(true);
-        System.out.println("CLOCKCREATED");
     }
 
 
 
-    public int getRunTimeInSeconds() { return this.seconds; }
+    // public int getRunTimeInSeconds() { return this.seconds; }
 
 
 
@@ -63,7 +62,7 @@ public class SecondClock {
             public void run() {
                 Platform.runLater(new Runnable() {
                     public void run() {
-                        seconds++;
+                        //seconds++;
                         notifyListeners();
                     }
                 });
