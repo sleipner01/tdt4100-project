@@ -175,6 +175,9 @@ public class Plane implements SecondClockListener {
 
     public void setDestination(Airport destination) throws IllegalArgumentException {
 
+        if(destination.equals(this.getAirport()))
+            throw new IllegalArgumentException("You cannot set the current airport as destination");
+
         if(!this.isInRange(destination))
             throw new IllegalArgumentException("This airport is out of range for this aircraft");
 
@@ -227,8 +230,8 @@ public class Plane implements SecondClockListener {
     public void takeOff() throws IllegalArgumentException, IllegalStateException {
         if(this.isInFlight())
             throw new IllegalArgumentException("The plane is already in flight");
-        if(Objects.isNull(this.destination)) 
-            throw new IllegalStateException("Destination is not set.");
+        if(!isReadyForTakeOff()) 
+            throw new IllegalStateException("Destination is not set, or you do not have enough money for the flight.");
 
         this.inFlight = true;
 
