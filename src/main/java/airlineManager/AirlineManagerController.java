@@ -35,8 +35,8 @@ public class AirlineManagerController implements SecondClockListener {
 
     private final int PLANE_BUTTON_MIN_HEIGHT = 70;
     private final int PLANE_BUTTON_MAX_HEIGHT = 70;
-    private final int PLANE_BUTTON_MIN_WIDTH = 70;
-    private final int PLANE_BUTTON_MAX_WIDTH = 100;
+    private final int PLANE_BUTTON_MIN_WIDTH = 100;
+    private final int PLANE_BUTTON_MAX_WIDTH = 120;
 
     private final int DESTINATION_BUTTON_MIN_HEIGHT = 50;
     private final int DESTINATION_BUTTON_MAX_HEIGHT = 90;
@@ -162,7 +162,6 @@ public class AirlineManagerController implements SecondClockListener {
         
     }
 
-    // To keep the grid from having to update constantly, this only updates the flights in air.
     private void refreshPlanesInFlight() {
 
         Node viewablePlanesListContent = viewablePlanesList.getContent();
@@ -171,19 +170,21 @@ public class AirlineManagerController implements SecondClockListener {
         GridPane viewablePlanesListGridPane = (GridPane)viewablePlanesListContent;
         ObservableList<Node> gridPanePlaneButtons = viewablePlanesListGridPane.getChildren();
 
-        List<Plane> planesList = game.getAirline().getPlanes();
-        // The two lists should be the same length, one with buttons, the other with planes..
-        if(!(gridPanePlaneButtons.size() == planesList.size())) {
-            loadPlanesList(); // In case a new aircraft have been bought
-            if(!(gridPanePlaneButtons.size() == planesList.size())) 
-                showAlert("For some reason, the amount of buttons and the number of planes stored in the game are not equal.");
-        }
+        for (Node node : gridPanePlaneButtons) {
+            Button button = (Button) node;
+            Plane plane = (Plane) button.getUserData();
 
-        for (Node button : gridPanePlaneButtons) {
-            if(button.isDisable()){
-                int index = gridPanePlaneButtons.indexOf(button);
-                gridPanePlaneButtons.set(index, createPlaneButton(planesList.get(index)));
+            if(plane.isInFlight()) {
+                button.setText(plane.getNickName() + "\n" + 
+                                "Time remaining:\n" + 
+                                plane.getRemainingFlightTimeInMinutes() + " min");
+                button.setDisable(true);
             }
+            else { 
+                button.setText(plane.getNickName());
+                button.setDisable(false);
+            }
+            
             
         }
         
@@ -203,6 +204,7 @@ public class AirlineManagerController implements SecondClockListener {
         button.wrapTextProperty().setValue(true);
         button.setStyle("-fx-text-alignment: center;");
         button.setCursor(Cursor.HAND);
+        button.setUserData(plane);
         button.setOnAction((event) -> handlePlaneSelect(plane));
         button.setMaxWidth(PLANE_BUTTON_MAX_WIDTH);
         button.setMinWidth(PLANE_BUTTON_MIN_WIDTH);

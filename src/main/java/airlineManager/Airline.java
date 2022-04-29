@@ -51,7 +51,7 @@ public class Airline implements Iterable<Plane> {
     }
 
     private boolean isValidCoinInput(int coins) {
-        if(coins > 0) return true;
+        if(coins >= 0) return true;
         return false;
     }
 

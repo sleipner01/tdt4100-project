@@ -79,7 +79,7 @@ public class Plane implements SecondClockListener {
     public Airport getDestination() { return this.destination; }
 
     // Using real world minutes as seconds in the game.
-    private void setFlightTime(int time) { this.flightTime = time; System.out.println(time); System.out.println(getRemainingFlightTimeInMinutes()); }
+    private void setFlightTime(int time) { this.flightTime = time; }
 
     private int getRemainingFlightTime() { return this.flightTime; }
     
