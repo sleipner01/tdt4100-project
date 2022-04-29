@@ -59,4 +59,4 @@ The state of the game (Airline info, the location of the planes) will be able to
 
 
 ## Before submitting
-- Fix bug where flying planes spawn on top
+- JUNIT
