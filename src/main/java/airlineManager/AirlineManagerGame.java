@@ -82,7 +82,9 @@ public class AirlineManagerGame implements SecondClockListener {
     }
 
     private void setDefaultAirport() {
-        this.defaultAirport = airports.stream().filter(airport -> airport.getAirportName().equals(this.properties.get("defaultAirport"))).findFirst().get();
+        String propertiesDefaultAirport = this.properties.getOrDefault("defaultAirport", "").toString();
+        if(propertiesDefaultAirport.equals("")) this.defaultAirport = airports.get(0);
+        else this.defaultAirport = airports.stream().filter(airport -> airport.getAirportName().equals(propertiesDefaultAirport)).findFirst().get();
         System.out.println("Made " + this.defaultAirport + " as default airport");
     }
 

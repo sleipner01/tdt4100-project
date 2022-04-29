@@ -6,7 +6,7 @@ public class Passenger {
 
 
 
-    private final double PAYMENT_RATIO = 0.4;
+    private final double PAYMENT_RATIO = 0.7;
     private final String REGEX_PATTERN = "^([ \\u00c0-\\u01ffa-zA-Z'\\-])+$";
 
     private String fullName;

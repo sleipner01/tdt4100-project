@@ -100,7 +100,6 @@ public class SecondClock {
 
 
     private void notifyListeners() {
-        System.out.println(seconds);
         this.listeners.forEach(listener -> listener.tick());
     }
 
