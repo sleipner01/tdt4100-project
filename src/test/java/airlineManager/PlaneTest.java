@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -61,6 +60,7 @@ public class PlaneTest {
 
     }
 
+    @Test
     public void testTakeOff() {
 
         AirlineManagerGame game = createGame();
@@ -79,6 +79,30 @@ public class PlaneTest {
         plane.takeOff();
 
         assertThrows(IllegalArgumentException.class, () -> plane.takeOff());
+
+        assertFalse(planeAirport.getPlanes().contains(plane), "The plane should be gone from the airport");
+    }
+
+    @Test
+    public void testLanding() {
+
+        AirlineManagerGame game = createGame();
+        Plane plane = game.getAirline().getPlanes().get(0);
+        Airport planeAirport = plane.getAirport();
+        List<Airport> otherAirports = game.getAirports();
+        otherAirports.remove(planeAirport);
+        Airport inRangeAirport = otherAirports.stream().filter(airport -> airport.compareTo(planeAirport) < plane.getAircraft().getRange()).findFirst().get();
+
+        plane.setDestination(inRangeAirport);
+        plane.takeOff();
+
+        assertTrue(plane.getDestination().equals(inRangeAirport), "The destination should have been set correctly");
+        assertFalse(inRangeAirport.getPlanes().contains(plane), "The destination should not contain the aircraft yet");
+
+        plane.land();
+
+        assertTrue(inRangeAirport.getPlanes().contains(plane), "The destination should contain the aircraft");
+        assertThrows(IllegalArgumentException.class, () -> plane.land());
 
     }
 
