@@ -29,12 +29,6 @@
                   <MenuItem mnemonicParsing="false" onAction="#handleRenameAirline" text="Rename" />
                </items>
             </Menu>
-          <Menu fx:id="help" mnemonicParsing="false" text="Help">
-            <items>
-                  <MenuItem mnemonicParsing="false" text="Blahblah" />
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
         </menus>
       </MenuBar>
       <HBox alignment="CENTER_RIGHT" layoutX="345.0" layoutY="1.0" prefHeight="27.0" prefWidth="454.0">
