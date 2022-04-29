@@ -15,7 +15,6 @@ public class AirlineManagerGame implements SecondClockListener {
     private final String CONFIG_FILE_NAME = "config";
     private final String AIRCRAFTS_FILE_NAME = "aircrafts";
     private final String AIRPORTS_FILE_NAME = "airports";
-    private final int travellersRefreshInterval = 5;
 
     private final InterfaceGameSaveHandler gameSaveHandler;
     private final Properties properties;
@@ -29,7 +28,10 @@ public class AirlineManagerGame implements SecondClockListener {
     private String defaultGameSaveName;
 
     private Airline airline;
-    private int seconds;
+    private int travellerSeconds;
+    private int autoSaveSeconds;
+    private int travellersRefreshInterval;
+    private int autoSaveInterval;
     private boolean hasLoadedFromGameSave;
 
     private Plane selectedPlane;
@@ -49,6 +51,8 @@ public class AirlineManagerGame implements SecondClockListener {
         this.secondClock = new SecondClock();
         this.setDefaultAirport();
         this.setDefaultGameSaveName();
+        this.setTravellersRefreshInterval();
+        this.setAutoSaveInterval();
 
         this.loadGame();
 
@@ -107,7 +111,7 @@ public class AirlineManagerGame implements SecondClockListener {
     public List<Aircraft> getAircrafts() { return new ArrayList<>(this.aircrafts); }
 
     public int refreshingTravellersIn() {
-        return this.travellersRefreshInterval - this.seconds/60;
+        return this.travellersRefreshInterval - this.travellerSeconds/60;
     }
 
     private void refreshTravellers() {
@@ -188,6 +192,14 @@ public class AirlineManagerGame implements SecondClockListener {
         return this.hasLoadedFromGameSave;
     }
 
+    private void setTravellersRefreshInterval() {
+        this.autoSaveInterval = Integer.parseInt(properties.getOrDefault("travellersRefreshInterval", 5).toString());
+    }
+
+    private void setAutoSaveInterval() {
+        this.autoSaveInterval = Integer.parseInt(properties.getOrDefault("autoSaveInterval", 5).toString());
+    }
+
 
 
     // ***************
@@ -196,15 +208,14 @@ public class AirlineManagerGame implements SecondClockListener {
 
     private void startGameClock() {
         this.secondClock.addListener(this);
-        for (Plane plane : this.getAirline()) {
-            this.secondClock.addListener(plane);
-        }
+        for (Plane plane : this.getAirline()) this.secondClock.addListener(plane);
         this.secondClock.start();
     }
 
     @Override
     public void tick() {
-        this.seconds++;
+        this.travellerSeconds++;
+        this.autoSaveSeconds++;
         this.minuteProcedure();
     }
 
@@ -217,10 +228,13 @@ public class AirlineManagerGame implements SecondClockListener {
     }
 
     private void minuteProcedure() {
-        if(this.seconds/60 == this.travellersRefreshInterval) {
-            this.refreshTravellers();
+        if(this.autoSaveSeconds/60 == this.autoSaveInterval) {
             this.saveGame(defaultGameSaveName);
-            this.seconds = 0;
+            this.autoSaveSeconds = 0;
+        }
+        if(this.travellerSeconds/60 == this.travellersRefreshInterval) {
+            this.refreshTravellers();
+            this.travellerSeconds = 0;
         }
     }
 

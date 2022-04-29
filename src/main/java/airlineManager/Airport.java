@@ -156,4 +156,5 @@ public class Airport extends City implements Comparable<Airport> {
         return (int)CalculateFlightDistance.calculate(this, airport);
     }
 
+
 }
