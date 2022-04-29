@@ -51,12 +51,5 @@ The state of the game (Airline info, the location of the planes) will be able to
 - I will test the the airports can add and remove planes that arrive / depart
 - I will test that passangers can be added to flights, and removed from the airport
 
-
-## Tasks
-- Write to file
-- Errorhandeling at useful places
-- JUNIT tests
-
-
 ## Before submitting
 - JUNIT
