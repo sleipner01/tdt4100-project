@@ -6,6 +6,9 @@ This is a project I made in the course [TDT4100 Object-Oriented Programming](htt
 ## About the project
 The project description is written in ["prosjektbeskrivelse"](prosjektbeskrivelse_2022.pdf) but is written in Norwegian. In short, the goal was to make an application with Java, that had at least 4 classes, 1 interface, used JavaFX, and could be tested. We needed to both write and read for at least one file.
 
+## Run the code
+
+
 ### Other comments
 
 In hindsight I have realized that the resources folder cannot be written to when packaged as jar...
