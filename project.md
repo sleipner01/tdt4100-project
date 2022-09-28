@@ -18,7 +18,7 @@ Possible expansions:
 
 ## Base classes
 - Plane
-  - Contsains information about an aircraft.
+  - Contains information about an aircraft.
 
 - Flight
   - Contains the aircraft and its passangers
