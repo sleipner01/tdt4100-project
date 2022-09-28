@@ -6,8 +6,8 @@ This is a project I made in the course [TDT4100 Object-Oriented Programming](htt
 ## About the project
 The project description is written in ["prosjektbeskrivelse"](prosjektbeskrivelse_2022.pdf) but is written in Norwegian. In short, the goal was to make an application with Java, that had at least 4 classes, 1 interface, used JavaFX, and could be tested. We needed to both write and read for at least one file.
 
-## Run the code
-
+## Run the application
+To run the application, either manually run [AirlineManagerApp](src/main/java/airlineManager/AirlineManagerApp.java) or from the root directory, use ´mvn javafx:run´. Make sure to have Maven installed.
 
 ### Other comments
 
