@@ -1,7 +1,9 @@
-open module TDT4100_project {
+open module airlineManager {
     requires javafx.base;
-    requires javafx.controls;
+    requires transitive javafx.controls;
     requires javafx.fxml;
-    requires javafx.graphics;
+    requires transitive javafx.graphics;
     // requires com.github.javafaker;
+
+    exports airlineManager;
 }
